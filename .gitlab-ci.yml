@@ -1,0 +1,59 @@
+image: 'docker-registry.dev.concisesoftware.com/node-java:latest'
+
+stages:
+  - install
+  - dependencies
+  - build
+  - tests
+
+install:
+  stage: install
+  only:
+    - merge_requests
+  script:
+    - rm -rf node_modules
+    - yarn install
+  artifacts:
+    name: 'artifacts-$CI_PIPELINE_ID'
+    expire_in: 30 minutes
+    paths:
+      - app/node_modules/
+
+check:
+  only:
+    - merge_requests
+  stage: dependencies
+  script:
+    - yarn install
+    - yarn check:dependencies
+  dependencies:
+    - install
+
+audit:
+  only:
+    - merge_requests
+  stage: dependencies
+  script:
+    - yarn audit
+  dependencies:
+    - install
+
+build:
+  stage: build
+  only:
+    - merge_requests
+  script:
+    - yarn install
+    - yarn build-ci
+  dependencies:
+    - install
+
+lint:
+  only:
+    - merge_requests
+  stage: tests
+  script:
+    - yarn install
+    - yarn lint
+  dependencies:
+    - install
