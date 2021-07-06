@@ -1,0 +1,43 @@
+version: '3.4'
+
+services:
+  biostasis_app:
+    env_file:
+      - .env
+    build: .
+    container_name: biostasis_app
+    ports:
+      - ${APP_PORT}:5000
+    volumes:
+      - .:/var/www/backend
+    tty: true
+    links:
+      - biostasis_database
+    depends_on:
+      - biostasis_database
+    environment:
+      - APP_PORT=${APP_PORT}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - NODE_ENV=${NODE_ENV}
+      - GLOBAL_PREFIX=${GLOBAL_PREFIX}
+  biostasis_database:
+    env_file:
+      - .env
+    image: mysql:8.0.20
+    container_name: biostasis_database
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: ${DB_DATABASE}
+    command:
+      [
+        '--character-set-server=utf8mb4',
+        '--collation-server=utf8mb4_unicode_ci',
+        '--default-authentication-plugin=mysql_native_password',
+      ]

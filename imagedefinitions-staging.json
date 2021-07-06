@@ -1,0 +1,6 @@
+[
+    {
+        "name": "backend-staging",
+        "imageUri": "some-address"
+    }
+]
