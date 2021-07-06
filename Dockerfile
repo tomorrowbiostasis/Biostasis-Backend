@@ -20,4 +20,4 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
     && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
-CMD yarn && dockerize -wait tcp://biostasis_database:3306 -timeout 60m npm run start:dev
+CMD yarn && yarn typeorm:run && dockerize -wait tcp://biostasis_database:3306 -timeout 60m npm run start:dev
