@@ -19,13 +19,17 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "check:dependencies": "depcheck"
+    "check:dependencies": "depcheck",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config config/typeorm.js",
+    "typeorm:create": "npm run typeorm migration:create -- -n",
+    "typeorm:run": "npm run typeorm migration:run"
   },
   "dependencies": {
     "@nestjs/common": "^7.6.18",
     "@nestjs/core": "^7.6.18",
     "@nestjs/platform-express": "^7.6.18",
     "@nestjs/swagger": "4.8.2",
+    "@nestjs/typeorm": "7.1.5",
     "config": "^3.3.6",
     "dotenv": "^10.0.0",
     "helmet": "^4.6.0",
@@ -34,7 +38,8 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "swagger-ui-express": "^4.1.6"
+    "swagger-ui-express": "^4.1.6",
+    "typeorm": "0.2.34"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.6.0",
