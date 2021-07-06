@@ -28,7 +28,7 @@ services:
       MYSQL_ROOT_HOST: '%'
       MYSQL_DATABASE: biostasts
     volumes:
-      -/home/jenkins/biostasis/db/mysql/:/var/lib/mysql
+      - /home/jenkins/biostasis/db/mysql/:/var/lib/mysql
     command:
       [
         '--character-set-server=utf8mb4',
