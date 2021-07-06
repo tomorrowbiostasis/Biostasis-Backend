@@ -19,7 +19,7 @@ services:
       - DB_HOST=biostasis_database
       - DB_PORT=3306
       - NODE_ENV=development
-      - GLOBAL_PREFIX=${GLOBAL_PREFIX}
+      - GLOBAL_PREFIX=api/v1
   biostasis_database:
     image: mysql:8.0.20
     container_name: biostasis_database
