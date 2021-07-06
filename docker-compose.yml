@@ -2,8 +2,6 @@ version: '3.4'
 
 services:
   biostasis_app:
-    env_file:
-      - .env
     build: .
     container_name: biostasis_app
     ports:
@@ -23,8 +21,6 @@ services:
       - NODE_ENV=development
       - GLOBAL_PREFIX=${GLOBAL_PREFIX}
   biostasis_database:
-    env_file:
-      - .env
     image: mysql:8.0.20
     container_name: biostasis_database
     environment:
