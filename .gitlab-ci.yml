@@ -57,3 +57,18 @@ lint:
     - yarn lint
   dependencies:
     - install
+
+unit-test:
+  only:
+    - merge_requests
+  stage: tests
+  script:
+    - yarn install
+    - yarn test --coverage
+  dependencies:
+    - install
+  artifacts:
+    name: 'cov-artifact-$CI_PIPELINE_ID'
+    expire_in: 1 hour
+    paths:
+      - ./coverage
