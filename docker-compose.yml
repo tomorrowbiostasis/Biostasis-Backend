@@ -7,7 +7,7 @@ services:
     build: .
     container_name: biostasis_app
     ports:
-      - 17001:5000
+      - ${APP_PORT}:5000
     tty: true
     links:
       - biostasis_database
@@ -19,14 +19,21 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_DATABASE=${DB_DATABASE}
       - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
+      - DB_PORT=3306
       - NODE_ENV=${NODE_ENV}
       - GLOBAL_PREFIX=${GLOBAL_PREFIX}
+      - COGNITO_ACCESS_KEY_ID=${COGNITO_ACCESS_KEY_ID}
+      - COGNITO_SECRET_ACCESS_KEY=${COGNITO_SECRET_ACCESS_KEY}
+      - COGNITO_USER_POOL_ID=${COGNITO_USER_POOL_ID}
+      - COGNITO_CLIENT_ID=${COGNITO_CLIENT_ID}
+      - COGNITO_REGION=${COGNITO_REGION}
   biostasis_database:
     env_file:
       - .env
     image: mysql:8.0.20
     container_name: biostasis_database
+    ports:
+      - ${DB_PORT}:3306
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_HOST: '%'
