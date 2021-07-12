@@ -11,7 +11,7 @@ export class AddContactDTO {
   email: string;
 
   @ApiProperty({ type: Number, maxLength: 3 })
-  prefix: string;
+  prefix: number;
 
   @ApiProperty({ type: String, maxLength: 20 })
   phone: string;
