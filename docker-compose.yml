@@ -8,6 +8,8 @@ services:
     container_name: biostasis_app
     ports:
       - ${APP_PORT}:5000
+    volumes:
+      - .:/var/www/backend
     tty: true
     links:
       - biostasis_database
@@ -27,6 +29,7 @@ services:
       - COGNITO_USER_POOL_ID=${COGNITO_USER_POOL_ID}
       - COGNITO_CLIENT_ID=${COGNITO_CLIENT_ID}
       - COGNITO_REGION=${COGNITO_REGION}
+
   biostasis_database:
     env_file:
       - .env
@@ -34,12 +37,15 @@ services:
     container_name: biostasis_database
     ports:
       - ${DB_PORT}:3306
+    volumes:
+      - /home/jenkins/biostasis/db/mysql/:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_HOST: '%'
       MYSQL_DATABASE: ${DB_DATABASE}
-    volumes:
-      - /home/jenkins/biostasis/db/mysql/:/var/lib/mysql
+    entrypoint: sh -c "
+      echo 'CREATE DATABASE IF NOT EXISTS biostasis_test;' > /docker-entrypoint-initdb.d/init.sql;
+      /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password"
     command:
       [
         '--character-set-server=utf8mb4',

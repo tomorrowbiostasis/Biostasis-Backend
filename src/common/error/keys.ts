@@ -1,2 +1,3 @@
 export const UNKNOWN_ERROR = 'E0001';
 export const MISSING_AUTHENTICATION_TOKEN = 'E0002';
+export const VALIDATION_FAILED = 'E0003';
