@@ -5,6 +5,7 @@ import * as helmet from 'helmet';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { configSchema } from './common/validation/config.validation';
+import { ExceptionsFilter } from './common/error/exception.filter';
 
 async function bootstrap() {
   await configSchema.validateAsync(process.env).catch((error) => {
@@ -14,8 +15,13 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const port = +get('application.port');
 
+  app.useGlobalFilters(new ExceptionsFilter());
   app.setGlobalPrefix(get('application.global_prefix'));
   app.use(helmet());
+  app.enableCors({
+    origin: true,
+    credentials: true,
+  });
 
   setupSwagger(app);
 

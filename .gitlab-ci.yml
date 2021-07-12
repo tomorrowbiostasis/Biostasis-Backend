@@ -72,3 +72,29 @@ unit-test:
     expire_in: 1 hour
     paths:
       - ./coverage
+
+integration-tests:
+  only:
+    - merge_requests
+  stage: tests
+  variables:
+    MYSQL_DATABASE: biostasis_test
+    MYSQL_ROOT_PASSWORD: rootpassw0rd
+    DB_HOST: db
+    DB_PASSWORD: rootpassw0rd
+    DB_PORT: 3306
+    DB_USERNAME: root
+    NODE_ENV: test
+  services:
+    - name: mysql:8.0.20
+      alias: db
+      entrypoint:
+        [
+          '/entrypoint.sh',
+          '--default-authentication-plugin=mysql_native_password',
+        ]
+  script:
+    - yarn install
+    - yarn test:integration
+  dependencies:
+    - install
