@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class AddContactDTO {
-  @ApiProperty({ type: String, maxLength: 100 })
+export class UpdateContactDTO {
+  @ApiProperty({ type: String, maxLength: 100, required: false })
   name: string;
 
-  @ApiProperty({ type: String, maxLength: 100 })
+  @ApiProperty({ type: String, maxLength: 100, required: false })
   surname: string;
 
   @ApiProperty({ type: String, maxLength: 320, required: false })

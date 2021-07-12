@@ -11,6 +11,7 @@ export const initializeDataset = async (): Promise<{
   const contacts = await Promise.all([
     addContact({
       userId: users[0].id,
+      active: true,
     }),
     addContact({
       userId: users[1].id,

@@ -28,6 +28,7 @@ export const getContactStub = (data?: IContactData): ContactEntity => {
   contact.name = data?.name ?? faker.name.firstName();
   contact.surname = data?.surname ?? faker.name.lastName();
   contact.userId = data?.userId;
+  contact.active = data?.active ?? faker.datatype.boolean();
 
   return contact;
 };

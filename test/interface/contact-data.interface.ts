@@ -6,4 +6,5 @@ export interface IContactData {
   name?: string;
   surname?: string;
   userId: string;
+  active?: boolean;
 }
