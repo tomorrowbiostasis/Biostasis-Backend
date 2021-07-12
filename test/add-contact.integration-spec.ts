@@ -4,7 +4,6 @@ import { getTestApp } from './mock/app.mock';
 import { initializeDataset } from './helper/contact';
 import * as faker from 'faker';
 import {
-  checkContact,
   getRandomPhoneNumber,
   getRandomPhonePrefix,
 } from './entity/contact.mock';
@@ -26,8 +25,8 @@ describe('/contact (integration) ', () => {
       max: 999,
     }),
     faker.datatype.number({
-      min: 10000000000000,
-    }),
+      min: 999,
+    }) * 100000000,
   ];
 
   beforeAll(async () => {
