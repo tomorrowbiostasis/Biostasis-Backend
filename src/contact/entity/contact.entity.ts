@@ -30,7 +30,7 @@ export class ContactEntity {
   surname: string;
 
   @Column({ type: 'varchar', length: 3 })
-  prefix: string;
+  prefix: number;
 
   @Column({ type: 'varchar', length: 12 })
   phone: string;

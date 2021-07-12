@@ -10,6 +10,10 @@ export class ContactService {
     private readonly userRepository: ContactRepository
   ) {}
 
+  async findContactsByUserId(userId: string) {
+    return this.userRepository.find({ userId });
+  }
+
   async saveContact(
     userId: string,
     data: AddContactDTO

@@ -3,8 +3,13 @@ import { clearDatabase } from './helper';
 import { getTestApp } from './mock/app.mock';
 import { initializeDataset } from './helper/contact';
 import * as faker from 'faker';
-import { checkContact } from './entity/contact.mock';
+import {
+  checkContact,
+  getRandomPhoneNumber,
+  getRandomPhonePrefix,
+} from './entity/contact.mock';
 import { VALIDATION_FAILED } from '../src/common/error/keys';
+import { getContactById } from './entity/contact.mock';
 
 describe('/contact (integration) ', () => {
   let app;
@@ -59,7 +64,7 @@ describe('/contact (integration) ', () => {
       it(`Should return status 400 and error VALIDATION_FAILED if prefix is ${prefix}`, async () => {
         return api
           .post('/contact')
-          .set('Authorization', dataset.user.id)
+          .set('Authorization', dataset.users[0].id)
           .send({
             prefix,
             phone: faker.datatype.number(999999999999).toString(),
@@ -79,7 +84,7 @@ describe('/contact (integration) ', () => {
       it(`Should return status 400 and error VALIDATION_FAILED if phone is ${phone}`, async () => {
         return api
           .post('/contact')
-          .set('Authorization', dataset.user.id)
+          .set('Authorization', dataset.users[0].id)
           .send({
             prefix: faker.datatype.number(999),
             phone: phone.toString(),
@@ -96,22 +101,13 @@ describe('/contact (integration) ', () => {
     }
 
     it('Should return status 400 and error VALIDATION_FAILED for invalid dataset', async () => {
-      const phone = faker.datatype
-        .number({
-          min: 999,
-          max: 999999999999,
-        })
-        .toString();
-      const prefix = faker.datatype.number({
-        min: 1,
-        max: 999,
-      });
+      const userId = dataset.users[0].id;
 
       await api
         .post('/contact')
-        .set('Authorization', dataset.user.id)
+        .set('Authorization', userId)
         .send({
-          phone,
+          phone: getRandomPhoneNumber(),
           name: faker.name.findName(),
           surname: faker.name.lastName(),
           active: true,
@@ -124,9 +120,9 @@ describe('/contact (integration) ', () => {
 
       await api
         .post('/contact')
-        .set('Authorization', dataset.user.id)
+        .set('Authorization', userId)
         .send({
-          prefix,
+          prefix: getRandomPhonePrefix(),
           name: faker.name.findName(),
           surname: faker.name.lastName(),
           active: true,
@@ -139,7 +135,7 @@ describe('/contact (integration) ', () => {
 
       await api
         .post('/contact')
-        .set('Authorization', dataset.user.id)
+        .set('Authorization', userId)
         .send({
           name: faker.name.findName(),
           surname: faker.name.lastName(),
@@ -152,7 +148,7 @@ describe('/contact (integration) ', () => {
 
       await api
         .post('/contact')
-        .set('Authorization', dataset.user.id)
+        .set('Authorization', userId)
         .send({
           name: faker.name.findName(),
           surname: faker.name.lastName(),
@@ -165,13 +161,13 @@ describe('/contact (integration) ', () => {
 
       return api
         .post('/contact')
-        .set('Authorization', dataset.user.id)
+        .set('Authorization', userId)
         .send({
           name: faker.name.findName(),
           surname: faker.name.lastName(),
           active: true,
-          phone,
-          prefix,
+          phone: getRandomPhoneNumber(),
+          prefix: getRandomPhonePrefix(),
         })
         .then((result) => {
           expect(result.status).toBe(201);
@@ -181,7 +177,7 @@ describe('/contact (integration) ', () => {
     it('Should add contact, return status 201 and valid body', async () => {
       const { body } = await api
         .post('/contact')
-        .set('Authorization', dataset.user.id)
+        .set('Authorization', dataset.users[0].id)
         .send({
           prefix: faker.datatype.number(999),
           phone: faker.datatype.number(999999999999).toString(),
@@ -190,11 +186,13 @@ describe('/contact (integration) ', () => {
           active: true,
           email: faker.internet.email(),
         })
-        .expect(async ({ status, body }) => {
+        .expect(async ({ status }) => {
           expect(status).toBe(201);
         });
 
-      await checkContact(body);
+      const contact = await getContactById(body.id);
+
+      expect(contact.id).toBe(body.id);
     });
   });
 });

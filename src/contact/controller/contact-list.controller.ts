@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import {
   ApiTags,
   ApiBearerAuth,
@@ -12,10 +12,7 @@ import { plainToClass } from 'class-transformer';
 import { ContactService } from '../service/contact.service';
 import { User } from '../../authentication/decorator/user.decorator';
 import { UserEntity, ROLES } from '../../user/entity/user.entity';
-import { ContactIdRO } from '../response/contact-id.ro';
-import { AddContactDTO } from '../request/dto/add-contact.dto';
-import { addContactSchema } from '../request/schema/add-contact.schema';
-import { ValidationPipe } from '../../common/pipe/validation.pipe';
+import { ContactRO } from '../response/contact.ro';
 import { AuthGuard } from '@nestjs/passport';
 
 @ApiBearerAuth()
@@ -23,20 +20,16 @@ import { AuthGuard } from '@nestjs/passport';
 @UseGuards(AuthGuard('cognito'))
 @ApiTags('contact')
 @Controller('contact')
-export class AddContactController {
+export class ContactListController {
   constructor(private readonly contactService: ContactService) {}
 
-  @ApiResponse({ status: 201 })
-  @ApiOperation({ summary: 'Add contact by user' })
+  @ApiResponse({ status: 201, type: ContactRO })
+  @ApiOperation({ summary: 'Get contact list' })
   @Roles([ROLES.USER])
-  @Post()
-  async addContact(
-    @User() user: UserEntity,
-    @Body(new ValidationPipe(addContactSchema))
-    data: AddContactDTO
-  ) {
-    const contact = await this.contactService.saveContact(user.id, data);
+  @Get()
+  async getContactList(@User() user: UserEntity) {
+    const contacts = await this.contactService.findContactsByUserId(user.id);
 
-    return plainToClass(ContactIdRO, contact);
+    return contacts.map((contact) => plainToClass(ContactRO, contact));
   }
 }
