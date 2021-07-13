@@ -13,7 +13,12 @@ export class AddContactDTO {
   @ApiProperty({ type: Number, maxLength: 3, required: false })
   prefix: number;
 
-  @ApiProperty({ type: String, maxLength: 20, required: false })
+  @ApiProperty({
+    type: String,
+    maxLength: 12,
+    required: false,
+    example: '123456789',
+  })
   phone: string;
 
   @ApiProperty({ type: Boolean, required: false })

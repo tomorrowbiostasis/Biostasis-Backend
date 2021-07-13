@@ -1,4 +1,4 @@
-import { Controller, Patch, Body, UseGuards, Param } from '@nestjs/common';
+import { Controller, Delete, UseGuards, Param } from '@nestjs/common';
 import {
   ApiTags,
   ApiBearerAuth,
@@ -12,10 +12,7 @@ import { plainToClass } from 'class-transformer';
 import { ContactService } from '../service/contact.service';
 import { User } from '../../authentication/decorator/user.decorator';
 import { UserEntity, ROLES } from '../../user/entity/user.entity';
-import { ContactRO } from '../response/contact.ro';
-import { UpdateContactDTO } from '../request/dto/update-contact.dto';
-import { updateContactSchema } from '../request/schema/update-contact.schema';
-import { ValidationPipe } from '../../common/pipe/validation.pipe';
+import { SuccessRO } from '../../common/response/success.ro';
 import { AuthGuard } from '@nestjs/passport';
 import { NumericIdValidationPipe } from '../../common/pipe/numeric-id-validation.pipe';
 
@@ -24,28 +21,24 @@ import { NumericIdValidationPipe } from '../../common/pipe/numeric-id-validation
 @UseGuards(AuthGuard('cognito'))
 @ApiTags('contact')
 @Controller('contact')
-export class EditContactController {
+export class DeleteContactController {
   constructor(private readonly contactService: ContactService) {}
 
   @ApiResponse({ status: 200 })
-  @ApiOperation({ summary: 'Edit contact by user' })
+  @ApiOperation({ summary: 'Delete contact by user' })
   @Roles([ROLES.USER])
-  @Patch(':id')
-  async updateContact(
+  @Delete(':id')
+  async deleteContact(
     @User() user: UserEntity,
-    @Param('id', new NumericIdValidationPipe()) contactId: number,
-    @Body(new ValidationPipe(updateContactSchema))
-    data: UpdateContactDTO
+    @Param('id', new NumericIdValidationPipe()) contactId: number
   ) {
-    let contact = await this.contactService.findByIdAndUserIdOrFail(
+    const contact = await this.contactService.findByIdAndUserIdOrFail(
       contactId,
       user.id
     );
 
-    await this.contactService.updateContact(contact, data);
+    const result = await this.contactService.deleteContact(contact.id);
 
-    contact = await this.contactService.findById(contactId);
-
-    return plainToClass(ContactRO, contact);
+    return plainToClass(SuccessRO, { success: !!result?.affected });
   }
 }

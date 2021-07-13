@@ -41,7 +41,7 @@ export const addContact = async (
   return getConnection().getRepository(ContactEntity).save(contact);
 };
 
-export const getContactById = async (id: string): Promise<ContactEntity> => {
+export const getContactById = async (id: number): Promise<ContactEntity> => {
   return getConnection().getRepository(ContactEntity).findOne(id);
 };
 
