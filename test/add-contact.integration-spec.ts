@@ -26,7 +26,7 @@ describe('/contact (integration) ', () => {
     }),
     faker.datatype.number({
       min: 999,
-    }) * 100000000,
+    }) * 1000000000,
   ];
 
   beforeAll(async () => {

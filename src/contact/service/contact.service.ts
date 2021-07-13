@@ -1,5 +1,5 @@
 import { Inject, Injectable, BadRequestException } from '@nestjs/common';
-import { UpdateResult } from 'typeorm';
+import { UpdateResult, DeleteResult } from 'typeorm';
 import { ContactRepository } from '../repository/contact.repository';
 import { ContactEntity } from '../entity/contact.entity';
 import { AddContactDTO } from '../request/dto/add-contact.dto';
@@ -37,6 +37,10 @@ export class ContactService {
 
   async findById(id: number) {
     return this.contactRepository.findOne(id);
+  }
+
+  async deleteContact(contactId: number): Promise<DeleteResult> {
+    return this.contactRepository.delete(contactId);
   }
 
   async saveContact(
