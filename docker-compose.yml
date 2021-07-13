@@ -35,8 +35,8 @@ services:
       - .env
     image: mysql:8.0.20
     container_name: biostasis_database
-    ports:
-      - ${DB_PORT}:3306
+    # ports:
+    #   - ${DB_PORT}:3306
     volumes:
       - /home/jenkins/biostasis/db/mysql/:/var/lib/mysql
     environment:
