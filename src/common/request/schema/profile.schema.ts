@@ -1,6 +1,6 @@
 import * as Joi from 'joi';
 
-export const contactSchema = {
+export const profileSchema = {
   name: Joi.string().max(100).required(),
   surname: Joi.string().max(100).required(),
   active: Joi.boolean().allow(null),

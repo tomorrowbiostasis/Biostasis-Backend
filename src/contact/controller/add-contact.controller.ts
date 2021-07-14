@@ -26,7 +26,7 @@ import { AuthGuard } from '@nestjs/passport';
 export class AddContactController {
   constructor(private readonly contactService: ContactService) {}
 
-  @ApiResponse({ status: 201 })
+  @ApiResponse({ status: 201, type: ContactIdRO })
   @ApiOperation({ summary: 'Add contact by user' })
   @Roles([ROLES.USER])
   @Post()

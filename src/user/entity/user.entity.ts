@@ -6,8 +6,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  OneToOne,
 } from 'typeorm';
 import { ContactEntity } from '../../contact/entity/contact.entity';
+import { ProfileEntity } from './profile.entity';
 
 export enum ROLES {
   USER = 0,
@@ -30,6 +32,9 @@ export class UserEntity {
 
   @UpdateDateColumn({ name: 'updated_at', type: 'datetime' })
   updatedAt: Date;
+
+  @OneToOne(() => ProfileEntity, (profile) => profile.user)
+  profile: ProfileEntity;
 
   @OneToMany(() => ContactEntity, (contact) => contact.user)
   contacts: ContactEntity[];

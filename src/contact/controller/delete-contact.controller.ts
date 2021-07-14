@@ -24,7 +24,7 @@ import { NumericIdValidationPipe } from '../../common/pipe/numeric-id-validation
 export class DeleteContactController {
   constructor(private readonly contactService: ContactService) {}
 
-  @ApiResponse({ status: 200 })
+  @ApiResponse({ status: 200, type: SuccessRO })
   @ApiOperation({ summary: 'Delete contact by user' })
   @Roles([ROLES.USER])
   @Delete(':id')
