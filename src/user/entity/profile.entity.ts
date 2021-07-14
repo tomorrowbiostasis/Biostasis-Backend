@@ -1,0 +1,47 @@
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
+import { UserEntity } from './user.entity';
+
+@Entity('profile')
+export class ProfileEntity {
+  @PrimaryGeneratedColumn({ type: 'int' })
+  id: number;
+
+  @Column({ name: 'user_id', type: 'varchar', length: 36 })
+  userId: string;
+
+  @Column({ type: 'varchar', length: 100 })
+  name: string;
+
+  @Column({ type: 'varchar', length: 100 })
+  surname: string;
+
+  @Column({ type: 'varchar', length: 3 })
+  prefix: number;
+
+  @Column({ type: 'varchar', length: 12 })
+  phone: string;
+
+  @Column({ type: 'varchar', length: 200 })
+  address: string;
+
+  @Column({ name: 'date_of_birth', type: 'date' })
+  dateOfBirth: Date;
+
+  @CreateDateColumn({ name: 'created_at', type: 'datetime' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at', type: 'datetime' })
+  updatedAt: Date;
+
+  @JoinColumn({ name: 'user_id' })
+  @OneToOne(() => UserEntity, (user) => user.profile)
+  user: UserEntity;
+}

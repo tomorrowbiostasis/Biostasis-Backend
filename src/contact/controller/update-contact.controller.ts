@@ -24,11 +24,11 @@ import { NumericIdValidationPipe } from '../../common/pipe/numeric-id-validation
 @UseGuards(AuthGuard('cognito'))
 @ApiTags('contact')
 @Controller('contact')
-export class EditContactController {
+export class UpdateContactController {
   constructor(private readonly contactService: ContactService) {}
 
-  @ApiResponse({ status: 200 })
-  @ApiOperation({ summary: 'Edit contact by user' })
+  @ApiResponse({ status: 200, type: ContactRO })
+  @ApiOperation({ summary: 'Update contact by user' })
   @Roles([ROLES.USER])
   @Patch(':id')
   async updateContact(

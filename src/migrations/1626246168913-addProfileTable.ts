@@ -6,9 +6,9 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class AddContactTable1625819654567 implements MigrationInterface {
-  private tableName = 'contact';
-  private foreignKeyUserId = 'FK_conversationToUser';
+export class AddProfileTable1626246168913 implements MigrationInterface {
+  private tableName = 'profile';
+  private foreignKeyUserId = 'FK_profileToUser';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
@@ -29,27 +29,16 @@ export class AddContactTable1625819654567 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: 'active',
-            type: 'boolean',
-            default: false,
-          },
-          {
-            name: 'email',
-            type: 'varchar',
-            length: '320',
-            isNullable: true,
-          },
-          {
             name: 'name',
             type: 'varchar',
+            isNullable: true,
             length: '100',
-            isNullable: false,
           },
           {
             name: 'surname',
             type: 'varchar',
+            isNullable: true,
             length: '100',
-            isNullable: false,
           },
           {
             name: 'prefix',
@@ -64,6 +53,17 @@ export class AddContactTable1625819654567 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: 'address',
+            type: 'varchar',
+            length: '200',
+            isNullable: true,
+          },
+          {
+            name: 'date_of_birth',
+            type: 'date',
+            isNullable: true,
+          },
+          {
             name: 'created_at',
             type: 'datetime',
             length: '6',
@@ -74,12 +74,11 @@ export class AddContactTable1625819654567 implements MigrationInterface {
             name: 'updated_at',
             type: 'datetime',
             length: '6',
-            isNullable: false,
+            isNullable: true,
             default: 'CURRENT_TIMESTAMP(6)',
           },
         ],
-      }),
-      true
+      })
     );
     await queryRunner.createIndex(
       this.tableName,
@@ -101,7 +100,6 @@ export class AddContactTable1625819654567 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey(this.tableName, this.foreignKeyUserId);
     await queryRunner.dropTable(this.tableName);
   }
 }

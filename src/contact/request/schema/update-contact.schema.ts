@@ -1,13 +1,13 @@
 import * as Joi from 'joi';
-import { contactSchema } from './contact.schema';
+import { profileSchema } from '../../../common/request/schema/profile.schema';
 
 export const updateContactSchema: Joi.ObjectSchema = Joi.object({
-  name: contactSchema.name.optional(),
-  surname: contactSchema.surname.optional(),
-  active: contactSchema.active,
-  prefix: contactSchema.prefix,
-  phone: contactSchema.phone,
-  email: contactSchema.email,
+  name: profileSchema.name.optional(),
+  surname: profileSchema.surname.optional(),
+  active: profileSchema.active,
+  prefix: profileSchema.prefix,
+  phone: profileSchema.phone,
+  email: profileSchema.email,
 })
   .and('prefix', 'phone')
   .options({
