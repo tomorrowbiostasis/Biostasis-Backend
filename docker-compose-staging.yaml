@@ -1,0 +1,52 @@
+version: '3.4'
+
+services:
+  biostasis_app:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile-staging
+    container_name: biostasis_app
+    ports:
+      - 17001:5000
+    tty: true
+    links:
+      - biostasis_database
+    depends_on:
+      - biostasis_database
+    environment:
+      - APP_PORT=${APP_PORT}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=3306
+      - NODE_ENV=${NODE_ENV}
+      - GLOBAL_PREFIX=${GLOBAL_PREFIX}
+      - COGNITO_ACCESS_KEY_ID=${COGNITO_ACCESS_KEY_ID}
+      - COGNITO_SECRET_ACCESS_KEY=${COGNITO_SECRET_ACCESS_KEY}
+      - COGNITO_USER_POOL_ID=${COGNITO_USER_POOL_ID}
+      - COGNITO_CLIENT_ID=${COGNITO_CLIENT_ID}
+      - COGNITO_REGION=${COGNITO_REGION}
+
+  biostasis_database:
+    env_file:
+      - .env
+    image: mysql:8.0.20
+    container_name: biostasis_database
+    volumes:
+      - /home/jenkins/biostasis/db/mysql/:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: ${DB_DATABASE}
+    entrypoint: sh -c "
+      echo 'CREATE DATABASE IF NOT EXISTS biostasis_test;' > /docker-entrypoint-initdb.d/init.sql;
+      /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password"
+    command:
+      [
+        '--character-set-server=utf8mb4',
+        '--collation-server=utf8mb4_unicode_ci',
+        '--default-authentication-plugin=mysql_native_password',
+      ]
