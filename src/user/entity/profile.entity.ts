@@ -35,6 +35,21 @@ export class ProfileEntity {
   @Column({ name: 'date_of_birth', type: 'date' })
   dateOfBirth: Date;
 
+  @Column({ name: 'primary_phisican', type: 'varchar', length: 100 })
+  primaryPhisican: string;
+
+  @Column({ name: 'primary_phisican_address', type: 'varchar', length: 200 })
+  primaryPhisicanAddress: string;
+
+  @Column({ name: 'serious_medical_issues', type: 'boolean' })
+  seriousMedicalIssues: boolean;
+
+  @Column({ name: 'most_recent_diagnosis', type: 'varchar', length: 300 })
+  mostRecentDiagnosis: string;
+
+  @Column({ name: 'last_hospital_visit', type: 'date' })
+  lastHospitalVisit: Date;
+
   @CreateDateColumn({ name: 'created_at', type: 'datetime' })
   createdAt: Date;
 

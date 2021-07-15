@@ -46,6 +46,29 @@ export class ProfileRO {
 
   @Expose()
   @ApiProperty({ type: String })
+  primaryPhisican: string;
+
+  @Expose()
+  @ApiProperty({ type: String })
+  primaryPhisicanAddress: string;
+
+  @Expose()
+  @ApiProperty({ type: Boolean })
+  seriousMedicalIssues: boolean;
+
+  @Expose()
+  @ApiProperty({ type: String })
+  mostRecentDiagnosis: string;
+
+  @Expose()
+  @Transform(({ value }: TransformFnParams) =>
+    value ? moment(value).format('DD/MM/YYYY') : null
+  )
+  @ApiProperty({ type: String })
+  lastHospitalVisit: string;
+
+  @Expose()
+  @ApiProperty({ type: String })
   createdAt: string;
 
   @Expose()

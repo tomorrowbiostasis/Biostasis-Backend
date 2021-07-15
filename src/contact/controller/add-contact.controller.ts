@@ -17,6 +17,7 @@ import { AddContactDTO } from '../request/dto/add-contact.dto';
 import { addContactSchema } from '../request/schema/add-contact.schema';
 import { ValidationPipe } from '../../common/pipe/validation.pipe';
 import { AuthGuard } from '@nestjs/passport';
+import { ErrorMessageRO } from '../../common/response/error.ro';
 
 @ApiBearerAuth()
 @UseGuards(new RolesGuard(new Reflector()))
@@ -27,6 +28,7 @@ export class AddContactController {
   constructor(private readonly contactService: ContactService) {}
 
   @ApiResponse({ status: 201, type: ContactIdRO })
+  @ApiResponse({ status: 400, type: ErrorMessageRO })
   @ApiOperation({ summary: 'Add contact by user' })
   @Roles([ROLES.USER])
   @Post()
