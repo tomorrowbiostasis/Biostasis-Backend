@@ -18,6 +18,7 @@ import { updateContactSchema } from '../request/schema/update-contact.schema';
 import { ValidationPipe } from '../../common/pipe/validation.pipe';
 import { AuthGuard } from '@nestjs/passport';
 import { NumericIdValidationPipe } from '../../common/pipe/numeric-id-validation.pipe';
+import { ErrorMessageRO } from '../../common/response/error.ro';
 
 @ApiBearerAuth()
 @UseGuards(new RolesGuard(new Reflector()))
@@ -28,6 +29,7 @@ export class UpdateContactController {
   constructor(private readonly contactService: ContactService) {}
 
   @ApiResponse({ status: 200, type: ContactRO })
+  @ApiResponse({ status: 400, type: ErrorMessageRO })
   @ApiOperation({ summary: 'Update contact by user' })
   @Roles([ROLES.USER])
   @Patch(':id')

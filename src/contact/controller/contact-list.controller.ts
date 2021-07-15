@@ -14,6 +14,7 @@ import { User } from '../../authentication/decorator/user.decorator';
 import { UserEntity, ROLES } from '../../user/entity/user.entity';
 import { ContactRO } from '../response/contact.ro';
 import { AuthGuard } from '@nestjs/passport';
+import { ErrorMessageRO } from '../../common/response/error.ro';
 
 @ApiBearerAuth()
 @UseGuards(new RolesGuard(new Reflector()))
@@ -24,6 +25,7 @@ export class ContactListController {
   constructor(private readonly contactService: ContactService) {}
 
   @ApiResponse({ status: 200, type: ContactRO, isArray: true })
+  @ApiResponse({ status: 400, type: ErrorMessageRO })
   @ApiOperation({ summary: 'Get contact list' })
   @Roles([ROLES.USER])
   @Get()

@@ -1,4 +1,4 @@
-import { Controller, Patch, Body, UseGuards, Param } from '@nestjs/common';
+import { Controller, Patch, Body, UseGuards } from '@nestjs/common';
 import {
   ApiTags,
   ApiBearerAuth,
@@ -8,7 +8,6 @@ import {
 import { RolesGuard } from '../../authentication/roles.guard';
 import { Roles } from '../../authentication/decorator/roles.decorator';
 import { Reflector } from '@nestjs/core';
-import { plainToClass } from 'class-transformer';
 import { ProfileService } from '../service/profile.service';
 import { User } from '../../authentication/decorator/user.decorator';
 import { UserEntity, ROLES } from '../../user/entity/user.entity';
@@ -18,6 +17,7 @@ import { updateUserProfileSchema } from '../request/schema/update-user-profile.s
 import { ValidationPipe } from '../../common/pipe/validation.pipe';
 import { AuthGuard } from '@nestjs/passport';
 import { profileMapper } from '../mapper/profile.mapper';
+import { ErrorMessageRO } from '../../common/response/error.ro';
 
 @ApiBearerAuth()
 @UseGuards(new RolesGuard(new Reflector()))
@@ -28,6 +28,7 @@ export class UpdateUserProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
   @ApiResponse({ status: 200, type: ProfileRO })
+  @ApiResponse({ status: 400, type: ErrorMessageRO })
   @ApiOperation({ summary: 'Edit profile by user' })
   @Roles([ROLES.USER])
   @Patch()

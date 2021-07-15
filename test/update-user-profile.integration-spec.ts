@@ -71,6 +71,11 @@ describe('/user (integration) ', () => {
       surname: faker.name.lastName(),
       address: `${faker.address.streetName()}, ${faker.address.city()}, ${faker.address.country()}`,
       dateOfBirth: moment().format('DD/MM/YYYY'),
+      primaryPhisican: `${faker.name.firstName()} ${faker.name.lastName()}`,
+      primaryPhisicanAddress: `${faker.address.streetName()}, ${faker.address.city()}, ${faker.address.country()}`,
+      seriousMedicalIssues: true,
+      mostRecentDiagnosis: faker.lorem.sentence(),
+      lastHospitalVisit: moment().subtract(2, 'days').format('DD/MM/YYYY'),
     };
 
     let { body } = await api

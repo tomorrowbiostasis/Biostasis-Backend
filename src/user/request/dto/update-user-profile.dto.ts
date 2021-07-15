@@ -18,4 +18,19 @@ export class UpdateUserProfileDTO {
 
   @ApiProperty({ type: String, required: false, example: '12/08/1986' })
   dateOfBirth: string;
+
+  @ApiProperty({ type: String, maxLength: 200, required: false })
+  primaryPhisican: string;
+
+  @ApiProperty({ type: String, maxLength: 200, required: false })
+  primaryPhisicanAddress: string;
+
+  @ApiProperty({ type: Boolean, required: false })
+  seriousMedicalIssues: boolean;
+
+  @ApiProperty({ type: String, maxLength: 300, required: false })
+  mostRecentDiagnosis: string;
+
+  @ApiProperty({ type: String, required: false, example: '12/08/1986' })
+  lastHospitalVisit: string;
 }

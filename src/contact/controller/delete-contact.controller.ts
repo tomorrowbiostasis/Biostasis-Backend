@@ -15,6 +15,7 @@ import { UserEntity, ROLES } from '../../user/entity/user.entity';
 import { SuccessRO } from '../../common/response/success.ro';
 import { AuthGuard } from '@nestjs/passport';
 import { NumericIdValidationPipe } from '../../common/pipe/numeric-id-validation.pipe';
+import { ErrorMessageRO } from '../../common/response/error.ro';
 
 @ApiBearerAuth()
 @UseGuards(new RolesGuard(new Reflector()))
@@ -25,6 +26,7 @@ export class DeleteContactController {
   constructor(private readonly contactService: ContactService) {}
 
   @ApiResponse({ status: 200, type: SuccessRO })
+  @ApiResponse({ status: 400, type: ErrorMessageRO })
   @ApiOperation({ summary: 'Delete contact by user' })
   @Roles([ROLES.USER])
   @Delete(':id')

@@ -12,6 +12,11 @@ export const updateUserProfileSchema: JoiLibrary.ObjectSchema =
     phone: profileSchema.phone,
     address: Joi.string().max(200),
     dateOfBirth: Joi.date().format('DD/MM/YYYY'),
+    primaryPhisican: Joi.string().allow(null).optional(),
+    primaryPhisicanAddress: Joi.string().allow(null).optional(),
+    seriousMedicalIssues: Joi.boolean().allow(null).optional(),
+    mostRecentDiagnosis: Joi.string().allow(null).optional(),
+    lastHospitalVisit: Joi.date().format('DD/MM/YYYY').optional(),
   })
     .and('prefix', 'phone')
     .options({
