@@ -1,7 +1,50 @@
 import * as moment from 'moment';
+import * as faker from 'faker';
 import { ProfileEntity } from '../../src/user/entity/profile.entity';
 import { getConnection } from 'typeorm';
 import { omit } from '../../src/common/helper/omit';
+import { IProfileData } from '../interface/profile-data.interface';
+import { getRandomPhoneNumber, getRandomPhonePrefix } from './contact.mock';
+
+export const getProfileStub = (data?: IProfileData): ProfileEntity => {
+  const profile = new ProfileEntity();
+
+  profile.userId = data.userId;
+  profile.name = data?.name ?? faker.name.firstName();
+  profile.surname = data?.surname ?? faker.name.lastName();
+  profile.prefix = data?.prefix ?? getRandomPhonePrefix();
+  profile.phone = data?.phone ?? getRandomPhoneNumber();
+  profile.address =
+    data?.address ??
+    `${faker.address.streetName()}, ${faker.address.city()}, ${faker.address.country()}`;
+  profile.dateOfBirth = data?.dateOfBirth ?? moment().toDate();
+  profile.primaryPhisican =
+    data?.primaryPhisican ??
+    `${faker.name.firstName()} ${faker.name.lastName()}`;
+  profile.primaryPhisicanAddress =
+    data?.primaryPhisicanAddress ??
+    `${faker.address.streetName()}, ${faker.address.city()}, ${faker.address.country()}`;
+  profile.seriousMedicalIssues =
+    data?.seriousMedicalIssues ?? faker.datatype.boolean();
+  profile.mostRecentDiagnosis =
+    data?.mostRecentDiagnosis !== undefined
+      ? data.mostRecentDiagnosis
+      : faker.lorem.sentence();
+  profile.lastHospitalVisit =
+    data.lastHospitalVisit !== undefined
+      ? data.lastHospitalVisit
+      : moment().toDate();
+
+  return profile;
+};
+
+export const addProfile = async (
+  data?: IProfileData
+): Promise<ProfileEntity> => {
+  const profile = getProfileStub(data);
+
+  return getConnection().getRepository(ProfileEntity).save(profile);
+};
 
 export const getProfileById = async (
   userId: string

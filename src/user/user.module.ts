@@ -6,9 +6,10 @@ import { ConfigProvider } from '../common/provider/config.provider';
 import { UserRepositoryProvider } from './provider/user-repository.provider';
 import { ProfileRepositoryProvider } from './provider/profile-repository.provider';
 import { UpdateUserProfileController } from './controller/update-user-profile.controller';
+import { GetUserController } from './controller/get-user.controller';
 
 @Module({
-  controllers: [UpdateUserProfileController],
+  controllers: [UpdateUserProfileController, GetUserController],
   providers: [
     UserService,
     ProfileService,
