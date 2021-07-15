@@ -2,3 +2,6 @@ export const UNKNOWN_ERROR = 'E0001';
 export const MISSING_AUTHENTICATION_TOKEN = 'E0002';
 export const VALIDATION_FAILED = 'E0003';
 export const CONTACT_NOT_FOUND = 'E0004';
+export const SAVE_PROFILE_FAILED = 'E0005';
+export const SAVE_CONTACT_FAILED = 'E0006';
+export const DELETE_CONTACT_FAILED = 'E0007';

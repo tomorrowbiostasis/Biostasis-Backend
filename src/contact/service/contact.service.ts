@@ -4,7 +4,13 @@ import { ContactRepository } from '../repository/contact.repository';
 import { ContactEntity } from '../entity/contact.entity';
 import { AddContactDTO } from '../request/dto/add-contact.dto';
 import { UpdateContactDTO } from '../request/dto/update-contact.dto';
-import { CONTACT_NOT_FOUND, VALIDATION_FAILED } from '../../common/error/keys';
+import {
+  CONTACT_NOT_FOUND,
+  VALIDATION_FAILED,
+  SAVE_CONTACT_FAILED,
+  DELETE_CONTACT_FAILED,
+} from '../../common/error/keys';
+import { CustomError } from '../../common/error/custom-error';
 
 @Injectable()
 export class ContactService {
@@ -40,17 +46,23 @@ export class ContactService {
   }
 
   async deleteContact(contactId: number): Promise<DeleteResult> {
-    return this.contactRepository.delete(contactId);
+    return this.contactRepository.delete(contactId).catch((error) => {
+      throw new CustomError(DELETE_CONTACT_FAILED, error);
+    });
   }
 
   async saveContact(
     userId: string,
     data: AddContactDTO
   ): Promise<ContactEntity> {
-    return this.contactRepository.save({
-      ...data,
-      userId,
-    });
+    return this.contactRepository
+      .save({
+        ...data,
+        userId,
+      })
+      .catch((error) => {
+        throw new CustomError(SAVE_CONTACT_FAILED, error);
+      });
   }
 
   async updateContact(
@@ -67,11 +79,15 @@ export class ContactService {
       throw new BadRequestException(VALIDATION_FAILED);
     }
 
-    return this.contactRepository.update(
-      {
-        id: contact.id,
-      },
-      { ...data }
-    );
+    return this.contactRepository
+      .update(
+        {
+          id: contact.id,
+        },
+        { ...data }
+      )
+      .catch((error) => {
+        throw new CustomError(SAVE_CONTACT_FAILED, error);
+      });
   }
 }

@@ -1,15 +1,10 @@
-import {
-  Exclude,
-  Expose,
-  Transform,
-  TransformFnParams,
-} from 'class-transformer';
-import * as moment from 'moment';
+import { Exclude, Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { ROLES } from '../entity/user.entity';
+import { ProfileRO } from './profile.ro';
 
 @Exclude()
-export class UserRO {
+export class UserRO extends ProfileRO {
   @Expose()
   @ApiProperty({ type: String })
   id: string;
@@ -32,4 +27,11 @@ export class UserRO {
   @Expose()
   @ApiProperty({ type: String })
   updatedAt: string;
+
+  @Expose()
+  @ApiProperty({ type: Number })
+  fillLevel: number;
+
+  @Exclude()
+  userId = undefined;
 }
