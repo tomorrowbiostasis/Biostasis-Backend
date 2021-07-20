@@ -68,6 +68,14 @@ export class ProfileRO {
   lastHospitalVisit: string;
 
   @Expose()
+  @ApiProperty({ type: Boolean })
+  allowNotifications: boolean;
+
+  @Expose()
+  @ApiProperty({ type: Boolean })
+  tipsAndTricks: boolean;
+
+  @Expose()
   @ApiProperty({ type: String })
   createdAt: string;
 

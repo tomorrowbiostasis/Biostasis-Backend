@@ -27,7 +27,7 @@ describe('/user (integration) ', () => {
   describe('/user/email/confirm (PATCH)', () => {
     it('Should return status 400 and error VALIDATION_FAILED for invalid dataset', async () => {
       return api
-        .patch('/user')
+        .patch('/user/email/confirm')
         .set('Authorization', dataset.user.id)
         .send({
           code: null,

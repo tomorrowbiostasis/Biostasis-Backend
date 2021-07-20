@@ -39,14 +39,22 @@ export const checkUser = async (response: any) => {
       'fillLevel',
     ])
   ).toEqual(
-    omit({ ...userDB.profile, ...userDB }, [
-      'createdAt',
-      'updatedAt',
-      'profile',
-      'dateOfBirth',
-      'lastHospitalVisit',
-      'userId',
-    ])
+    omit(
+      {
+        ...userDB.profile,
+        allowNotifications: userDB.profile.allowNotifications !== false,
+        tipsAndTricks: userDB.profile.tipsAndTricks !== false,
+        ...userDB,
+      },
+      [
+        'createdAt',
+        'updatedAt',
+        'profile',
+        'dateOfBirth',
+        'lastHospitalVisit',
+        'userId',
+      ]
+    )
   );
 
   expect(response.fillLevel).toBeDefined();

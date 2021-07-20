@@ -36,4 +36,10 @@ export class UpdateUserProfileDTO {
 
   @ApiProperty({ type: String, required: false, example: '12/08/1986' })
   lastHospitalVisit: string;
+
+  @ApiProperty({ type: Boolean, required: false })
+  allowNotifications: boolean;
+
+  @ApiProperty({ type: Boolean, required: false })
+  tipsAndTricks: boolean;
 }

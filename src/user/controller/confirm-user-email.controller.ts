@@ -1,10 +1,5 @@
-import { Controller, Patch, Body, UseGuards } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiBearerAuth,
-  ApiResponse,
-  ApiOperation,
-} from '@nestjs/swagger';
+import { Controller, Patch, Body } from '@nestjs/common';
+import { ApiTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
 import { plainToClass } from 'class-transformer';
 import { Roles } from '../../authentication/decorator/roles.decorator';
 import { UserService } from '../service/user.service';
@@ -17,7 +12,6 @@ import { ErrorMessageRO } from '../../common/response/error.ro';
 import { UnconfirmedEmailService } from '../service/unconfirmed-email.service';
 import { SuccessRO } from '../../common/response/success.ro';
 
-@ApiBearerAuth()
 @ApiTags('user')
 @Controller('user')
 export class ConfirmUserEmailController {

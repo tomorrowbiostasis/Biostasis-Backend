@@ -39,25 +39,25 @@ describe('/contact (integration) ', () => {
           expect(status).toBe(403);
         });
     });
-  });
 
-  it('Should return status 200 and valid body', async () => {
-    const userId = dataset.users[0].id;
-    const { body } = await api
-      .get('/contact')
-      .set('Authorization', userId)
-      .send()
-      .expect(async ({ status }) => {
-        expect(status).toBe(200);
-      });
+    it('Should return status 200 and valid body', async () => {
+      const userId = dataset.users[0].id;
+      const { body } = await api
+        .get('/contact')
+        .set('Authorization', userId)
+        .send()
+        .expect(async ({ status }) => {
+          expect(status).toBe(200);
+        });
 
-    for (const contact of body) {
-      expect(
-        dataset.contacts.find(
-          (item) => item.id === contact.id && item.userId === userId
-        )
-      ).toBeDefined();
-      await checkContact(contact);
-    }
+      for (const contact of body) {
+        expect(
+          dataset.contacts.find(
+            (item) => item.id === contact.id && item.userId === userId
+          )
+        ).toBeDefined();
+        await checkContact(contact);
+      }
+    });
   });
 });

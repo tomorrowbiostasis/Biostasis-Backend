@@ -36,7 +36,7 @@ describe('/contact (integration) ', () => {
 
   it('Should return status 400 and error CONTACT_NOT_FOUND for invalid dataset', async () => {
     await api
-      .patch(`/contact/${dataset.contacts[1].id}`)
+      .delete(`/contact/${dataset.contacts[1].id}`)
       .set('Authorization', dataset.users[0].id)
       .send({
         surname: faker.name.lastName(),
@@ -47,7 +47,7 @@ describe('/contact (integration) ', () => {
       });
 
     return api
-      .patch(`/contact/${faker.datatype.number()}`)
+      .delete(`/contact/${faker.datatype.number()}`)
       .set('Authorization', dataset.users[0].id)
       .send({
         surname: faker.name.lastName(),

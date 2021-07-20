@@ -44,6 +44,8 @@ const calculatePercentByWeight = (user: UserEntity): number => {
 export const userMapper = (user: UserEntity): UserRO => {
   return plainToClass(UserRO, {
     ...user.profile,
+    allowNotifications: user.profile.allowNotifications !== false,
+    tipsAndTricks: user.profile.tipsAndTricks !== false,
     ...user,
     fillLevel: Math.round(calculatePercentByWeight(user)),
   });
