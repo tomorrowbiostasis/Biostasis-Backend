@@ -2,7 +2,7 @@ import { plainToClass } from 'class-transformer';
 import { UserEntity } from '../entity/user.entity';
 import { UserRO } from '../response/user.ro';
 import { isDefined } from '../../common/helper/is-defined';
-import { match } from 'assert';
+import { getProfileDefaultValues } from '../helper/get-profile-default-values';
 
 export enum PROFILE_WEIGHT {
   name = 1,
@@ -44,8 +44,7 @@ const calculatePercentByWeight = (user: UserEntity): number => {
 export const userMapper = (user: UserEntity): UserRO => {
   return plainToClass(UserRO, {
     ...user.profile,
-    allowNotifications: user.profile.allowNotifications !== false,
-    tipsAndTricks: user.profile.tipsAndTricks !== false,
+    ...getProfileDefaultValues(user?.profile),
     ...user,
     fillLevel: Math.round(calculatePercentByWeight(user)),
   });

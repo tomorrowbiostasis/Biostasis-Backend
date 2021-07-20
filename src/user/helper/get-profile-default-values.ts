@@ -1,0 +1,12 @@
+import { ProfileEntity } from '../../user/entity/profile.entity';
+
+export const getProfileDefaultValues = (
+  profile: ProfileEntity
+): Record<string, unknown> => ({
+  allowNotifications: profile?.allowNotifications !== false,
+  tipsAndTricks: profile?.tipsAndTricks !== false,
+  emergencyEmailAndSms: profile?.emergencyEmailAndSms !== false,
+  automatedVoiceCall: profile?.automatedVoiceCall !== false,
+  uploadedDocumentsAccess: profile?.uploadedDocumentsAccess !== false,
+  locationAccess: !!profile?.locationAccess,
+});

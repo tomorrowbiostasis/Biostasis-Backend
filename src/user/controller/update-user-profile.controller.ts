@@ -21,11 +21,11 @@ import { ErrorMessageRO } from '../../common/response/error.ro';
 import { UnconfirmedEmailService } from '../service/unconfirmed-email.service';
 import { NotificationService } from '../../notification/service/notification.service';
 import { getMailTemplateId } from '../../notification/helper/get-template-id';
-import { getNameOrEmail } from '../../common/helper/get-name-or-email';
+import { getNameOrEmail } from '../helper/get-name-or-email';
 import { DICTIONARY } from '../../common/constant/dictionary.constant';
 import { ProfileEntity } from '../../user/entity/profile.entity';
 import { omit } from '../../common/helper/omit';
-import { plainToClass } from 'class-transformer';
+import { profileMapper } from '../mapper/profile.mapper';
 
 @ApiBearerAuth()
 @UseGuards(new RolesGuard(new Reflector()))
@@ -65,7 +65,7 @@ export class UpdateUserProfileController {
       omit(data, ['email'])
     );
 
-    return plainToClass(ProfileRO, profile);
+    return profileMapper(profile);
   }
 
   async generateAndSendCodeConfirmingEmailChange(

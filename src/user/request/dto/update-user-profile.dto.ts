@@ -13,7 +13,12 @@ export class UpdateUserProfileDTO {
   @ApiProperty({ type: Number, maxLength: 3, required: false })
   prefix: number;
 
-  @ApiProperty({ type: String, maxLength: 12, required: false })
+  @ApiProperty({
+    type: String,
+    maxLength: 12,
+    required: false,
+    example: '123456789',
+  })
   phone: string;
 
   @ApiProperty({ type: String, maxLength: 200, required: false })
@@ -42,4 +47,19 @@ export class UpdateUserProfileDTO {
 
   @ApiProperty({ type: Boolean, required: false })
   tipsAndTricks: boolean;
+
+  @ApiProperty({ type: Boolean, required: false })
+  emergencyEmailAndSms: boolean;
+
+  @ApiProperty({ type: Boolean, required: false })
+  automatedVoiceCall: boolean;
+
+  @ApiProperty({ type: Boolean, required: false })
+  locationAccess: boolean;
+
+  @ApiProperty({ type: Boolean, required: false })
+  uploadedDocumentsAccess: boolean;
+
+  @ApiProperty({ type: String, maxLength: 1000, required: false })
+  emergencyMessage: string;
 }

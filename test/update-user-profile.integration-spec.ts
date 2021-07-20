@@ -78,6 +78,11 @@ describe('/user (integration) ', () => {
       lastHospitalVisit: moment().subtract(2, 'days').format('DD/MM/YYYY'),
       allowNotifications: true,
       tipsAndTricks: true,
+      emergencyEmailAndSms: true,
+      automatedVoiceCall: true,
+      locationAccess: true,
+      uploadedDocumentsAccess: true,
+      emergencyMessage: faker.lorem.sentence(),
     };
 
     let { body } = await api
@@ -97,6 +102,18 @@ describe('/user (integration) ', () => {
     expect(body.dateOfBirth).toBe(data.dateOfBirth);
     expect(body.prefix).toBe(data.prefix);
     expect(body.phone).toBe(data.phone);
+    expect(body.primaryPhisican).toBe(data.primaryPhisican);
+    expect(body.primaryPhisicanAddress).toBe(data.primaryPhisicanAddress);
+    expect(body.seriousMedicalIssues).toBe(data.seriousMedicalIssues);
+    expect(body.mostRecentDiagnosis).toBe(data.mostRecentDiagnosis);
+    expect(body.lastHospitalVisit).toBe(data.lastHospitalVisit);
+    expect(body.allowNotifications).toBe(data.allowNotifications);
+    expect(body.tipsAndTricks).toBe(data.tipsAndTricks);
+    expect(body.emergencyEmailAndSms).toBe(data.emergencyEmailAndSms);
+    expect(body.automatedVoiceCall).toBe(data.automatedVoiceCall);
+    expect(body.locationAccess).toBe(data.locationAccess);
+    expect(body.uploadedDocumentsAccess).toBe(data.uploadedDocumentsAccess);
+    expect(body.emergencyMessage).toBe(data.emergencyMessage);
 
     await api
       .patch('/user')
