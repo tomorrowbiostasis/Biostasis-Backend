@@ -56,6 +56,21 @@ export class ProfileEntity {
   @Column({ name: 'tips_and_tricks', type: 'boolean' })
   tipsAndTricks: boolean;
 
+  @Column({ name: 'emergency_email_and_sms', type: 'boolean' })
+  emergencyEmailAndSms: boolean;
+
+  @Column({ name: 'automated_voice_call', type: 'boolean' })
+  automatedVoiceCall: boolean;
+
+  @Column({ name: 'location_access', type: 'boolean' })
+  locationAccess: boolean;
+
+  @Column({ name: 'uploaded_documents_access', type: 'boolean' })
+  uploadedDocumentsAccess: boolean;
+
+  @Column({ name: 'emergency_message', type: 'varchar', length: 1000 })
+  emergencyMessage: string;
+
   @CreateDateColumn({ name: 'created_at', type: 'datetime' })
   createdAt: Date;
 

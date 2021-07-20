@@ -76,6 +76,26 @@ export class ProfileRO {
   tipsAndTricks: boolean;
 
   @Expose()
+  @ApiProperty({ type: Boolean })
+  emergencyEmailAndSms: boolean;
+
+  @Expose()
+  @ApiProperty({ type: Boolean })
+  automatedVoiceCall: boolean;
+
+  @Expose()
+  @ApiProperty({ type: Boolean })
+  locationAccess: boolean;
+
+  @Expose()
+  @ApiProperty({ type: Boolean })
+  uploadedDocumentsAccess: boolean;
+
+  @Expose()
+  @ApiProperty({ type: String })
+  emergencyMessage: string;
+
+  @Expose()
   @ApiProperty({ type: String })
   createdAt: string;
 

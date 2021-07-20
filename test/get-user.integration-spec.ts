@@ -41,6 +41,8 @@ describe('/user (integration) ', () => {
           expect(status).toBe(200);
         });
 
+      expect(body.id).toBe(userId);
+
       await checkUser(body);
     });
   });

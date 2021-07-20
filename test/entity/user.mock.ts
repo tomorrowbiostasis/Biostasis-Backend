@@ -44,6 +44,11 @@ export const checkUser = async (response: any) => {
         ...userDB.profile,
         allowNotifications: userDB.profile.allowNotifications !== false,
         tipsAndTricks: userDB.profile.tipsAndTricks !== false,
+        emergencyEmailAndSms: userDB.profile.emergencyEmailAndSms !== false,
+        automatedVoiceCall: userDB.profile.automatedVoiceCall !== false,
+        uploadedDocumentsAccess:
+          userDB.profile.uploadedDocumentsAccess !== false,
+        locationAccess: !!userDB.profile.locationAccess,
         ...userDB,
       },
       [
