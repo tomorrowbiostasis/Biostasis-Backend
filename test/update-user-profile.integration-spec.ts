@@ -93,7 +93,7 @@ describe('/user (integration) ', () => {
     expect(body.surname).toBe(data.surname);
     expect(body.address).toBe(data.address);
     expect(body.dateOfBirth).toBe(data.dateOfBirth);
-    expect(body.prefix).toBe(data.prefix.toString());
+    expect(body.prefix).toBe(data.prefix);
     expect(body.phone).toBe(data.phone);
 
     await api
@@ -115,7 +115,7 @@ describe('/user (integration) ', () => {
         expect(status).toBe(200);
       }));
 
-    expect(body.prefix).toBe(prefix.toString());
+    expect(body.prefix).toBe(prefix);
     expect(body.phone).toBe(phone.toString());
   });
 });

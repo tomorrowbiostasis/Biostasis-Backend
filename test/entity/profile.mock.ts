@@ -6,7 +6,7 @@ import { omit } from '../../src/common/helper/omit';
 import { IProfileData } from '../interface/profile-data.interface';
 import { getRandomPhoneNumber, getRandomPhonePrefix } from './contact.mock';
 
-export const getProfileStub = (data?: IProfileData): ProfileEntity => {
+export const getProfileStub = (data: IProfileData): ProfileEntity => {
   const profile = new ProfileEntity();
 
   profile.userId = data.userId;
@@ -66,15 +66,21 @@ export const checkProfile = async (response: any) => {
       'lastHospitalVisit',
     ])
   ).toEqual(
-    omit({ ...profileDB, email: profileDB.user.email }, [
-      'createdAt',
-      'updatedAt',
-      'contacts',
-      'dateOfBirth',
-      'lastHospitalVisit',
-      'user',
-      'id',
-    ])
+    omit(
+      {
+        ...profileDB,
+        prefix: Number(profileDB.prefix),
+      },
+      [
+        'createdAt',
+        'updatedAt',
+        'contacts',
+        'dateOfBirth',
+        'lastHospitalVisit',
+        'user',
+        'id',
+      ]
+    )
   );
 
   if (response.dateOfBirth) {

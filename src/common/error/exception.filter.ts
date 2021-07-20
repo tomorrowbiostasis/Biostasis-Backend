@@ -44,7 +44,7 @@ export class ExceptionsFilter implements ExceptionFilter {
         exception instanceof CustomError
           ? JSON.stringify(exception.error) || exception
           : exception.stack;
-      this.logger.error(exception.message || null, stack);
+      this.logger.error(errorResponse, stack);
     }
 
     response.status(status).json(errorResponse);

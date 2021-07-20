@@ -41,7 +41,7 @@ describe('/contact (integration) ', () => {
     await app.close();
   });
 
-  describe('/ (POST)', () => {
+  describe('/contact (POST)', () => {
     it('Should return status 403', async () => {
       await api
         .post('/contact')
