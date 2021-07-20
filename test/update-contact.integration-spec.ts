@@ -27,7 +27,7 @@ describe('/contact (integration) ', () => {
     await app.close();
   });
 
-  describe('/:id (PATCH)', () => {
+  describe('/contact/:id (PATCH)', () => {
     it('Should return status 403', async () => {
       return api
         .patch(`/contact/${faker.datatype.number()}`)

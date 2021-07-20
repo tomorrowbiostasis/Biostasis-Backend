@@ -30,5 +30,18 @@ describe('/user (integration) ', () => {
           expect(status).toBe(403);
         });
     });
+
+    it('Should return status 200 and valid body', async () => {
+      const userId = dataset.user.id;
+      const { body } = await api
+        .get('/user')
+        .set('Authorization', userId)
+        .send()
+        .expect(async ({ status }) => {
+          expect(status).toBe(200);
+        });
+
+      await checkUser(body);
+    });
   });
 });

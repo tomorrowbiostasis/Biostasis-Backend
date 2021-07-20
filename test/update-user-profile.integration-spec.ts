@@ -28,7 +28,7 @@ describe('/user (integration) ', () => {
     await app.close();
   });
 
-  describe('/:id (DELETE)', () => {
+  describe('/user (PATCH)', () => {
     it('Should return status 403', async () => {
       return api
         .patch('/user')
@@ -76,6 +76,8 @@ describe('/user (integration) ', () => {
       seriousMedicalIssues: true,
       mostRecentDiagnosis: faker.lorem.sentence(),
       lastHospitalVisit: moment().subtract(2, 'days').format('DD/MM/YYYY'),
+      allowNotifications: true,
+      tipsAndTricks: true,
     };
 
     let { body } = await api

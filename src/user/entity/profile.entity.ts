@@ -50,6 +50,12 @@ export class ProfileEntity {
   @Column({ name: 'last_hospital_visit', type: 'date' })
   lastHospitalVisit: Date;
 
+  @Column({ name: 'allow_notifications', type: 'boolean' })
+  allowNotifications: boolean;
+
+  @Column({ name: 'tips_and_tricks', type: 'boolean' })
+  tipsAndTricks: boolean;
+
   @CreateDateColumn({ name: 'created_at', type: 'datetime' })
   createdAt: Date;
 
