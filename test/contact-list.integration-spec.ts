@@ -22,7 +22,7 @@ describe('/contact (integration) ', () => {
     await app.close();
   });
 
-  describe('/ (GET)', () => {
+  describe('/contact (GET)', () => {
     it('Should return status 403', async () => {
       await api
         .get('/contact')

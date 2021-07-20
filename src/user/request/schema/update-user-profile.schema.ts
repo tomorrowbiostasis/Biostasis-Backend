@@ -10,6 +10,7 @@ export const updateUserProfileSchema: JoiLibrary.ObjectSchema =
     surname: profileSchema.surname.optional(),
     prefix: profileSchema.prefix,
     phone: profileSchema.phone,
+    email: Joi.string().email(),
     address: Joi.string().max(200),
     dateOfBirth: Joi.date().format('DD/MM/YYYY'),
     primaryPhisican: Joi.string().allow(null).optional(),

@@ -23,7 +23,7 @@ describe('/contact (integration) ', () => {
     await app.close();
   });
 
-  describe('/:id (DELETE)', () => {
+  describe('/contact/:id (DELETE)', () => {
     it('Should return status 403', async () => {
       return api
         .delete(`/contact/${faker.datatype.number()}`)

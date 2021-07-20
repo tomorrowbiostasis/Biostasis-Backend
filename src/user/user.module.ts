@@ -5,18 +5,29 @@ import { CognitoIdentityServiceProvider } from '../common/provider/cognito-ident
 import { ConfigProvider } from '../common/provider/config.provider';
 import { UserRepositoryProvider } from './provider/user-repository.provider';
 import { ProfileRepositoryProvider } from './provider/profile-repository.provider';
+import { UnconfirmedEmailRepositoryProvider } from './provider/unconfirmed-email-repository.provider';
 import { UpdateUserProfileController } from './controller/update-user-profile.controller';
 import { GetUserController } from './controller/get-user.controller';
+import { ConfirmUserEmailController } from './controller/confirm-user-email.controller';
+import { UnconfirmedEmailService } from './service/unconfirmed-email.service';
+import { NotificationModule } from '../notification/notification.module';
 
 @Module({
-  controllers: [UpdateUserProfileController, GetUserController],
+  imports: [NotificationModule],
+  controllers: [
+    UpdateUserProfileController,
+    GetUserController,
+    ConfirmUserEmailController,
+  ],
   providers: [
     UserService,
     ProfileService,
     CognitoIdentityServiceProvider,
     ProfileRepositoryProvider,
+    UnconfirmedEmailRepositoryProvider,
     ConfigProvider,
     UserRepositoryProvider,
+    UnconfirmedEmailService,
   ],
   exports: [UserService],
 })

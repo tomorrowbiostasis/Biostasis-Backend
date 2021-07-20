@@ -7,6 +7,9 @@ export class UpdateUserProfileDTO {
   @ApiProperty({ type: String, maxLength: 100, required: false })
   surname: string;
 
+  @ApiProperty({ type: String, maxLength: 320, required: false })
+  email: string;
+
   @ApiProperty({ type: Number, maxLength: 3, required: false })
   prefix: number;
 

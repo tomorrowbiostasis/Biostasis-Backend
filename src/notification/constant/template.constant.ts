@@ -1,0 +1,3 @@
+export enum EN_MAIL_TEMPLATE {
+  USER_CHANGE_EMAIL = 3051696,
+}

@@ -16,6 +16,12 @@ module.exports = {
     userPoolId: env.COGNITO_USER_POOL_ID,
     jwks: `https://cognito-idp.${env.COGNITO_REGION}.amazonaws.com/${env.COGNITO_USER_POOL_ID}/.well-known/jwks.json`,
   },
+  mailJet: {
+    apiKey: env.MAILJET_API_KEY || '',
+    apiSecret: env.MAILJET_API_SECRET || '',
+    email: env.MAILJET_EMAIL || '',
+    username: env.MAILJET_USERNAME || '',
+  },
   database: {
     enable_ssl: false,
     charset: 'utf8mb4_unicode_ci',
@@ -27,5 +33,8 @@ module.exports = {
     synchronize: false,
     type: 'mysql',
     username: env.DB_USERNAME,
+  },
+  backend: {
+    url: env.BACKEND_URL || '',
   },
 };
