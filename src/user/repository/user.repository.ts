@@ -1,9 +1,16 @@
+import { Logger } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
 import { UserEntity } from '../entity/user.entity';
 
 @EntityRepository(UserEntity)
 export class UserRepository extends Repository<UserEntity> {
+  protected readonly logger = new Logger(UserRepository.name);
+
   findById(id: string): Promise<UserEntity> {
-    return this.findOne({ where: { id }, relations: ['profile'] });
+    return new Promise((resolve) => {
+      this.findOne({ where: { id }, relations: ['profile'] })
+        .then((data) => resolve(data))
+        .catch((error) => this.logger.error(error));
+    });
   }
 }

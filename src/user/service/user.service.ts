@@ -2,7 +2,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import { UpdateResult } from 'typeorm';
 import { UserRepository } from '../repository/user.repository';
 import { UserEntity } from '../entity/user.entity';
-import { UPDATE_USER_EMAIL_FAILED } from '../../common/error/keys';
+import {
+  UPDATE_USER_EMAIL_FAILED,
+  SAVE_USER_FAILED,
+} from '../../common/error/keys';
 import { CustomError } from '../../common/error/custom-error';
 
 @Injectable()
@@ -16,10 +19,14 @@ export class UserService {
   }
 
   async saveUser(id: string, email: string): Promise<UserEntity> {
-    return this.userRepository.save({
-      id,
-      email,
-    });
+    return this.userRepository
+      .save({
+        id,
+        email,
+      })
+      .catch((error) => {
+        throw new CustomError(SAVE_USER_FAILED, error);
+      });
   }
 
   async updateUserEmail(id: string, email: string): Promise<UpdateResult> {
