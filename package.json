@@ -50,6 +50,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
     "swagger-ui-express": "^4.1.6",
+    "twilio": "^3.64.0",
     "typeorm": "0.2.34"
   },
   "devDependencies": {
@@ -63,6 +64,7 @@
     "@types/node": "^16.0.0",
     "@types/node-mailjet": "^3.3.7",
     "@types/supertest": "^2.0.11",
+    "@types/twilio": "^3.19.2",
     "@typescript-eslint/eslint-plugin": "^4.28.2",
     "@typescript-eslint/parser": "^4.28.2",
     "depcheck": "^1.4.2",

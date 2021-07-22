@@ -11,6 +11,7 @@ import { GetUserController } from './controller/get-user.controller';
 import { ConfirmUserEmailController } from './controller/confirm-user-email.controller';
 import { UnconfirmedEmailService } from './service/unconfirmed-email.service';
 import { NotificationModule } from '../notification/notification.module';
+import { SendTestMessageController } from './controller/send-test-message.controller';
 
 @Module({
   imports: [NotificationModule],
@@ -18,6 +19,7 @@ import { NotificationModule } from '../notification/notification.module';
     UpdateUserProfileController,
     GetUserController,
     ConfirmUserEmailController,
+    SendTestMessageController,
   ],
   providers: [
     UserService,

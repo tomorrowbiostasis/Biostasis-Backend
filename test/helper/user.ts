@@ -11,6 +11,8 @@ export const initializeDataset = async (): Promise<{
     seriousMedicalIssues: true,
     mostRecentDiagnosis: null,
     lastHospitalVisit: null,
+    emergencyEmailAndSms: true,
+    locationAccess: true,
   });
 
   return {

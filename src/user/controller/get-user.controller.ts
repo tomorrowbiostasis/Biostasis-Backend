@@ -12,7 +12,6 @@ import { UserService } from '../service/user.service';
 import { User } from '../../authentication/decorator/user.decorator';
 import { UserEntity, ROLES } from '../../user/entity/user.entity';
 import { UserRO } from '../response/user.ro';
-
 import { AuthGuard } from '@nestjs/passport';
 import { userMapper } from '../mapper/user.mapper';
 
@@ -29,7 +28,7 @@ export class GetUserController {
   @Roles([ROLES.USER])
   @Get()
   async getUserProfile(@User() user: UserEntity) {
-    const details = await this.userService.findById(user.id);
+    const details = await this.userService.findByIdOrFail(user.id);
 
     return userMapper(details);
   }

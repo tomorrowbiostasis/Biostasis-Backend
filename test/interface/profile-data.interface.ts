@@ -11,4 +11,6 @@ export interface IProfileData {
   seriousMedicalIssues?: boolean;
   mostRecentDiagnosis?: string;
   lastHospitalVisit?: Date;
+  emergencyEmailAndSms?: boolean;
+  locationAccess?: boolean;
 }

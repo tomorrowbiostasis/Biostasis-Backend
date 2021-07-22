@@ -1,7 +1,7 @@
 import * as moment from 'moment';
 import * as faker from 'faker';
 import { ProfileEntity } from '../../src/user/entity/profile.entity';
-import { getConnection } from 'typeorm';
+import { getConnection, UpdateResult } from 'typeorm';
 import { omit } from '../../src/common/helper/omit';
 import { IProfileData } from '../interface/profile-data.interface';
 import { getRandomPhoneNumber, getRandomPhonePrefix } from './contact.mock';
@@ -25,7 +25,9 @@ export const getProfileStub = (data: IProfileData): ProfileEntity => {
     data?.primaryPhisicanAddress ??
     `${faker.address.streetName()}, ${faker.address.city()}, ${faker.address.country()}`;
   profile.seriousMedicalIssues =
-    data?.seriousMedicalIssues ?? faker.datatype.boolean();
+    data?.seriousMedicalIssues !== undefined
+      ? data.seriousMedicalIssues
+      : faker.datatype.boolean();
   profile.mostRecentDiagnosis =
     data?.mostRecentDiagnosis !== undefined
       ? data.mostRecentDiagnosis
@@ -34,6 +36,14 @@ export const getProfileStub = (data: IProfileData): ProfileEntity => {
     data.lastHospitalVisit !== undefined
       ? data.lastHospitalVisit
       : moment().toDate();
+  profile.emergencyEmailAndSms =
+    data?.emergencyEmailAndSms !== undefined
+      ? data.emergencyEmailAndSms
+      : faker.datatype.boolean();
+  profile.locationAccess =
+    data?.locationAccess !== undefined
+      ? data.locationAccess
+      : faker.datatype.boolean();
 
   return profile;
 };
@@ -52,6 +62,15 @@ export const getProfileById = async (
   return getConnection()
     .getRepository(ProfileEntity)
     .findOne({ where: { userId }, relations: ['user'] });
+};
+
+export const updateProfile = async (
+  id: number,
+  data: {
+    emergencyEmailAndSms?: boolean;
+  }
+): Promise<UpdateResult> => {
+  return getConnection().getRepository(ProfileEntity).update(id, data);
 };
 
 export const checkProfile = async (response: any) => {

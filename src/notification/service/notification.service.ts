@@ -1,22 +1,47 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  Logger,
+  BadRequestException,
+} from '@nestjs/common';
 import { Email } from 'node-mailjet';
 import * as configLib from 'config';
 import { DICTIONARY } from '../../common/constant/dictionary.constant';
-import { SEND_MAIL_FAILED } from '../../common/error/keys';
+import {
+  SEND_MAIL_FAILED,
+  SEND_SMS_FAILED,
+  EMAIL_AND_SMS_NOT_ALLOWED,
+} from '../../common/error/keys';
 import { CustomError } from '../../common/error/custom-error';
 import { DICTIONARY as NOTIFICATION_DI } from '../constant/dictionary.constant';
+import * as twilioLibrary from 'twilio';
+import { UserEntity } from '../../user/entity/user.entity';
+import { escapeHTML } from '../helper/escape-html';
+import { getMailTemplateId } from '../helper/get-template-id';
+import { getNameOrEmail } from '../../user/helper/get-name-or-email';
+import { SendTestMessageDTO } from '../../user/request/dto/send-test-message.dto';
 
 @Injectable()
 export class NotificationService {
   constructor(
     @Inject(DICTIONARY.CONFIG) private readonly config: configLib.IConfig,
-    @Inject(NOTIFICATION_DI.MAIL_JET) private readonly mailJet: Email.Client
+    @Inject(NOTIFICATION_DI.MAIL_JET) private readonly mailJet: Email.Client,
+    @Inject(twilioLibrary.Twilio) private readonly twilio: twilioLibrary.Twilio
   ) {}
-  private escapeHtmlEntities(value: string) {
-    return value.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+
+  async sendSms(to: string, message: string) {
+    return this.twilio.messages
+      .create({
+        from: this.config.get('twilio.phoneNumber'),
+        to,
+        body: message,
+      })
+      .catch((e) => {
+        throw new CustomError(SEND_SMS_FAILED, e);
+      });
   }
 
-  sendEmail(
+  async sendEmail(
     templateId: number,
     variablesToEscapeAndSend: object,
     variablesToSend: object,
@@ -30,7 +55,7 @@ export class NotificationService {
     const escapedVariables = {};
     for (const [key, value] of Object.entries(variablesToEscapeAndSend)) {
       escapedVariables[key] =
-        typeof value === 'string' ? this.escapeHtmlEntities(value) : value;
+        typeof value === 'string' ? escapeHTML(value) : value;
     }
     const params = {
       Messages: [
@@ -49,7 +74,6 @@ export class NotificationService {
         },
       ],
     };
-    Logger.log(params, 'sendEmail - parameters');
 
     return this.mailJet
       .post('send', { version: 'v3.1' })
@@ -57,5 +81,57 @@ export class NotificationService {
       .catch((e) => {
         throw new CustomError(SEND_MAIL_FAILED, e);
       });
+  }
+
+  async sendEmergencyMessage(
+    contact: {
+      name: string;
+      email: string;
+    },
+    user: UserEntity,
+    data: SendTestMessageDTO
+  ) {
+    if (user.profile.emergencyEmailAndSms === false) {
+      throw new BadRequestException(EMAIL_AND_SMS_NOT_ALLOWED);
+    }
+
+    if (user.profile?.phone) {
+      await this.sendSms(
+        `${user.profile.prefix}${user.profile.phone}`,
+        user.profile.emergencyMessage
+      );
+    }
+
+    let params: Record<string, unknown> = {
+      contactName: contact.name,
+      userName: getNameOrEmail(
+        user.profile?.name,
+        user.profile?.surname,
+        user.email
+      ),
+      message: user.profile.emergencyMessage,
+    };
+
+    if (user.profile?.locationAccess !== false) {
+      params.latitude = data.latitude;
+      params.longitude = data.longitude;
+      params.accuracy = data.accuracy;
+      params.locationUrl = data.locationUrl;
+    }
+
+    await this.sendEmail(
+      getMailTemplateId(
+        `EMERGENCY_MESSAGE_WITH${
+          user.profile?.locationAccess === false ? 'OUT' : ''
+        }_LOCATION`
+      ),
+      params,
+      {},
+      [
+        {
+          Email: contact.email,
+        },
+      ]
+    );
   }
 }
