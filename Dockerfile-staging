@@ -17,4 +17,4 @@ EXPOSE 5000
 
 RUN yarn
 RUN npm run build
-CMD npm run start:prod
+CMD npm run typeorm:run && npm run start:prod
