@@ -8,6 +8,8 @@ import * as AWS from 'aws-sdk';
 import { awsCognitoMock } from './aws-cognito.mock';
 import { DICTIONARY as NOTIFICATION_DI } from '../../src/notification/constant/dictionary.constant';
 import { mailJetMock } from './mailjet.mock';
+import * as twilioLibrary from 'twilio';
+import { twilioMock } from './twilio.mock';
 
 export const getTestApp = async () => {
   let app;
@@ -21,6 +23,8 @@ export const getTestApp = async () => {
     .useValue(awsCognitoMock)
     .overrideProvider(NOTIFICATION_DI.MAIL_JET)
     .useValue(mailJetMock)
+    .overrideProvider(twilioLibrary.Twilio)
+    .useValue(twilioMock)
     .compile();
 
   app = moduleFixture.createNestApplication();

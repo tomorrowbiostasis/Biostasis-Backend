@@ -1,9 +1,10 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, BadRequestException } from '@nestjs/common';
 import { UpdateResult } from 'typeorm';
 import { UserRepository } from '../repository/user.repository';
 import { UserEntity } from '../entity/user.entity';
 import {
   UPDATE_USER_EMAIL_FAILED,
+  USER_NOT_FOUND,
   SAVE_USER_FAILED,
 } from '../../common/error/keys';
 import { CustomError } from '../../common/error/custom-error';
@@ -16,6 +17,16 @@ export class UserService {
 
   findById(id: string): Promise<UserEntity> {
     return this.userRepository.findById(id);
+  }
+
+  async findByIdOrFail(id: string): Promise<UserEntity> {
+    return this.findById(id).then((data) => {
+      if (!data) {
+        throw new BadRequestException(USER_NOT_FOUND);
+      }
+
+      return data;
+    });
   }
 
   async saveUser(id: string, email: string): Promise<UserEntity> {

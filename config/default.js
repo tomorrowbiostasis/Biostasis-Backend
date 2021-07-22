@@ -22,6 +22,11 @@ module.exports = {
     email: env.MAILJET_EMAIL || '',
     username: env.MAILJET_USERNAME || '',
   },
+  twilio: {
+    accountSid: env.TWILIO_ACCOUNT_SID || '',
+    authToken: env.TWILIO_AUTH_TOKEN || '',
+    phoneNumber: env.TWILIO_PHONE_NUMBER || '',
+  },
   database: {
     enable_ssl: false,
     charset: 'utf8mb4_unicode_ci',
