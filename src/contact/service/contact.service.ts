@@ -9,6 +9,7 @@ import {
   VALIDATION_FAILED,
   SAVE_CONTACT_FAILED,
   DELETE_CONTACT_FAILED,
+  UPDATE_CONTACT_FAILED,
 } from '../../common/error/keys';
 import { CustomError } from '../../common/error/custom-error';
 
@@ -20,7 +21,7 @@ export class ContactService {
   ) {}
 
   async findContactsByUserId(userId: string) {
-    return this.contactRepository.find({ userId });
+    return this.contactRepository.findManyByParams({ userId });
   }
 
   async findByIdAndUserIdOrFail(
@@ -28,7 +29,7 @@ export class ContactService {
     userId: string
   ): Promise<ContactEntity> {
     return this.contactRepository
-      .findOne({
+      .findOneByParams({
         id,
         userId,
       })
@@ -42,7 +43,7 @@ export class ContactService {
   }
 
   async findById(id: number) {
-    return this.contactRepository.findOne(id);
+    return this.contactRepository.findOneByParams({ id });
   }
 
   async deleteContact(contactId: number): Promise<DeleteResult> {
@@ -87,7 +88,7 @@ export class ContactService {
         { ...data }
       )
       .catch((error) => {
-        throw new CustomError(SAVE_CONTACT_FAILED, error);
+        throw new CustomError(UPDATE_CONTACT_FAILED, error);
       });
   }
 }

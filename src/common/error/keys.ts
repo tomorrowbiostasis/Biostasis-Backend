@@ -10,3 +10,5 @@ export const UNCONFIRMED_EMAIL_NOT_FOUND = 'E0009';
 export const EMAIL_ALREADY_IN_USE = 'E0010';
 export const UPDATE_USER_EMAIL_FAILED = 'E0011';
 export const SEND_MAIL_FAILED = 'E0012';
+export const SAVE_USER_FAILED = 'E0013';
+export const UPDATE_CONTACT_FAILED = 'E0014';
