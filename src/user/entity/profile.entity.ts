@@ -36,10 +36,10 @@ export class ProfileEntity {
   dateOfBirth: Date;
 
   @Column({ name: 'primary_phisican', type: 'varchar', length: 100 })
-  primaryPhisican: string;
+  primaryPhysician: string;
 
   @Column({ name: 'primary_phisican_address', type: 'varchar', length: 200 })
-  primaryPhisicanAddress: string;
+  primaryPhysicianAddress: string;
 
   @Column({ name: 'serious_medical_issues', type: 'boolean' })
   seriousMedicalIssues: boolean;

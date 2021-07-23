@@ -14,28 +14,29 @@ export class ProfileRO {
   userId: string;
 
   @Expose()
+  @Transform(({ value }: TransformFnParams) => value ?? null)
   @ApiProperty({ type: String })
   address?: string;
 
   @Expose()
+  @Transform(({ value }: TransformFnParams) => value ?? null)
   @ApiProperty({ type: String })
   name?: string;
 
   @Expose()
+  @Transform(({ value }: TransformFnParams) => value ?? null)
   @ApiProperty({ type: String })
   surname?: string;
 
   @Expose()
+  @Transform(({ value }: TransformFnParams) => value ?? null)
   @ApiProperty({ type: String })
   phone?: string;
 
   @Expose()
+  @Transform(({ value }: TransformFnParams) => value ?? null)
   @ApiProperty({ type: Number })
   prefix?: number;
-
-  @Expose()
-  @ApiProperty({ type: String })
-  email?: string;
 
   @Expose()
   @Transform(({ value }: TransformFnParams) =>
@@ -45,18 +46,22 @@ export class ProfileRO {
   dateOfBirth?: string;
 
   @Expose()
+  @Transform(({ value }: TransformFnParams) => value ?? null)
   @ApiProperty({ type: String })
-  primaryPhisican: string;
+  primaryPhysician: string;
 
   @Expose()
+  @Transform(({ value }: TransformFnParams) => value ?? null)
   @ApiProperty({ type: String })
-  primaryPhisicanAddress: string;
+  primaryPhysicianAddress: string;
 
   @Expose()
+  @Transform(({ value }: TransformFnParams) => value ?? null)
   @ApiProperty({ type: Boolean })
   seriousMedicalIssues: boolean;
 
   @Expose()
+  @Transform(({ value }: TransformFnParams) => value ?? null)
   @ApiProperty({ type: String })
   mostRecentDiagnosis: string;
 
@@ -92,6 +97,7 @@ export class ProfileRO {
   uploadedDocumentsAccess: boolean;
 
   @Expose()
+  @Transform(({ value }: TransformFnParams) => value ?? null)
   @ApiProperty({ type: String })
   emergencyMessage: string;
 

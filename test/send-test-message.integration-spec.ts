@@ -17,12 +17,10 @@ describe('/user/message/test (integration) ', () => {
   let api: superTest.SuperTest<superTest.Test>;
   let dataset: any;
 
-  const notValidLocationValue = [faker.datatype.string(), null, undefined];
   const notValidUrlValue = [
     faker.datatype.boolean(),
     faker.datatype.number(),
     null,
-    undefined,
   ];
 
   beforeAll(async () => {
@@ -53,15 +51,6 @@ describe('/user/message/test (integration) ', () => {
           .post('/user/message/test')
           .set('Authorization', dataset.user.id)
           .send({
-            latitude: faker.datatype.number({
-              precision: 0.001,
-            }),
-            longitude: faker.datatype.number({
-              precision: 0.001,
-            }),
-            accuracy: faker.datatype.number({
-              precision: 0.001,
-            }),
             locationUrl: urlValue,
           })
           .then(({ status, body }) => {
@@ -69,152 +58,6 @@ describe('/user/message/test (integration) ', () => {
             expect(body.error.code).toBe(VALIDATION_FAILED);
           });
       }
-
-      for (const locationValue of notValidLocationValue) {
-        await api
-          .post('/user/message/test')
-          .set('Authorization', dataset.user.id)
-          .send({
-            latitude: locationValue,
-            longitude: faker.datatype.number({
-              precision: 0.001,
-            }),
-            accuracy: faker.datatype.number({
-              precision: 0.001,
-            }),
-            locationUrl: faker.internet.url(),
-          })
-          .then(({ status, body }) => {
-            expect(status).toBe(400);
-            expect(body.error.code).toBe(VALIDATION_FAILED);
-          });
-
-        await api
-          .post('/user/message/test')
-          .set('Authorization', dataset.user.id)
-          .send({
-            latitude: faker.datatype.number({
-              precision: 0.001,
-            }),
-            longitude: locationValue,
-            accuracy: faker.datatype.number({
-              precision: 0.001,
-            }),
-            locationUrl: faker.internet.url(),
-          })
-          .then(({ status, body }) => {
-            expect(status).toBe(400);
-            expect(body.error.code).toBe(VALIDATION_FAILED);
-          });
-
-        await api
-          .post('/user/message/test')
-          .set('Authorization', dataset.user.id)
-          .send({
-            latitude: faker.datatype.number({
-              precision: 0.001,
-            }),
-            longitude: faker.datatype.number({
-              precision: 0.001,
-            }),
-            accuracy: locationValue,
-            locationUrl: faker.internet.url(),
-          })
-          .then(({ status, body }) => {
-            expect(status).toBe(400);
-            expect(body.error.code).toBe(VALIDATION_FAILED);
-          });
-      }
-
-      await api
-        .post('/user/message/test')
-        .set('Authorization', dataset.user.id)
-        .send({
-          latitude: faker.datatype.number({
-            precision: 0.001,
-          }),
-          longitude: faker.datatype.number({
-            precision: 0.001,
-          }),
-          locationUrl: faker.internet.url(),
-        })
-        .then(({ status, body }) => {
-          expect(status).toBe(400);
-          expect(body.error.code).toBe(VALIDATION_FAILED);
-        });
-
-      await api
-        .post('/user/message/test')
-        .set('Authorization', dataset.user.id)
-        .send({
-          accuracy: faker.datatype.number({
-            precision: 0.001,
-          }),
-          longitude: faker.datatype.number({
-            precision: 0.001,
-          }),
-          locationUrl: faker.internet.url(),
-        })
-        .then(({ status, body }) => {
-          expect(status).toBe(400);
-          expect(body.error.code).toBe(VALIDATION_FAILED);
-        });
-
-      await api
-        .post('/user/message/test')
-        .set('Authorization', dataset.user.id)
-        .send({
-          accuracy: faker.datatype.number({
-            precision: 0.001,
-          }),
-          latitude: faker.datatype.number({
-            precision: 0.001,
-          }),
-          locationUrl: faker.internet.url(),
-        })
-        .then(({ status, body }) => {
-          expect(status).toBe(400);
-          expect(body.error.code).toBe(VALIDATION_FAILED);
-        });
-
-      await api
-        .post('/user/message/test')
-        .set('Authorization', dataset.user.id)
-        .send({
-          accuracy: faker.datatype.number({
-            precision: 0.001,
-          }),
-        })
-        .then(({ status, body }) => {
-          expect(status).toBe(400);
-          expect(body.error.code).toBe(VALIDATION_FAILED);
-        });
-
-      await api
-        .post('/user/message/test')
-        .set('Authorization', dataset.user.id)
-        .send({
-          latitude: faker.datatype.number({
-            precision: 0.001,
-          }),
-        })
-        .then(({ status, body }) => {
-          expect(status).toBe(400);
-          expect(body.error.code).toBe(VALIDATION_FAILED);
-        });
-
-      await api
-        .post('/user/message/test')
-        .set('Authorization', dataset.user.id)
-        .send({
-          longitude: faker.datatype.number({
-            precision: 0.001,
-          }),
-        })
-        .then(({ status, body }) => {
-          expect(status).toBe(400);
-          expect(body.error.code).toBe(VALIDATION_FAILED);
-        });
     });
 
     it('Should return status 400 and error LOCATION_DATA_IS_NEEDED for invalid dataset', async () => {
@@ -239,15 +82,6 @@ describe('/user/message/test (integration) ', () => {
         .post('/user/message/test')
         .set('Authorization', user.id)
         .send({
-          longitude: faker.datatype.number({
-            precision: 0.001,
-          }),
-          accuracy: faker.datatype.number({
-            precision: 0.001,
-          }),
-          latitude: faker.datatype.number({
-            precision: 0.001,
-          }),
           locationUrl: faker.internet.url(),
         })
         .then((result) => {
@@ -261,15 +95,6 @@ describe('/user/message/test (integration) ', () => {
         .post('/user/message/test')
         .set('Authorization', dataset.user.id)
         .send({
-          longitude: faker.datatype.number({
-            precision: 0.001,
-          }),
-          accuracy: faker.datatype.number({
-            precision: 0.001,
-          }),
-          latitude: faker.datatype.number({
-            precision: 0.001,
-          }),
           locationUrl: faker.internet.url(),
         })
         .then(({ status, body }) => {

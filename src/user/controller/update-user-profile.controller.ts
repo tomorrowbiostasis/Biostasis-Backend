@@ -61,7 +61,7 @@ export class UpdateUserProfileController {
     }
 
     profile = await this.profileService.saveProfile(
-      profile,
+      { ...profile, userId: logged.id },
       omit(data, ['email'])
     );
 

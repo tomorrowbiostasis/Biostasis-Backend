@@ -8,7 +8,7 @@ export const initializeDataset = async (): Promise<{
   const user = await addUser();
   user.profile = await addProfile({
     userId: user.id,
-    seriousMedicalIssues: true,
+    seriousMedicalIssues: false,
     mostRecentDiagnosis: null,
     lastHospitalVisit: null,
     emergencyEmailAndSms: true,

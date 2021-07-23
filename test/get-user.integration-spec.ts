@@ -42,6 +42,7 @@ describe('/user (integration) ', () => {
         });
 
       expect(body.id).toBe(userId);
+      expect(body.fillLevel).toBe(100);
 
       await checkUser(body);
     });

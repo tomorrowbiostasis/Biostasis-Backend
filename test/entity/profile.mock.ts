@@ -14,15 +14,16 @@ export const getProfileStub = (data: IProfileData): ProfileEntity => {
   profile.surname = data?.surname ?? faker.name.lastName();
   profile.prefix = data?.prefix ?? getRandomPhonePrefix();
   profile.phone = data?.phone ?? getRandomPhoneNumber();
+  profile.emergencyMessage = data?.emergencyMessage ?? faker.lorem.sentence();
   profile.address =
     data?.address ??
     `${faker.address.streetName()}, ${faker.address.city()}, ${faker.address.country()}`;
   profile.dateOfBirth = data?.dateOfBirth ?? moment().toDate();
-  profile.primaryPhisican =
-    data?.primaryPhisican ??
+  profile.primaryPhysician =
+    data?.primaryPhysician ??
     `${faker.name.firstName()} ${faker.name.lastName()}`;
-  profile.primaryPhisicanAddress =
-    data?.primaryPhisicanAddress ??
+  profile.primaryPhysicianAddress =
+    data?.primaryPhysicianAddress ??
     `${faker.address.streetName()}, ${faker.address.city()}, ${faker.address.country()}`;
   profile.seriousMedicalIssues =
     data?.seriousMedicalIssues !== undefined

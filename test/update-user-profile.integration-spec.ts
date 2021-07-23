@@ -10,6 +10,7 @@ import {
   getRandomPhonePrefix,
 } from './entity/contact.mock';
 import { checkProfile } from './entity/profile.mock';
+import { addUser } from './entity/user.mock';
 
 describe('/user (integration) ', () => {
   let app;
@@ -71,8 +72,8 @@ describe('/user (integration) ', () => {
       surname: faker.name.lastName(),
       address: `${faker.address.streetName()}, ${faker.address.city()}, ${faker.address.country()}`,
       dateOfBirth: moment().format('DD/MM/YYYY'),
-      primaryPhisican: `${faker.name.firstName()} ${faker.name.lastName()}`,
-      primaryPhisicanAddress: `${faker.address.streetName()}, ${faker.address.city()}, ${faker.address.country()}`,
+      primaryPhysician: `${faker.name.firstName()} ${faker.name.lastName()}`,
+      primaryPhysicianAddress: `${faker.address.streetName()}, ${faker.address.city()}, ${faker.address.country()}`,
       seriousMedicalIssues: true,
       mostRecentDiagnosis: faker.lorem.sentence(),
       lastHospitalVisit: moment().subtract(2, 'days').format('DD/MM/YYYY'),
@@ -102,8 +103,8 @@ describe('/user (integration) ', () => {
     expect(body.dateOfBirth).toBe(data.dateOfBirth);
     expect(body.prefix).toBe(data.prefix);
     expect(body.phone).toBe(data.phone);
-    expect(body.primaryPhisican).toBe(data.primaryPhisican);
-    expect(body.primaryPhisicanAddress).toBe(data.primaryPhisicanAddress);
+    expect(body.primaryPhysician).toBe(data.primaryPhysician);
+    expect(body.primaryPhysicianAddress).toBe(data.primaryPhysicianAddress);
     expect(body.seriousMedicalIssues).toBe(data.seriousMedicalIssues);
     expect(body.mostRecentDiagnosis).toBe(data.mostRecentDiagnosis);
     expect(body.lastHospitalVisit).toBe(data.lastHospitalVisit);
@@ -136,5 +137,26 @@ describe('/user (integration) ', () => {
 
     expect(body.prefix).toBe(prefix);
     expect(body.phone).toBe(phone.toString());
+
+    const user = await addUser();
+    const randomName = faker.name.firstName();
+
+    ({ body } = await api
+      .patch('/user')
+      .set('Authorization', user.id)
+      .send({ name: randomName })
+      .expect(async ({ status }) => {
+        expect(status).toBe(200);
+      }));
+
+    ({ body } = await api
+      .get('/user')
+      .set('Authorization', user.id)
+      .send()
+      .expect(async ({ status }) => {
+        expect(status).toBe(200);
+      }));
+
+    expect(body.name).toBe(randomName);
   });
 });

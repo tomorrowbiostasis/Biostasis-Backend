@@ -51,7 +51,7 @@ export class SendTestMessageController {
   ) {
     user = await this.userService.findByIdOrFail(user.id);
 
-    if (!data.latitude && user.profile?.locationAccess !== false) {
+    if (!data.locationUrl && user.profile?.locationAccess !== false) {
       throw new BadRequestException(LOCATION_DATA_IS_NEEDED);
     }
 
