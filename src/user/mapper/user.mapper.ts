@@ -11,8 +11,8 @@ export enum PROFILE_WEIGHT {
   phone = 1,
   address = 1,
   dateOfBirth = 1,
-  primaryPhisican = 1,
-  primaryPhisicanAddress = 1,
+  primaryPhysician = 1,
+  primaryPhysicianAddress = 1,
   seriousMedicalIssues = 1,
   mostRecentDiagnosis = 1,
   lastHospitalVisit = 1,
@@ -31,7 +31,7 @@ const calculatePercentByWeight = (user: UserEntity): number => {
     if (
       isDefined(user[key]) ||
       (user.profile && isDefined(user.profile[key])) ||
-      (!user?.profile?.seriousMedicalIssues &&
+      (user?.profile?.seriousMedicalIssues !== true &&
         ['mostRecentDiagnosis', 'lastHospitalVisit'].includes(key))
     ) {
       weightOfValues += Number(value);

@@ -28,10 +28,10 @@ export class UpdateUserProfileDTO {
   dateOfBirth: string;
 
   @ApiProperty({ type: String, maxLength: 200, required: false })
-  primaryPhisican: string;
+  primaryPhysician: string;
 
   @ApiProperty({ type: String, maxLength: 200, required: false })
-  primaryPhisicanAddress: string;
+  primaryPhysicianAddress: string;
 
   @ApiProperty({ type: Boolean, required: false })
   seriousMedicalIssues: boolean;

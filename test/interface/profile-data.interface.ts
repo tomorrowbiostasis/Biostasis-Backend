@@ -6,11 +6,12 @@ export interface IProfileData {
   phone?: string;
   address?: string;
   dateOfBirth?: Date;
-  primaryPhisican?: string;
-  primaryPhisicanAddress?: string;
+  primaryPhysician?: string;
+  primaryPhysicianAddress?: string;
   seriousMedicalIssues?: boolean;
   mostRecentDiagnosis?: string;
   lastHospitalVisit?: Date;
   emergencyEmailAndSms?: boolean;
   locationAccess?: boolean;
+  emergencyMessage?: string;
 }

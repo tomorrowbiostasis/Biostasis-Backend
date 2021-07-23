@@ -1,9 +1,4 @@
-import {
-  Inject,
-  Injectable,
-  Logger,
-  BadRequestException,
-} from '@nestjs/common';
+import { Inject, Injectable, BadRequestException } from '@nestjs/common';
 import { Email } from 'node-mailjet';
 import * as configLib from 'config';
 import { DICTIONARY } from '../../common/constant/dictionary.constant';
@@ -11,6 +6,7 @@ import {
   SEND_MAIL_FAILED,
   SEND_SMS_FAILED,
   EMAIL_AND_SMS_NOT_ALLOWED,
+  MESSAGE_IS_NEEDED,
 } from '../../common/error/keys';
 import { CustomError } from '../../common/error/custom-error';
 import { DICTIONARY as NOTIFICATION_DI } from '../constant/dictionary.constant';
@@ -91,14 +87,20 @@ export class NotificationService {
     user: UserEntity,
     data: SendTestMessageDTO
   ) {
-    if (user.profile.emergencyEmailAndSms === false) {
+    if (user.profile?.emergencyEmailAndSms === false) {
       throw new BadRequestException(EMAIL_AND_SMS_NOT_ALLOWED);
+    }
+
+    if (!user.profile?.emergencyMessage) {
+      throw new BadRequestException(MESSAGE_IS_NEEDED);
     }
 
     if (user.profile?.phone) {
       await this.sendSms(
         `${user.profile.prefix}${user.profile.phone}`,
-        user.profile.emergencyMessage
+        `${user.profile.emergencyMessage} ${
+          user.profile?.locationAccess !== false ? data.locationUrl : ''
+        }`.trim()
       );
     }
 
@@ -113,9 +115,6 @@ export class NotificationService {
     };
 
     if (user.profile?.locationAccess !== false) {
-      params.latitude = data.latitude;
-      params.longitude = data.longitude;
-      params.accuracy = data.accuracy;
       params.locationUrl = data.locationUrl;
     }
 

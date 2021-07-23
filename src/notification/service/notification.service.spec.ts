@@ -60,9 +60,6 @@ describe('NotificationService', () => {
         email: faker.internet.email(),
       };
       const data = {
-        latitude: faker.datatype.number(),
-        longitude: faker.datatype.number(),
-        accuracy: faker.datatype.number(),
         locationUrl: faker.internet.url(),
       };
 
@@ -73,7 +70,7 @@ describe('NotificationService', () => {
 
       expect(spyOnSendSms).toBeCalledWith(
         `${user.profile.prefix}${user.profile.phone}`,
-        user.profile.emergencyMessage
+        `${user.profile.emergencyMessage} ${data.locationUrl}`
       );
 
       expect(spyOnSendEmail).toBeCalledWith(
@@ -82,9 +79,6 @@ describe('NotificationService', () => {
           contactName: contact.name,
           userName: `${user.profile.name} ${user.profile.surname}`,
           message: user.profile.emergencyMessage,
-          latitude: data.latitude,
-          longitude: data.longitude,
-          accuracy: data.accuracy,
           locationUrl: data.locationUrl,
         },
         {},
