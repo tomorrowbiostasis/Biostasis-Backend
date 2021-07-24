@@ -144,7 +144,7 @@ describe('/user (integration) ', () => {
     ({ body } = await api
       .patch('/user')
       .set('Authorization', user.id)
-      .send({ name: randomName })
+      .send({ name: randomName, seriousMedicalIssues: false, prefix, phone })
       .expect(async ({ status }) => {
         expect(status).toBe(200);
       }));
@@ -158,5 +158,8 @@ describe('/user (integration) ', () => {
       }));
 
     expect(body.name).toBe(randomName);
+    expect(body.seriousMedicalIssues).toBe(false);
+    expect(body.prefix).toBe(prefix);
+    expect(body.phone).toBe(phone);
   });
 });

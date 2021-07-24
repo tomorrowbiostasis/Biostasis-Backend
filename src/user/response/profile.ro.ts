@@ -34,7 +34,9 @@ export class ProfileRO {
   phone?: string;
 
   @Expose()
-  @Transform(({ value }: TransformFnParams) => value ?? null)
+  @Transform(({ value }: TransformFnParams) =>
+    value !== undefined ? Number(value) : null
+  )
   @ApiProperty({ type: Number })
   prefix?: number;
 
@@ -56,7 +58,9 @@ export class ProfileRO {
   primaryPhysicianAddress: string;
 
   @Expose()
-  @Transform(({ value }: TransformFnParams) => value ?? null)
+  @Transform(({ value }: TransformFnParams) =>
+    value !== undefined ? value : null
+  )
   @ApiProperty({ type: Boolean })
   seriousMedicalIssues: boolean;
 
