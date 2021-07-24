@@ -37,6 +37,7 @@ export const checkUser = async (response: any) => {
       'dateOfBirth',
       'lastHospitalVisit',
       'fillLevel',
+      'prefix',
     ])
   ).toEqual(
     omit(
@@ -52,6 +53,7 @@ export const checkUser = async (response: any) => {
         ...userDB,
       },
       [
+        'prefix',
         'createdAt',
         'updatedAt',
         'profile',
@@ -63,6 +65,10 @@ export const checkUser = async (response: any) => {
   );
 
   expect(response.fillLevel).toBeDefined();
+
+  if (response.prefix) {
+    expect(response.prefix).toBe(Number(userDB.profile.prefix));
+  }
 
   if (response.dateOfBirth) {
     expect(response.dateOfBirth).toBe(
