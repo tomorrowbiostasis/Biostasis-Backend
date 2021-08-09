@@ -13,5 +13,7 @@ export interface IProfileData {
   lastHospitalVisit?: Date;
   emergencyEmailAndSms?: boolean;
   locationAccess?: boolean;
+  automatedEmergency?: boolean;
+  readManual?: boolean;
   emergencyMessage?: string;
 }

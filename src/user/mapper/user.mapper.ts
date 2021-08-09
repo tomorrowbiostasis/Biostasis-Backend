@@ -16,6 +16,8 @@ export enum PROFILE_WEIGHT {
   seriousMedicalIssues = 1,
   mostRecentDiagnosis = 1,
   lastHospitalVisit = 1,
+  readManual = 1,
+  automatedEmergency = 1,
 }
 
 const calculatePercentByWeight = (user: UserEntity): number => {

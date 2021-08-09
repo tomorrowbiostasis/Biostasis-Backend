@@ -13,6 +13,8 @@ export const initializeDataset = async (): Promise<{
     lastHospitalVisit: null,
     emergencyEmailAndSms: true,
     locationAccess: true,
+    automatedEmergency: false,
+    readManual: false,
   });
 
   return {

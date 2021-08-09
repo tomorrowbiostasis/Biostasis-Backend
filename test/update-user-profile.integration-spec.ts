@@ -83,6 +83,8 @@ describe('/user (integration) ', () => {
       automatedVoiceCall: true,
       locationAccess: true,
       uploadedDocumentsAccess: true,
+      readManual: true,
+      automatedEmergency: true,
       emergencyMessage: faker.lorem.sentence(),
     };
 
@@ -114,6 +116,8 @@ describe('/user (integration) ', () => {
     expect(body.automatedVoiceCall).toBe(data.automatedVoiceCall);
     expect(body.locationAccess).toBe(data.locationAccess);
     expect(body.uploadedDocumentsAccess).toBe(data.uploadedDocumentsAccess);
+    expect(body.readManual).toBe(data.readManual);
+    expect(body.automatedEmergency).toBe(data.automatedEmergency);
     expect(body.emergencyMessage).toBe(data.emergencyMessage);
 
     await api

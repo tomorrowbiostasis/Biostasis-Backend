@@ -9,4 +9,6 @@ export const getProfileDefaultValues = (
   automatedVoiceCall: profile?.automatedVoiceCall !== false,
   uploadedDocumentsAccess: profile?.uploadedDocumentsAccess !== false,
   locationAccess: !!profile?.locationAccess,
+  readManual: !!profile?.readManual,
+  automatedEmergency: !!profile?.automatedEmergency,
 });
