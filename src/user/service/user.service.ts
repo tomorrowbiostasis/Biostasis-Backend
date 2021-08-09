@@ -15,6 +15,10 @@ export class UserService {
     @Inject(UserRepository) private readonly userRepository: UserRepository
   ) {}
 
+  findByEmail(email: string): Promise<UserEntity> {
+    return this.userRepository.findByEmail(email);
+  }
+
   findById(id: string): Promise<UserEntity> {
     return this.userRepository.findById(id);
   }

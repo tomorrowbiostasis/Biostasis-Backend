@@ -18,21 +18,33 @@ export class CognitoStrategy extends PassportStrategy(Strategy, 'cognito') {
         logger: new Logger(CognitoStrategy.name),
       },
       async (request, token, done) => {
-        let user = await this.userService.findById(token.sub);
+        const userAttributes = await this.authService.getUserAttributes(
+          token?.sub
+        );
+
+        if (!userAttributes) {
+          done(null);
+          return;
+        }
+
+        let user = await this.userService.findByEmail(userAttributes.email);
 
         if (!user) {
-          const userAttributes = await this.authService.getUserAttributes(
-            token.sub
-          );
-
-          if (!userAttributes) {
+          await new Promise((resolve, reject) => {
+            this.userService
+              .saveUser(token?.sub, userAttributes.email)
+              .then((result) => resolve(result))
+              .catch((err) => {
+                this.logger.error(JSON.stringify(err));
+                reject(err);
+              });
+          }).catch(() => {
             done(null);
-            return;
-          }
+          });
 
-          await this.userService.saveUser(token.sub, userAttributes.email);
-          user = await this.userService.findById(token.sub);
+          user = await this.userService.findByEmail(userAttributes.email);
         }
+
         done(user, null);
       }
     );
