@@ -50,6 +50,8 @@ export const checkUser = async (response: any) => {
         uploadedDocumentsAccess:
           userDB.profile.uploadedDocumentsAccess !== false,
         locationAccess: !!userDB.profile.locationAccess,
+        readManual: !!userDB.profile.readManual,
+        automatedEmergency: !!userDB.profile.automatedEmergency,
         ...userDB,
       },
       [

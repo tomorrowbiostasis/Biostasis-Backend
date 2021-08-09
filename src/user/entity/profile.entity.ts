@@ -71,6 +71,12 @@ export class ProfileEntity {
   @Column({ name: 'emergency_message', type: 'varchar', length: 1000 })
   emergencyMessage: string;
 
+  @Column({ name: 'read_manual', type: 'boolean' })
+  readManual: boolean;
+
+  @Column({ name: 'automated_emergency', type: 'boolean' })
+  automatedEmergency: boolean;
+
   @CreateDateColumn({ name: 'created_at', type: 'datetime' })
   createdAt: Date;
 

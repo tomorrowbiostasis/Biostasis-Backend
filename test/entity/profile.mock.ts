@@ -45,6 +45,12 @@ export const getProfileStub = (data: IProfileData): ProfileEntity => {
     data?.locationAccess !== undefined
       ? data.locationAccess
       : faker.datatype.boolean();
+  profile.readManual =
+    data?.readManual !== undefined ? data.readManual : faker.datatype.boolean();
+  profile.automatedEmergency =
+    data?.automatedEmergency !== undefined
+      ? data.automatedEmergency
+      : faker.datatype.boolean();
 
   return profile;
 };

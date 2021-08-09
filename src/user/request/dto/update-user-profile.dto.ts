@@ -60,6 +60,12 @@ export class UpdateUserProfileDTO {
   @ApiProperty({ type: Boolean, required: false })
   uploadedDocumentsAccess: boolean;
 
+  @ApiProperty({ type: Boolean, required: false })
+  readManual: boolean;
+
+  @ApiProperty({ type: Boolean, required: false })
+  automatedEmergency: boolean;
+
   @ApiProperty({ type: String, maxLength: 1000, required: false })
   emergencyMessage: string;
 }

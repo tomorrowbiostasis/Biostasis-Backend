@@ -106,6 +106,14 @@ export class ProfileRO {
   emergencyMessage: string;
 
   @Expose()
+  @ApiProperty({ type: Boolean })
+  readManual: boolean;
+
+  @Expose()
+  @ApiProperty({ type: Boolean })
+  automatedEmergency: boolean;
+
+  @Expose()
   @ApiProperty({ type: String })
   createdAt: string;
 
