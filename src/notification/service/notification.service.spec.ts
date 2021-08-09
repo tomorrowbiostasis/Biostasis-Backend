@@ -118,5 +118,24 @@ describe('NotificationService', () => {
         ]
       );
     });
+
+    it('sendEmergencyMessage() does not call sendSms() fo test message', async () => {
+      jest.clearAllMocks();
+
+      const spyOnSendSms = jest.spyOn(service, 'sendSms');
+      const spyOnSendEmail = jest.spyOn(service, 'sendEmail');
+      const data = {
+        locationUrl: faker.internet.url(),
+      };
+      const contact = {
+        name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+        email: user.email,
+      };
+
+      await service.sendEmergencyMessage(contact, user, data);
+
+      expect(spyOnSendEmail).toBeCalledTimes(1);
+      expect(spyOnSendSms).toBeCalledTimes(0);
+    });
   });
 });

@@ -95,7 +95,7 @@ export class NotificationService {
       throw new BadRequestException(MESSAGE_IS_NEEDED);
     }
 
-    if (user.profile?.phone) {
+    if (user.profile?.phone && user.email !== contact.email) {
       await this.sendSms(
         `${user.profile.prefix}${user.profile.phone}`,
         `${user.profile.emergencyMessage} ${
