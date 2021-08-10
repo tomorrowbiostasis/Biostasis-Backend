@@ -12,8 +12,10 @@ export const getProfileStub = (data: IProfileData): ProfileEntity => {
   profile.userId = data.userId;
   profile.name = data?.name ?? faker.name.firstName();
   profile.surname = data?.surname ?? faker.name.lastName();
-  profile.prefix = data?.prefix ?? getRandomPhonePrefix();
-  profile.phone = data?.phone ?? getRandomPhoneNumber();
+  profile.prefix =
+    data?.prefix !== undefined ? data.prefix : getRandomPhonePrefix();
+  profile.phone =
+    data?.phone !== undefined ? data.phone : getRandomPhoneNumber();
   profile.emergencyMessage = data?.emergencyMessage ?? faker.lorem.sentence();
   profile.address =
     data?.address ??

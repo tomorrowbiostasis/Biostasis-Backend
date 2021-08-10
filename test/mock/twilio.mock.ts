@@ -4,6 +4,6 @@ export const fetch = jest.fn(async () => ({}));
 
 export const twilioMock = {
   messages: {
-    create: jest.fn(async () => ({ sid: uuid.v4() })),
+    create: jest.fn(async () => ({ sid: uuid.v4(), errorCode: null })),
   },
 };

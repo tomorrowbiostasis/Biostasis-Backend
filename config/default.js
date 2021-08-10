@@ -42,4 +42,8 @@ module.exports = {
   backend: {
     url: env.BACKEND_URL || '',
   },
+  sms: {
+    noConnectionToWatch: 'We have detected no connection with your watch.',
+    heartRateInvalid: 'Your hear rate is invalid.',
+  },
 };
