@@ -17,3 +17,4 @@ export const USER_NOT_FOUND = 'E0016';
 export const EMAIL_AND_SMS_NOT_ALLOWED = 'E0017';
 export const LOCATION_DATA_IS_NEEDED = 'E0018';
 export const MESSAGE_IS_NEEDED = 'E0019';
+export const PHONE_NUMBER_IS_NEEDED = 'E0020';

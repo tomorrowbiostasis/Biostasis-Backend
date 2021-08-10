@@ -31,6 +31,6 @@ import { SendTestMessageController } from './controller/send-test-message.contro
     UserRepositoryProvider,
     UnconfirmedEmailService,
   ],
-  exports: [UserService],
+  exports: [UserService, ProfileService],
 })
 export class UserModule {}

@@ -5,6 +5,8 @@ import { UserModule } from './user/user.module';
 import { ContactModule } from './contact/contact.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { get } from 'config';
+import { NotificationModule } from './notification/notification.module';
+import { MessageModule } from './message/message.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { get } from 'config';
     AuthorizationModule,
     UserModule,
     ContactModule,
+    NotificationModule,
+    MessageModule,
   ],
 })
 export class AppModule {}
