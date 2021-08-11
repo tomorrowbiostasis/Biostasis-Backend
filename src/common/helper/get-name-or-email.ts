@@ -1,4 +1,3 @@
-import { UserEntity } from '../../user/entity/user.entity';
 import { getFullName } from './get-full-name';
 
 export const getNameOrEmail = (

@@ -1,4 +1,9 @@
-import { Inject, Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  BadRequestException,
+  Logger,
+} from '@nestjs/common';
 import { Email } from 'node-mailjet';
 import * as configLib from 'config';
 import { DICTIONARY } from '../../common/constant/dictionary.constant';
@@ -14,11 +19,13 @@ import * as twilioLibrary from 'twilio';
 import { UserEntity } from '../../user/entity/user.entity';
 import { escapeHTML } from '../helper/escape-html';
 import { getMailTemplateId } from '../helper/get-template-id';
-import { getNameOrEmail } from '../../user/helper/get-name-or-email';
-import { SendTestMessageDTO } from '../../user/request/dto/send-test-message.dto';
+import { getNameOrEmail } from '../../common/helper/get-name-or-email';
+import { SendEmergencyMessageDTO } from '../../message/request/dto/send-emergency-message.dto';
 
 @Injectable()
 export class NotificationService {
+  private readonly logger = new Logger(NotificationService.name);
+
   constructor(
     @Inject(DICTIONARY.CONFIG) private readonly config: configLib.IConfig,
     @Inject(NOTIFICATION_DI.MAIL_JET) private readonly mailJet: Email.Client,
@@ -31,6 +38,11 @@ export class NotificationService {
         from: this.config.get('twilio.phoneNumber'),
         to,
         body: message,
+      })
+      .then((result) => {
+        this.logger.log(JSON.stringify(result));
+
+        return result;
       })
       .catch((e) => {
         throw new CustomError(SEND_SMS_FAILED, e);
@@ -74,6 +86,11 @@ export class NotificationService {
     return this.mailJet
       .post('send', { version: 'v3.1' })
       .request(params)
+      .then((result) => {
+        this.logger.log(result.body);
+
+        return result;
+      })
       .catch((e) => {
         throw new CustomError(SEND_MAIL_FAILED, e);
       });
@@ -83,9 +100,10 @@ export class NotificationService {
     contact: {
       name: string;
       email: string;
+      phone: string;
     },
     user: UserEntity,
-    data: SendTestMessageDTO
+    data: SendEmergencyMessageDTO
   ) {
     if (user.profile?.emergencyEmailAndSms === false) {
       throw new BadRequestException(EMAIL_AND_SMS_NOT_ALLOWED);
@@ -95,11 +113,11 @@ export class NotificationService {
       throw new BadRequestException(MESSAGE_IS_NEEDED);
     }
 
-    if (user.profile?.phone && user.email !== contact.email) {
+    if (contact.phone && user.email !== contact.email) {
       await this.sendSms(
-        `${user.profile.prefix}${user.profile.phone}`,
+        contact.phone,
         `${user.profile.emergencyMessage} ${
-          user.profile?.locationAccess !== false ? data.locationUrl : ''
+          user.profile?.locationAccess === true ? data.locationUrl : ''
         }`.trim()
       );
     }
@@ -114,14 +132,14 @@ export class NotificationService {
       message: user.profile.emergencyMessage,
     };
 
-    if (user.profile?.locationAccess !== false) {
+    if (user.profile?.locationAccess === true) {
       params.locationUrl = data.locationUrl;
     }
 
     await this.sendEmail(
       getMailTemplateId(
         `EMERGENCY_MESSAGE_WITH${
-          user.profile?.locationAccess === false ? 'OUT' : ''
+          user.profile?.locationAccess !== true ? 'OUT' : ''
         }_LOCATION`
       ),
       params,

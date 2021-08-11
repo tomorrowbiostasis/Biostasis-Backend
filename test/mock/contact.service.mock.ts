@@ -1,1 +1,3 @@
-export const contactServiceMock = {};
+export const contactServiceMock = {
+  findActiveContactsByUserId: jest.fn(async () => ({})),
+};

@@ -9,7 +9,8 @@ import * as twilioLibrary from 'twilio';
 import { twilioMock } from '../../../test/mock/twilio.mock';
 import { getUserStub } from '../../../test/entity/user.mock';
 import { getProfileStub } from '../../../test/entity/profile.mock';
-import { SendTestMessageDTO } from '../../user/request/dto/send-test-message.dto';
+import { SendEmergencyMessageDTO } from '../../message/request/dto/send-emergency-message.dto';
+import { getRandomPhoneNumber } from '../../../test/entity/contact.mock';
 
 describe('NotificationService', () => {
   let service: NotificationService;
@@ -58,6 +59,7 @@ describe('NotificationService', () => {
       const contact = {
         name: `${faker.name.firstName()} ${faker.name.lastName()}`,
         email: faker.internet.email(),
+        phone: getRandomPhoneNumber(),
       };
       const data = {
         locationUrl: faker.internet.url(),
@@ -69,7 +71,7 @@ describe('NotificationService', () => {
       await service.sendEmergencyMessage(contact, user, data);
 
       expect(spyOnSendSms).toBeCalledWith(
-        `${user.profile.prefix}${user.profile.phone}`,
+        contact.phone,
         `${user.profile.emergencyMessage} ${data.locationUrl}`
       );
 
@@ -100,7 +102,7 @@ describe('NotificationService', () => {
             locationAccess: false,
           },
         },
-        {} as SendTestMessageDTO
+        {} as SendEmergencyMessageDTO
       );
 
       expect(spyOnSendEmail).toBeCalledWith(
@@ -130,6 +132,7 @@ describe('NotificationService', () => {
       const contact = {
         name: `${faker.name.firstName()} ${faker.name.lastName()}`,
         email: user.email,
+        phone: getRandomPhoneNumber(),
       };
 
       await service.sendEmergencyMessage(contact, user, data);
