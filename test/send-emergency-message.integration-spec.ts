@@ -1,0 +1,158 @@
+import * as superTest from 'supertest';
+import { clearDatabase } from './helper';
+import { getTestApp } from './mock/app.mock';
+import { initializeDataset } from './helper/message';
+import * as faker from 'faker';
+import {
+  VALIDATION_FAILED,
+  PHONE_NUMBER_IS_NEEDED,
+  LOCATION_DATA_IS_NEEDED,
+  EMAIL_AND_SMS_NOT_ALLOWED,
+} from '../src/common/error/keys';
+import { MESSAGE_TYPE } from '../src/message/enum/message-type.enum';
+import { addUser } from './entity/user.mock';
+import { addProfile } from './entity/profile.mock';
+import { twilioMock } from './mock/twilio.mock';
+import * as uuid from 'uuid';
+import { addContact } from './entity/contact.mock';
+
+describe('/message (integration) ', () => {
+  let app;
+  let api: superTest.SuperTest<superTest.Test>;
+  let dataset: any;
+
+  const notValidUrlValue = [
+    faker.datatype.boolean(),
+    faker.datatype.number(),
+    null,
+  ];
+
+  beforeAll(async () => {
+    app = await getTestApp();
+    api = superTest(app.getHttpServer());
+    await clearDatabase();
+
+    dataset = await initializeDataset();
+  });
+
+  afterAll(async () => {
+    await app.close();
+  });
+
+  describe('/message/send/emergency (POST)', () => {
+    it('Should return status 403', async () => {
+      await api
+        .post('/message/send/emergency')
+        .send()
+        .expect(({ status }) => {
+          expect(status).toBe(403);
+        });
+
+      return api
+        .post('/message/send/emergency')
+        .set('Authorization', faker.datatype.uuid())
+        .send()
+        .expect(({ status }) => {
+          expect(status).toBe(403);
+        });
+    });
+
+    it('Should return status 400 and error VALIDATION_FAILED for invalid dataset', async () => {
+      for (const urlValue of notValidUrlValue) {
+        await api
+          .post('/message/send/emergency')
+          .set('Authorization', dataset.user.id)
+          .send({
+            locationUrl: urlValue,
+          })
+          .then(({ status, body }) => {
+            expect(status).toBe(400);
+            expect(body.error.code).toBe(VALIDATION_FAILED);
+          });
+      }
+    });
+
+    it('Should return status 400 and error LOCATION_DATA_IS_NEEDED for invalid dataset', async () => {
+      await api
+        .post('/message/send/emergency')
+        .set('Authorization', dataset.user.id)
+        .send({})
+        .then((result) => {
+          expect(result.status).toBe(400);
+          expect(result.body.error.code).toBe(LOCATION_DATA_IS_NEEDED);
+        });
+    });
+
+    it('Should return status 400 and error EMAIL_AND_SMS_NOT_ALLOWED for invalid dataset', async () => {
+      const user = await addUser();
+      user.profile = await addProfile({
+        userId: user.id,
+        emergencyEmailAndSms: false,
+      });
+
+      await addContact({
+        userId: user.id,
+        active: true,
+      });
+
+      await api
+        .post('/message/send/emergency')
+        .set('Authorization', user.id)
+        .send({
+          locationUrl: faker.internet.url(),
+        })
+        .then((result) => {
+          expect(result.status).toBe(400);
+          expect(result.body.error.code).toBe(EMAIL_AND_SMS_NOT_ALLOWED);
+        });
+    });
+
+    it('Should send sms, return status 201 and key "success" with value false', async () => {
+      const user = await addUser();
+      user.profile = await addProfile({
+        userId: user.id,
+        emergencyEmailAndSms: false,
+      });
+
+      await api
+        .post('/message/send/emergency')
+        .set('Authorization', user.id)
+        .send({
+          locationUrl: faker.internet.url(),
+        })
+        .then(({ status, body }) => {
+          expect(status).toBe(201);
+          expect(body).toEqual({ success: false });
+        });
+
+      await addContact({
+        userId: user.id,
+        active: false,
+      });
+
+      await api
+        .post('/message/send/emergency')
+        .set('Authorization', user.id)
+        .send({
+          locationUrl: faker.internet.url(),
+        })
+        .then(({ status, body }) => {
+          expect(status).toBe(201);
+          expect(body).toEqual({ success: false });
+        });
+    });
+
+    it('Should send sms, return status 201 and key "success" with value true', async () => {
+      await api
+        .post('/message/send/emergency')
+        .set('Authorization', dataset.user.id)
+        .send({
+          locationUrl: faker.internet.url(),
+        })
+        .then(({ status, body }) => {
+          expect(status).toBe(201);
+          expect(body).toEqual({ success: true });
+        });
+    });
+  });
+});

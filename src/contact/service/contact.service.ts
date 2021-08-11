@@ -24,6 +24,12 @@ export class ContactService {
     return this.contactRepository.findManyByParams({ userId });
   }
 
+  async findActiveContactsByUserId(userId: string) {
+    const contacts = await this.findContactsByUserId(userId);
+
+    return contacts.filter((contact) => contact.active);
+  }
+
   async findByIdAndUserIdOrFail(
     id: number,
     userId: string

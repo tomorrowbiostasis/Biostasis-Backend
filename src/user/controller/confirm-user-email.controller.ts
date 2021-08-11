@@ -3,8 +3,7 @@ import { ApiTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
 import { plainToClass } from 'class-transformer';
 import { Roles } from '../../authentication/decorator/roles.decorator';
 import { UserService } from '../service/user.service';
-import { User } from '../../authentication/decorator/user.decorator';
-import { UserEntity, ROLES } from '../../user/entity/user.entity';
+import { ROLES } from '../../user/entity/user.entity';
 import { ConfirmUserEmailDTO } from '../request/dto/confirm-user-email.dto';
 import { confirmUserEmailSchema } from '../request/schema/confirm-user-email.schema';
 import { ValidationPipe } from '../../common/pipe/validation.pipe';
@@ -26,7 +25,6 @@ export class ConfirmUserEmailController {
   @Roles([ROLES.USER])
   @Patch('email/confirm')
   async confirmUserEmail(
-    @User() user: UserEntity,
     @Body(new ValidationPipe(confirmUserEmailSchema))
     data: ConfirmUserEmailDTO
   ) {
