@@ -75,4 +75,29 @@ export class AuthenticationService {
       );
     });
   }
+
+  async getTokens(
+    email: string,
+    password: string
+  ): Promise<AWS.CognitoIdentityServiceProvider.Types.InitiateAuthResponse> {
+    return new Promise((resolve, reject) => {
+      this.cognito.initiateAuth(
+        {
+          AuthFlow: 'USER_PASSWORD_AUTH',
+          AuthParameters: {
+            USERNAME: email,
+            PASSWORD: password,
+          },
+          ClientId: this.config.get('authorization.clientId'),
+        },
+        (error, result) => {
+          if (!error) {
+            resolve(result);
+            return;
+          }
+          reject(error);
+        }
+      );
+    });
+  }
 }

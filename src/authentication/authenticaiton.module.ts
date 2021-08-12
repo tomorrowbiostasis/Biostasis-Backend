@@ -5,12 +5,14 @@ import { AuthenticationService } from './service/authentication.service';
 import { CognitoIdentityServiceProvider } from '../common/provider/cognito-identity-service.provider';
 import { ConfigProvider } from '../common/provider/config.provider';
 import { UserModule } from '../user/user.module';
+import { GetAccessTokenController } from './controller/get-access-token.controller';
 
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'cognito' }),
     forwardRef(() => UserModule),
   ],
+  controllers: [GetAccessTokenController],
   providers: [
     CognitoStrategy,
     AuthenticationService,
