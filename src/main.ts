@@ -19,9 +19,9 @@ async function bootstrap() {
 
   app.setGlobalPrefix(get('application.global_prefix'), {
     exclude: [
-      { path: '/v2/user', method: RequestMethod.PATCH },
-      { path: '/v2/contact', method: RequestMethod.POST },
-      { path: '/v2/contact/:id', method: RequestMethod.PATCH },
+      { path: '/api/v2/user', method: RequestMethod.PATCH },
+      { path: '/api/v2/contact', method: RequestMethod.POST },
+      { path: '/api/v2/contact/:id', method: RequestMethod.PATCH },
     ],
   });
 
