@@ -6,6 +6,7 @@ import { AddContactController } from './controller/add-contact.controller';
 import { ContactListController } from './controller/contact-list.controller';
 import { UpdateContactController } from './controller/update-contact.controller';
 import { DeleteContactController } from './controller/delete-contact.controller';
+import { GoogleLibPhoneNumberProvider } from '../common/provider/google-phone-number.provider';
 
 @Module({
   controllers: [
@@ -14,7 +15,12 @@ import { DeleteContactController } from './controller/delete-contact.controller'
     UpdateContactController,
     DeleteContactController,
   ],
-  providers: [ContactService, ConfigProvider, ContactRepositoryProvider],
+  providers: [
+    ContactService,
+    ConfigProvider,
+    ContactRepositoryProvider,
+    GoogleLibPhoneNumberProvider,
+  ],
   exports: [ContactService],
 })
 export class ContactModule {}

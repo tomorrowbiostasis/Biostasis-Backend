@@ -1,16 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AddContactController } from './add-contact.controller';
+import { UpdateContactController } from './update-contact.controller';
 import { DICTIONARY } from '../../common/constant/dictionary.constant';
 import { googlePhoneNumberMock } from '../../../test/mock/google-phone-number.mock';
 import { ContactService } from '../service/contact.service';
 import { contactServiceMock } from '../../../test/mock/contact.service.mock';
 
-describe('Add Contact Controller', () => {
-  let controller: AddContactController;
+describe('Update Contact Controller', () => {
+  let controller: UpdateContactController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [AddContactController],
+      controllers: [UpdateContactController],
       providers: [
         {
           provide: ContactService,
@@ -23,7 +23,7 @@ describe('Add Contact Controller', () => {
       ],
     }).compile();
 
-    controller = module.get<AddContactController>(AddContactController);
+    controller = module.get<UpdateContactController>(UpdateContactController);
   });
 
   it('should be defined', () => {

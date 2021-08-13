@@ -12,6 +12,7 @@ import { ConfirmUserEmailController } from './controller/confirm-user-email.cont
 import { UnconfirmedEmailService } from './service/unconfirmed-email.service';
 import { NotificationModule } from '../notification/notification.module';
 import { SendTestMessageController } from './controller/send-test-message.controller';
+import { GoogleLibPhoneNumberProvider } from '../common/provider/google-phone-number.provider';
 
 @Module({
   imports: [NotificationModule],
@@ -27,6 +28,7 @@ import { SendTestMessageController } from './controller/send-test-message.contro
     CognitoIdentityServiceProvider,
     ProfileRepositoryProvider,
     UnconfirmedEmailRepositoryProvider,
+    GoogleLibPhoneNumberProvider,
     ConfigProvider,
     UserRepositoryProvider,
     UnconfirmedEmailService,

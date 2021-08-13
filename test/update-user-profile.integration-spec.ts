@@ -4,7 +4,10 @@ import { clearDatabase } from './helper';
 import { getTestApp } from './mock/app.mock';
 import { initializeDataset } from './helper/user';
 import * as faker from 'faker';
-import { VALIDATION_FAILED } from '../src/common/error/keys';
+import {
+  VALIDATION_FAILED,
+  PHONE_NUMBER_IS_INVALID,
+} from '../src/common/error/keys';
 import {
   getRandomPhoneNumber,
   getRandomPhonePrefix,
@@ -61,6 +64,33 @@ describe('/user (integration) ', () => {
       .then((result) => {
         expect(result.status).toBe(400);
         expect(result.body.error.code).toBe(VALIDATION_FAILED);
+      });
+
+    await api
+      .patch('/v2/user')
+      .set('Authorization', dataset.user.id)
+      .send({
+        prefix: getRandomPhonePrefix(),
+        phone: getRandomPhoneNumber(),
+      })
+      .then(({ status, body }) => {
+        expect(status).toBe(400);
+        expect(body.error.code).toBe(VALIDATION_FAILED);
+      });
+  });
+
+  it('Should return status 400 and error PHONE_NUMBER_IS_INVALID', async () => {
+    await api
+      .patch('/v2/user')
+      .set('Authorization', dataset.user.id)
+      .send({
+        prefix: 48,
+        phone: '111456789',
+        countryCode: 'pl',
+      })
+      .then(({ status, body }) => {
+        expect(status).toBe(400);
+        expect(body.error.code).toBe(PHONE_NUMBER_IS_INVALID);
       });
   });
 
@@ -165,5 +195,13 @@ describe('/user (integration) ', () => {
     expect(body.seriousMedicalIssues).toBe(false);
     expect(body.prefix).toBe(prefix);
     expect(body.phone).toBe(phone);
+
+    ({ body } = await api
+      .patch('/v2/user')
+      .set('Authorization', user.id)
+      .send({ prefix: 48, phone: '654321123', countryCode: 'pl' })
+      .expect(async ({ status }) => {
+        expect(status).toBe(200);
+      }));
   });
 });
