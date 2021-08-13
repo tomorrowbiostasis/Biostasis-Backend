@@ -67,7 +67,7 @@ describe('/user (integration) ', () => {
       });
 
     await api
-      .patch('/v2/user')
+      .patch('/api/v2/user')
       .set('Authorization', dataset.user.id)
       .send({
         prefix: getRandomPhonePrefix(),
@@ -81,7 +81,7 @@ describe('/user (integration) ', () => {
 
   it('Should return status 400 and error PHONE_NUMBER_IS_INVALID', async () => {
     await api
-      .patch('/v2/user')
+      .patch('/api/v2/user')
       .set('Authorization', dataset.user.id)
       .send({
         prefix: 48,
@@ -197,7 +197,7 @@ describe('/user (integration) ', () => {
     expect(body.phone).toBe(phone);
 
     ({ body } = await api
-      .patch('/v2/user')
+      .patch('/api/v2/user')
       .set('Authorization', user.id)
       .send({ prefix: 48, phone: '654321123', countryCode: 'pl' })
       .expect(async ({ status }) => {

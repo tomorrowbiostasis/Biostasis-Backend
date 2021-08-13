@@ -49,7 +49,7 @@ export class AddContactController {
   @ApiResponse({ status: 400, type: ErrorMessageRO })
   @ApiOperation({ summary: 'Add contact by user with phone check' })
   @Roles([ROLES.USER])
-  @Post('v2/contact')
+  @Post('api/v2/contact')
   async addContactAndCheckPhoneNumber(
     @User() user: UserEntity,
     @Body(new ValidationPipe(addContactAndCheckPhoneSchema))

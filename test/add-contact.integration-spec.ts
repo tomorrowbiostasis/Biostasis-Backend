@@ -149,7 +149,7 @@ describe('/contact (integration) ', () => {
         });
 
       await api
-        .post('/v2/contact')
+        .post('/api/v2/contact')
         .set('Authorization', dataset.users[0].id)
         .send({
           prefix: faker.datatype.number(999),
@@ -194,7 +194,7 @@ describe('/contact (integration) ', () => {
 
     it('Should return status 400 and error PHONE_NUMBER_IS_INVALID', async () => {
       await api
-        .post('/v2/contact')
+        .post('/api/v2/contact')
         .set('Authorization', dataset.users[0].id)
         .send({
           prefix: 48,
@@ -234,7 +234,7 @@ describe('/contact (integration) ', () => {
       expect(contact.id).toBe(body.id);
 
       body = await api
-        .post('/v2/contact')
+        .post('/api/v2/contact')
         .set('Authorization', dataset.users[0].id)
         .send({
           prefix: 48,

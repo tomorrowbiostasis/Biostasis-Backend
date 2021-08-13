@@ -51,7 +51,7 @@ export class UpdateContactController {
   @ApiResponse({ status: 400, type: ErrorMessageRO })
   @ApiOperation({ summary: 'Update contact by user with phone check' })
   @Roles([ROLES.USER])
-  @Patch('v2/contact/:id')
+  @Patch('api/v2/contact/:id')
   async updateContactAndCheckPhoneNumber(
     @User() user: UserEntity,
     @Param('id', new NumericIdValidationPipe()) contactId: number,

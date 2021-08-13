@@ -104,7 +104,7 @@ describe('/contact (integration) ', () => {
       });
 
     await api
-      .patch(`/v2/contact/${contact.id}`)
+      .patch(`/api/v2/contact/${contact.id}`)
       .set('Authorization', dataset.users[0].id)
       .send({
         prefix: getRandomPhonePrefix(),
@@ -122,7 +122,7 @@ describe('/contact (integration) ', () => {
 
   it('Should return status 400 and error PHONE_NUMBER_IS_INVALID', async () => {
     await api
-      .patch(`/v2/contact/${dataset.contacts[0].id}`)
+      .patch(`/api/v2/contact/${dataset.contacts[0].id}`)
       .set('Authorization', dataset.users[0].id)
       .send({
         prefix: 48,
@@ -191,7 +191,7 @@ describe('/contact (integration) ', () => {
       });
 
     await api
-      .patch(`/v2/contact/${contact.id}`)
+      .patch(`/api/v2/contact/${contact.id}`)
       .set('Authorization', dataset.users[0].id)
       .send({ prefix: 48, phone: '654321123', countryCode: 'pl' })
       .expect(async ({ status }) => {
