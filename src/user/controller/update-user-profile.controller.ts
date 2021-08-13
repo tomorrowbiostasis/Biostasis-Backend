@@ -58,7 +58,7 @@ export class UpdateUserProfileController {
   @ApiResponse({ status: 400, type: ErrorMessageRO })
   @ApiOperation({ summary: 'Edit profile by user with phone check' })
   @Roles([ROLES.USER])
-  @Patch('v2/user')
+  @Patch('api/v2/user')
   async updateUserProfileAndCheckPhoneNumber(
     @User() logged: UserEntity,
     @Body(new ValidationPipe(updateUserProfileAndCheckPhoneSchema))

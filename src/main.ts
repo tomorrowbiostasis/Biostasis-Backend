@@ -16,9 +16,8 @@ async function bootstrap() {
   const port = +get('application.port');
 
   app.useGlobalFilters(new ExceptionsFilter());
-  app.setGlobalPrefix(get('application.global_prefix'));
 
-  app.setGlobalPrefix('v1', {
+  app.setGlobalPrefix(get('application.global_prefix'), {
     exclude: [
       { path: '/v2/user', method: RequestMethod.PATCH },
       { path: '/v2/contact', method: RequestMethod.POST },
