@@ -8,7 +8,11 @@ import {
   getRandomPhoneNumber,
   getRandomPhonePrefix,
 } from './entity/contact.mock';
-import { CONTACT_NOT_FOUND, VALIDATION_FAILED } from '../src/common/error/keys';
+import {
+  CONTACT_NOT_FOUND,
+  VALIDATION_FAILED,
+  PHONE_NUMBER_IS_INVALID,
+} from '../src/common/error/keys';
 
 describe('/contact (integration) ', () => {
   let app;
@@ -87,7 +91,7 @@ describe('/contact (integration) ', () => {
         expect(result.body.error.code).toBe(VALIDATION_FAILED);
       });
 
-    return api
+    await api
       .patch(`/contact/${contact.id}`)
       .set('Authorization', dataset.users[0].id)
       .send({
@@ -97,6 +101,41 @@ describe('/contact (integration) ', () => {
       .then((result) => {
         expect(result.status).toBe(400);
         expect(result.body.error.code).toBe(VALIDATION_FAILED);
+      });
+
+    await api
+      .patch(`/v2/contact/${contact.id}`)
+      .set('Authorization', dataset.users[0].id)
+      .send({
+        prefix: getRandomPhonePrefix(),
+        phone: getRandomPhoneNumber(),
+        name: faker.name.findName(),
+        surname: faker.name.lastName(),
+        active: false,
+        email: faker.internet.email(),
+      })
+      .then(({ status, body }) => {
+        expect(status).toBe(400);
+        expect(body.error.code).toBe(VALIDATION_FAILED);
+      });
+  });
+
+  it('Should return status 400 and error PHONE_NUMBER_IS_INVALID', async () => {
+    await api
+      .patch(`/v2/contact/${dataset.contacts[0].id}`)
+      .set('Authorization', dataset.users[0].id)
+      .send({
+        prefix: 48,
+        phone: '111456789',
+        countryCode: 'pl',
+        name: faker.name.findName(),
+        surname: faker.name.lastName(),
+        active: false,
+        email: faker.internet.email(),
+      })
+      .then(({ status, body }) => {
+        expect(status).toBe(400);
+        expect(body.error.code).toBe(PHONE_NUMBER_IS_INVALID);
       });
   });
 
@@ -147,6 +186,14 @@ describe('/contact (integration) ', () => {
       .patch(`/contact/${contact.id}`)
       .set('Authorization', dataset.users[0].id)
       .send({ prefix: getRandomPhonePrefix(), phone: getRandomPhoneNumber() })
+      .expect(async ({ status }) => {
+        expect(status).toBe(200);
+      });
+
+    await api
+      .patch(`/v2/contact/${contact.id}`)
+      .set('Authorization', dataset.users[0].id)
+      .send({ prefix: 48, phone: '654321123', countryCode: 'pl' })
       .expect(async ({ status }) => {
         expect(status).toBe(200);
       });

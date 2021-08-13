@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { Logger } from '@nestjs/common';
+import { Logger, RequestMethod } from '@nestjs/common';
 import { get } from 'config';
 import * as helmet from 'helmet';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -17,6 +17,15 @@ async function bootstrap() {
 
   app.useGlobalFilters(new ExceptionsFilter());
   app.setGlobalPrefix(get('application.global_prefix'));
+
+  app.setGlobalPrefix('v1', {
+    exclude: [
+      { path: '/v2/user', method: RequestMethod.PATCH },
+      { path: '/v2/contact', method: RequestMethod.POST },
+      { path: '/v2/contact/:id', method: RequestMethod.PATCH },
+    ],
+  });
+
   app.use(helmet());
   app.enableCors({
     origin: true,

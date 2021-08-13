@@ -1,4 +1,11 @@
-import { Inject, Controller, Patch, Body, UseGuards } from '@nestjs/common';
+import {
+  Inject,
+  Controller,
+  Patch,
+  Body,
+  UseGuards,
+  BadRequestException,
+} from '@nestjs/common';
 import {
   ApiTags,
   ApiBearerAuth,
@@ -26,30 +33,66 @@ import { DICTIONARY } from '../../common/constant/dictionary.constant';
 import { ProfileEntity } from '../../user/entity/profile.entity';
 import { omit } from '../../common/helper/omit';
 import { profileMapper } from '../mapper/profile.mapper';
+import { UpdateUserProfileAndCheckPhoneDTO } from '../request/dto/update-user-profile-and-check-phone.dto';
+import { updateUserProfileAndCheckPhoneSchema } from '../request/schema/update-user-profile-and-check-phone.schema';
+import * as LibPhoneNumber from 'google-libphonenumber';
+import { PHONE_NUMBER_IS_INVALID } from '../../common/error/keys';
+import { checkPhoneNumber } from '../../common/helper/check-phone-number';
 
 @ApiBearerAuth()
 @UseGuards(new RolesGuard(new Reflector()))
 @UseGuards(AuthGuard('cognito'))
 @ApiTags('user')
-@Controller('user')
+@Controller()
 export class UpdateUserProfileController {
   constructor(
     private readonly profileService: ProfileService,
     private readonly unconfirmedEmailService: UnconfirmedEmailService,
     private readonly notificationService: NotificationService,
-    @Inject(DICTIONARY.CONFIG) private readonly config: configLib.IConfig
+    @Inject(DICTIONARY.CONFIG) private readonly config: configLib.IConfig,
+    @Inject(DICTIONARY.GOOGLE_PHONE_NUMBER)
+    private readonly phoneUtil: LibPhoneNumber.PhoneNumberUtil
   ) {}
+
+  @ApiResponse({ status: 200, type: ProfileRO })
+  @ApiResponse({ status: 400, type: ErrorMessageRO })
+  @ApiOperation({ summary: 'Edit profile by user with phone check' })
+  @Roles([ROLES.USER])
+  @Patch('v2/user')
+  async updateUserProfileAndCheckPhoneNumber(
+    @User() logged: UserEntity,
+    @Body(new ValidationPipe(updateUserProfileAndCheckPhoneSchema))
+    data: UpdateUserProfileAndCheckPhoneDTO
+  ) {
+    if (
+      data.phone &&
+      !checkPhoneNumber(
+        this.phoneUtil,
+        data.prefix,
+        data.phone,
+        data.countryCode
+      )
+    ) {
+      throw new BadRequestException(PHONE_NUMBER_IS_INVALID);
+    }
+
+    return this.updateUserProfile(logged, omit(data, ['countryCode']));
+  }
 
   @ApiResponse({ status: 200, type: ProfileRO })
   @ApiResponse({ status: 400, type: ErrorMessageRO })
   @ApiOperation({ summary: 'Edit profile by user' })
   @Roles([ROLES.USER])
-  @Patch()
-  async updateUserProfile(
+  @Patch('user')
+  async updateUserWithoutPhoneNumberVerification(
     @User() logged: UserEntity,
     @Body(new ValidationPipe(updateUserProfileSchema))
     data: UpdateUserProfileDTO
   ) {
+    return this.updateUserProfile(logged, data);
+  }
+
+  async updateUserProfile(logged: UserEntity, data: UpdateUserProfileDTO) {
     let profile = await this.profileService.findByUserId(logged.id);
 
     if (data.email && logged.email !== data.email) {

@@ -7,7 +7,10 @@ import {
   getRandomPhoneNumber,
   getRandomPhonePrefix,
 } from './entity/contact.mock';
-import { VALIDATION_FAILED } from '../src/common/error/keys';
+import {
+  VALIDATION_FAILED,
+  PHONE_NUMBER_IS_INVALID,
+} from '../src/common/error/keys';
 import { getContactById } from './entity/contact.mock';
 
 describe('/contact (integration) ', () => {
@@ -146,6 +149,22 @@ describe('/contact (integration) ', () => {
         });
 
       await api
+        .post('/v2/contact')
+        .set('Authorization', dataset.users[0].id)
+        .send({
+          prefix: faker.datatype.number(999),
+          phone: faker.datatype.number(999999999999).toString(),
+          name: faker.name.findName(),
+          surname: faker.name.lastName(),
+          active: true,
+          email: faker.internet.email(),
+        })
+        .then(({ status, body }) => {
+          expect(status).toBe(400);
+          expect(body.error.code).toBe(VALIDATION_FAILED);
+        });
+
+      await api
         .post('/contact')
         .set('Authorization', userId)
         .send({
@@ -173,8 +192,29 @@ describe('/contact (integration) ', () => {
         });
     });
 
+    it('Should return status 400 and error PHONE_NUMBER_IS_INVALID', async () => {
+      await api
+        .post('/v2/contact')
+        .set('Authorization', dataset.users[0].id)
+        .send({
+          prefix: 48,
+          phone: '111456789',
+          countryCode: 'pl',
+          name: faker.name.findName(),
+          surname: faker.name.lastName(),
+          active: true,
+          email: faker.internet.email(),
+        })
+        .then(({ status, body }) => {
+          expect(status).toBe(400);
+          expect(body.error.code).toBe(PHONE_NUMBER_IS_INVALID);
+        });
+    });
+
     it('Should add contact, return status 201 and valid body', async () => {
-      const { body } = await api
+      let body;
+
+      ({ body } = await api
         .post('/contact')
         .set('Authorization', dataset.users[0].id)
         .send({
@@ -187,11 +227,27 @@ describe('/contact (integration) ', () => {
         })
         .expect(async ({ status }) => {
           expect(status).toBe(201);
-        });
+        }));
 
       const contact = await getContactById(body.id);
 
       expect(contact.id).toBe(body.id);
+
+      body = await api
+        .post('/v2/contact')
+        .set('Authorization', dataset.users[0].id)
+        .send({
+          prefix: 48,
+          phone: '654321123',
+          countryCode: 'pl',
+          name: faker.name.findName(),
+          surname: faker.name.lastName(),
+          active: true,
+          email: faker.internet.email(),
+        })
+        .expect(async ({ status }) => {
+          expect(status).toBe(201);
+        });
     });
   });
 });
