@@ -23,10 +23,10 @@ services:
     tty: true
     links:
       - biostasis_database
-      - biostasts_redis
+      - biostasis_redis
     depends_on:
       - biostasis_database
-      - biostasts_redis
+      - biostasis_redis
     environment:
       - APP_PORT=${APP_PORT}
       - DB_USERNAME=${DB_USERNAME}
