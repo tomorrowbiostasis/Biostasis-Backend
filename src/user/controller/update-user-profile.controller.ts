@@ -122,7 +122,7 @@ export class UpdateUserProfileController {
         data.email
       );
 
-    await this.notificationService.sendEmail(
+    await this.notificationService.prepareDataAndSendEmail(
       getMailTemplateId('USER_CHANGE_EMAIL'),
       {
         username: getNameOrEmail(

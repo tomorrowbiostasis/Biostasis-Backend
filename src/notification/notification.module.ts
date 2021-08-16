@@ -3,8 +3,10 @@ import { NotificationService } from './service/notification.service';
 import { MailJetProvider } from './provider/mail-jet.provider';
 import { ConfigProvider } from '../common/provider/config.provider';
 import { TwilioProvider } from './provider/twilio.provider';
+import { QueueModule } from '../queue/queue.module';
 
 @Module({
+  imports: [QueueModule],
   providers: [
     NotificationService,
     MailJetProvider,

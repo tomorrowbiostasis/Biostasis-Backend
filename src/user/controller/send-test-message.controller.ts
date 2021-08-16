@@ -44,7 +44,7 @@ export class SendTestMessageController {
   @ApiOperation({ summary: 'Send test emergency message' })
   @Roles([ROLES.USER])
   @Post('message/test')
-  async confirmUserEmail(
+  async sendTestEmergencyMessage(
     @User() user: UserEntity,
     @Body(new ValidationPipe(sendEmergencyMessageSchema))
     data: SendEmergencyMessageDTO
@@ -63,8 +63,8 @@ export class SendTestMessageController {
           user.email
         ),
         email: user.email,
-        phone: user.profile.prefix
-          ? `${user.profile.prefix}${user.profile.phone}`
+        phone: user.profile?.prefix
+          ? `${user.profile?.prefix}${user.profile?.phone}`
           : null,
       },
       user,

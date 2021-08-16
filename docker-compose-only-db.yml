@@ -1,6 +1,13 @@
 version: '3.4'
 
 services:
+  redis:
+    image: redis:5.0.7
+    container_name: redis
+    command: ['--requirepass redis_password', '--notify-keyspace-events KEA']
+    ports:
+      - 6379:6379
+
   biostasis_database:
     env_file:
       - .env

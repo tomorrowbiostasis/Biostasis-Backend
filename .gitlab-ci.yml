@@ -80,19 +80,23 @@ integration-tests:
   variables:
     MYSQL_DATABASE: biostasis_test
     MYSQL_ROOT_PASSWORD: rootpassw0rd
-    DB_HOST: db
+    DB_HOST: mysql
     DB_PASSWORD: rootpassw0rd
     DB_PORT: 3306
     DB_USERNAME: root
     NODE_ENV: test
+    REDIS_HOST: redis
+    REDIS_SCHEMA: redis
+    REDIS_USER: redis
+    REDIS_PORT: 6379
   services:
     - name: mysql:8.0.20
-      alias: db
       entrypoint:
         [
           '/entrypoint.sh',
           '--default-authentication-plugin=mysql_native_password',
         ]
+    - name: redis:5.0.7
   script:
     - yarn install
     - yarn test:integration

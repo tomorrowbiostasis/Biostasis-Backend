@@ -21,6 +21,9 @@ import { escapeHTML } from '../helper/escape-html';
 import { getMailTemplateId } from '../helper/get-template-id';
 import { getNameOrEmail } from '../../common/helper/get-name-or-email';
 import { SendEmergencyMessageDTO } from '../../message/request/dto/send-emergency-message.dto';
+import { QUEUE } from '../../queue/constant/queue.constant';
+import { Queue } from 'bull';
+import { MessageListInstanceCreateOptions } from 'twilio/lib/rest/api/v2010/account/message';
 
 @Injectable()
 export class NotificationService {
@@ -29,27 +32,43 @@ export class NotificationService {
   constructor(
     @Inject(DICTIONARY.CONFIG) private readonly config: configLib.IConfig,
     @Inject(NOTIFICATION_DI.MAIL_JET) private readonly mailJet: Email.Client,
-    @Inject(twilioLibrary.Twilio) private readonly twilio: twilioLibrary.Twilio
+    @Inject(twilioLibrary.Twilio) private readonly twilio: twilioLibrary.Twilio,
+    @Inject(QUEUE.MESSAGE)
+    private messageQueue: Queue
   ) {}
 
-  async sendSms(to: string, message: string) {
+  async prepareDataAndSendSms(to: string, message: string) {
+    return this.sendSms({
+      from: this.config.get('twilio.phoneNumber'),
+      to,
+      body: message,
+    });
+  }
+
+  async sendSms(params: MessageListInstanceCreateOptions, isFromQueue = false) {
     return this.twilio.messages
-      .create({
-        from: this.config.get('twilio.phoneNumber'),
-        to,
-        body: message,
-      })
+      .create(params)
       .then((result) => {
-        this.logger.log(JSON.stringify(result));
+        if (result.errorMessage) {
+          throw result;
+        } else {
+          this.logger.log(JSON.stringify(result));
+        }
 
         return result;
       })
-      .catch((e) => {
-        throw new CustomError(SEND_SMS_FAILED, e);
+      .catch((error) => {
+        this.addJobToMessageQueueAndSendSupportMessage('sms', params);
+
+        if (isFromQueue) {
+          this.logger.log(JSON.stringify(error));
+        } else {
+          throw new CustomError(SEND_SMS_FAILED, error);
+        }
       });
   }
 
-  async sendEmail(
+  async prepareDataAndSendEmail(
     templateId: number,
     variablesToEscapeAndSend: object,
     variablesToSend: object,
@@ -83,16 +102,42 @@ export class NotificationService {
       ],
     };
 
+    return this.sendEmail(params);
+  }
+
+  addJobToMessageQueueAndSendSupportMessage(
+    jobName: string,
+    params: Email.SendParams | MessageListInstanceCreateOptions
+  ) {
+    return this.messageQueue.add(jobName, params, {
+      delay: this.config.get('queue.repeatTryingToSendMessageAfterTime'),
+    });
+  }
+
+  async sendEmail(
+    params: Email.SendParams,
+    isFromQueue = false
+  ): Promise<Email.Response> {
     return this.mailJet
       .post('send', { version: 'v3.1' })
       .request(params)
-      .then((result) => {
-        this.logger.log(result.body);
+      .then((result: any) => {
+        if (result.body.Messages[0].Status !== 'success') {
+          throw result.body;
+        } else {
+          this.logger.log(result.body);
+        }
 
         return result;
       })
-      .catch((e) => {
-        throw new CustomError(SEND_MAIL_FAILED, e);
+      .catch((error) => {
+        this.addJobToMessageQueueAndSendSupportMessage('email', params);
+
+        if (isFromQueue) {
+          this.logger.log(JSON.stringify(error));
+        } else {
+          throw new CustomError(SEND_MAIL_FAILED, error);
+        }
       });
   }
 
@@ -114,7 +159,7 @@ export class NotificationService {
     }
 
     if (contact.phone && user.email !== contact.email) {
-      await this.sendSms(
+      await this.prepareDataAndSendSms(
         contact.phone,
         `${user.profile.emergencyMessage} ${
           user.profile?.locationAccess === true ? data.locationUrl : ''
@@ -136,7 +181,7 @@ export class NotificationService {
       params.locationUrl = data.locationUrl;
     }
 
-    await this.sendEmail(
+    await this.prepareDataAndSendEmail(
       getMailTemplateId(
         `EMERGENCY_MESSAGE_WITH${
           user.profile?.locationAccess !== true ? 'OUT' : ''

@@ -77,7 +77,7 @@ describe('Send SMS Controller', () => {
           messageType,
         });
 
-        expect(notificationServiceMock.sendSms).toBeCalledWith(
+        expect(notificationServiceMock.prepareDataAndSendSms).toBeCalledWith(
           `${user.profile.prefix}${user.profile.phone}`,
           messages.get(messageType)
         );

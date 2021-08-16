@@ -10,6 +10,10 @@ import { DICTIONARY as NOTIFICATION_DI } from '../../src/notification/constant/d
 import { mailJetMock } from './mailjet.mock';
 import * as twilioLibrary from 'twilio';
 import { twilioMock } from './twilio.mock';
+import { DICTIONARY as COMMON_DI } from '../../src/common/constant/dictionary.constant';
+import { redisMock } from './redis.mock';
+import { queueServiceMock } from './queue.service.mock';
+import { QUEUE } from '../../src/queue/constant/queue.constant';
 
 export const getTestApp = async () => {
   let app;
@@ -25,6 +29,10 @@ export const getTestApp = async () => {
     .useValue(mailJetMock)
     .overrideProvider(twilioLibrary.Twilio)
     .useValue(twilioMock)
+    .overrideProvider(COMMON_DI.REDIS)
+    .useValue(redisMock)
+    .overrideProvider(QUEUE.MESSAGE)
+    .useValue(queueServiceMock)
     .compile();
 
   app = moduleFixture.createNestApplication();
