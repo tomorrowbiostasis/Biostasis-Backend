@@ -10,6 +10,11 @@ services:
       - REDIS_USER=${REDIS_USER}
       - REDIS_PORT=${REDIS_PORT}
       - REDIS_PASSWORD=${REDIS_PASSWORD}
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
       
   biostasis_app:
     env_file:
