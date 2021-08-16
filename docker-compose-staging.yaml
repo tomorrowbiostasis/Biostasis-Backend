@@ -4,12 +4,7 @@ services:
   biostasis_redis:
     image: redis:5.0.7
     container_name: biostasis_redis
-    command: ['--requirepass redis_password', '--notify-keyspace-events KEA']
-    environment:
-      - REDIS_SCHEMA=${REDIS_SCHEMA}
-      - REDIS_USER=${REDIS_USER}
-      - REDIS_PORT=${REDIS_PORT}
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    command: ['--notify-keyspace-events KEA']
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 1s
