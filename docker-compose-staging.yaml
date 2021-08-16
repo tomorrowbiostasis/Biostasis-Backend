@@ -22,6 +22,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-staging
+    command: sh -c "dockerize -wait tcp://${DB_DATABASE}:3306 -timeout 300s -wait-retry-interval 30s npm run typeorm:run && npm run start:prod"
     container_name: biostasis_app
     ports:
       - 17001:5000
