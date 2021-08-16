@@ -25,9 +25,10 @@ services:
       - biostasis_database
       - biostasis_redis
     depends_on:
-        - biostasis_database:
+        biostasis_database:
           condition: service_healthy
-        - biostasis_redis
+        biostasis_redis:
+          condition: service_healthy
     environment:
       - APP_PORT=${APP_PORT}
       - DB_USERNAME=${DB_USERNAME}
