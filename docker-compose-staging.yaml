@@ -1,6 +1,13 @@
 version: '3.4'
 
 services:
+  redis:
+    image: redis:5.0.7
+    container_name: redis
+    command: ['--requirepass redis_password', '--notify-keyspace-events KEA']
+    ports:
+      - 6379:6379
+
   biostasis_app:
     env_file:
       - .env
@@ -37,6 +44,11 @@ services:
       - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
       - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
       - TWILIO_PHONE_NUMBER=${TWILIO_PHONE_NUMBER}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_SCHEMA=${REDIS_SCHEMA}
+      - REDIS_USER=${REDIS_USER}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
 
   biostasis_database:
     env_file:

@@ -128,7 +128,7 @@ describe('Update User Profile Controller', () => {
         profile
       );
 
-      expect(notificationServiceMock.sendEmail).toBeCalledWith(
+      expect(notificationServiceMock.prepareDataAndSendEmail).toBeCalledWith(
         3051696,
         {
           username: `${data.name} ${data.surname}`,
@@ -154,7 +154,7 @@ describe('Update User Profile Controller', () => {
         surname: null,
       } as ProfileEntity);
 
-      expect(notificationServiceMock.sendEmail).toBeCalledWith(
+      expect(notificationServiceMock.prepareDataAndSendEmail).toBeCalledWith(
         3051696,
         {
           username: user.email,

@@ -27,6 +27,19 @@ module.exports = {
     authToken: env.TWILIO_AUTH_TOKEN || '',
     phoneNumber: env.TWILIO_PHONE_NUMBER || '',
   },
+  redis: {
+    connectionName: 'REDIS',
+    host: env.REDIS_HOST || '',
+    schema: env.REDIS_SCHEMA || 'redis',
+    user: env.REDIS_USER || 'redis',
+    port: env.REDIS_PORT || '',
+    password: env.REDIS_PASSWORD || '',
+    db: 0,
+  },
+  queue: {
+    numberOfAttempts: 3,
+    repeatTryingToSendMessageAfterTime: 60000,
+  },
   database: {
     enable_ssl: false,
     charset: 'utf8mb4_unicode_ci',

@@ -1,5 +1,5 @@
 export const notificationServiceMock = {
-  sendEmail: jest.fn(async () => ({})),
-  sendSms: jest.fn(async () => ({})),
+  prepareDataAndSendEmail: jest.fn(async () => ({})),
+  prepareDataAndSendSms: jest.fn(async () => ({})),
   sendEmergencyMessage: jest.fn(async () => ({})),
 };

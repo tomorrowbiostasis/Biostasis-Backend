@@ -7,6 +7,9 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { get } from 'config';
 import { NotificationModule } from './notification/notification.module';
 import { MessageModule } from './message/message.module';
+import { BullModule } from '@nestjs/bull';
+import { QueueModule } from './queue/queue.module';
+import { RedisProvider } from './common/provider/redis.provider';
 
 @Module({
   imports: [
@@ -20,11 +23,20 @@ import { MessageModule } from './message/message.module';
       ttl: 10,
       limit: 10,
     }),
+    BullModule.forRoot({
+      redis: {
+        host: get('redis.host'),
+        port: +get('redis.port'),
+        password: get('redis.password'),
+      },
+    }),
     AuthorizationModule,
     UserModule,
     ContactModule,
     NotificationModule,
+    QueueModule,
     MessageModule,
   ],
+  providers: [RedisProvider],
 })
 export class AppModule {}
