@@ -1,13 +1,16 @@
 version: '3.4'
 
 services:
-  redis:
+  biostasis_redis:
     image: redis:5.0.7
-    container_name: redis
+    container_name: biostasis_redis
     command: ['--requirepass redis_password', '--notify-keyspace-events KEA']
-    ports:
-      - 6379:6379
-
+    environment:
+      - REDIS_SCHEMA=${REDIS_SCHEMA}
+      - REDIS_USER=${REDIS_USER}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      
   biostasis_app:
     env_file:
       - .env
@@ -20,8 +23,10 @@ services:
     tty: true
     links:
       - biostasis_database
+      - biostasts_redis
     depends_on:
       - biostasis_database
+      - biostasts_redis
     environment:
       - APP_PORT=${APP_PORT}
       - DB_USERNAME=${DB_USERNAME}
