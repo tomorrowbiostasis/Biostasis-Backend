@@ -72,3 +72,4 @@ services:
         '--collation-server=utf8mb4_unicode_ci',
         '--default-authentication-plugin=mysql_native_password',
       ]
+
