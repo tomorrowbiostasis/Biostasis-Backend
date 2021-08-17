@@ -5,15 +5,12 @@ import { initializeDataset } from './helper/message';
 import * as faker from 'faker';
 import {
   VALIDATION_FAILED,
-  PHONE_NUMBER_IS_NEEDED,
   LOCATION_DATA_IS_NEEDED,
   EMAIL_AND_SMS_NOT_ALLOWED,
 } from '../src/common/error/keys';
 import { MESSAGE_TYPE } from '../src/message/enum/message-type.enum';
 import { addUser } from './entity/user.mock';
 import { addProfile } from './entity/profile.mock';
-import { twilioMock } from './mock/twilio.mock';
-import * as uuid from 'uuid';
 import { addContact } from './entity/contact.mock';
 
 describe('/message (integration) ', () => {
@@ -58,6 +55,42 @@ describe('/message (integration) ', () => {
     });
 
     it('Should return status 400 and error VALIDATION_FAILED for invalid dataset', async () => {
+      await api
+        .post('/message/send/emergency')
+        .set('Authorization', dataset.user.id)
+        .send({
+          locationUrl: faker.internet.url(),
+          delayed: true,
+        })
+        .then(({ status, body }) => {
+          expect(status).toBe(400);
+          expect(body.error.code).toBe(VALIDATION_FAILED);
+        });
+
+      await api
+        .post('/message/send/emergency')
+        .set('Authorization', dataset.user.id)
+        .send({
+          locationUrl: faker.internet.url(),
+          messageType: faker.datatype.string(),
+        })
+        .then(({ status, body }) => {
+          expect(status).toBe(400);
+          expect(body.error.code).toBe(VALIDATION_FAILED);
+        });
+
+      await api
+        .post('/message/send/emergency')
+        .set('Authorization', dataset.user.id)
+        .send({
+          locationUrl: faker.internet.url(),
+          messageType: MESSAGE_TYPE.HEART_RATE_INVALID,
+        })
+        .then(({ status, body }) => {
+          expect(status).toBe(400);
+          expect(body.error.code).toBe(VALIDATION_FAILED);
+        });
+
       for (const urlValue of notValidUrlValue) {
         await api
           .post('/message/send/emergency')
@@ -113,6 +146,19 @@ describe('/message (integration) ', () => {
         userId: user.id,
         emergencyEmailAndSms: false,
       });
+
+      await api
+        .post('/message/send/emergency')
+        .set('Authorization', user.id)
+        .send({
+          locationUrl: faker.internet.url(),
+          delayed: true,
+          messageType: MESSAGE_TYPE.HEART_RATE_INVALID,
+        })
+        .then(({ status, body }) => {
+          expect(status).toBe(201);
+          expect(body).toEqual({ success: false });
+        });
 
       await api
         .post('/message/send/emergency')

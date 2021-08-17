@@ -39,6 +39,11 @@ module.exports = {
   queue: {
     numberOfAttempts: 3,
     repeatTryingToSendMessageAfterTime: 60000,
+    sendAfterTime: {
+      repeatTryingToSendMessage: 60000,
+      noConnectionToWatch: 10000, // TODO: is temporary value for test purposes
+      heartRateInvalid: 30000, // TODO: is temporary value for test purposes
+    },
   },
   database: {
     enable_ssl: false,

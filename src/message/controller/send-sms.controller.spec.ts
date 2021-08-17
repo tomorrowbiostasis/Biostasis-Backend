@@ -10,6 +10,7 @@ import { configMock } from '../../../test/mock/config.mock';
 import { getUserStub } from '../../../test/entity/user.mock';
 import { getProfileStub } from '../../../test/entity/profile.mock';
 import { MESSAGE_TYPE } from '../enum/message-type.enum';
+import { getRandomPhoneNumber } from '../../../test/entity/contact.mock';
 
 describe('Send SMS Controller', () => {
   let controller: SendSMSController;
@@ -55,6 +56,8 @@ describe('Send SMS Controller', () => {
 
     it('sendSms() does call sendSms() with the expected parameters', async () => {
       const messageType = faker.datatype.string();
+      const sender = getRandomPhoneNumber();
+      const recipient = `${user.profile.prefix}${user.profile.phone}`;
 
       jest
         .spyOn(profileServiceMock, 'findByUserId')
@@ -72,15 +75,28 @@ describe('Send SMS Controller', () => {
         jest
           .spyOn(configMock, 'get')
           .mockReturnValueOnce(messages.get(messageType));
+        jest
+          .spyOn(notificationServiceMock, 'prepareSmsData')
+          .mockReturnValueOnce({
+            from: sender,
+            to: recipient,
+            body: messages.get(messageType),
+          });
 
         await controller.sendSms(user, {
           messageType,
         });
 
-        expect(notificationServiceMock.prepareDataAndSendSms).toBeCalledWith(
-          `${user.profile.prefix}${user.profile.phone}`,
+        expect(notificationServiceMock.prepareSmsData).toBeCalledWith(
+          recipient,
           messages.get(messageType)
         );
+
+        expect(notificationServiceMock.sendSms).toBeCalledWith({
+          from: sender,
+          to: recipient,
+          body: messages.get(messageType),
+        });
       }
     });
   });

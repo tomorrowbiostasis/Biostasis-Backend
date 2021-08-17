@@ -1,6 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { MESSAGE_TYPE } from '../../enum/message-type.enum';
+import { SendTestEmergencyMessageDTO } from '../../../user/request/dto/send-test-emergency-message.dto';
 
-export class SendEmergencyMessageDTO {
-  @ApiProperty({ type: String, required: false })
-  locationUrl: string;
+export class SendEmergencyMessageDTO extends SendTestEmergencyMessageDTO {
+  @ApiProperty({ type: Boolean, required: false })
+  delayed?: boolean;
+
+  @ApiProperty({
+    type: 'enum',
+    enum: MESSAGE_TYPE,
+    example: MESSAGE_TYPE.HEART_RATE_INVALID,
+  })
+  messageType?: string;
 }
