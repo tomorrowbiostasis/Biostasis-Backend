@@ -58,10 +58,11 @@ export class SendSMSController {
       throw new BadRequestException(PHONE_NUMBER_IS_NEEDED);
     }
 
-    const result = await this.notificationService.prepareDataAndSendSms(
+    const smsData = this.notificationService.prepareSmsData(
       `${profile.prefix}${profile.phone}`,
       this.config.get(`sms.${data.messageType}`)
     );
+    const result = await this.notificationService.sendSms(smsData);
 
     return plainToClass(SuccessRO, {
       success: result ? !!!result.errorCode : false,

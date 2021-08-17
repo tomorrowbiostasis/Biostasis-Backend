@@ -10,6 +10,7 @@ import { getProfileStub } from '../../../test/entity/profile.mock';
 import { ContactService } from '../../contact/service/contact.service';
 import { contactServiceMock } from '../../../test/mock/contact.service.mock';
 import { getContactStub } from '../../../test/entity/contact.mock';
+import { MESSAGE_TYPE } from '../../../src/message/enum/message-type.enum';
 
 describe('Send Emergency Message Controller', () => {
   let controller: SendEmergencyMessageController;
@@ -61,7 +62,11 @@ describe('Send Emergency Message Controller', () => {
     });
 
     it('sendEmergencyMessage() does call sendEmergencyMessage() with the expected parameters', async () => {
-      const data = { locationUrl: faker.internet.url() };
+      const data = {
+        locationUrl: faker.internet.url(),
+        delayed: true,
+        messageType: MESSAGE_TYPE.HEART_RATE_INVALID,
+      };
 
       jest
         .spyOn(userServiceMock, 'findByIdOrFail')

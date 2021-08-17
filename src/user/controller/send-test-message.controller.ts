@@ -22,8 +22,8 @@ import { UserEntity, ROLES } from '../../user/entity/user.entity';
 import { ErrorMessageRO } from '../../common/response/error.ro';
 import { NotificationService } from '../../notification/service/notification.service';
 import { SuccessRO } from '../../common/response/success.ro';
-import { SendEmergencyMessageDTO } from '../../message/request/dto/send-emergency-message.dto';
-import { sendEmergencyMessageSchema } from '../../message/request/schema/send-emergency-message.schema';
+import { SendTestEmergencyMessageDTO } from '../request/dto/send-test-emergency-message.dto';
+import { sendTestEmergencyMessageSchema } from '../request/schema/send-test-emergency-message.schema';
 import { ValidationPipe } from '../../common/pipe/validation.pipe';
 import { getNameOrEmail } from '../../common/helper/get-name-or-email';
 import { LOCATION_DATA_IS_NEEDED } from '../../common/error/keys';
@@ -46,8 +46,8 @@ export class SendTestMessageController {
   @Post('message/test')
   async sendTestEmergencyMessage(
     @User() user: UserEntity,
-    @Body(new ValidationPipe(sendEmergencyMessageSchema))
-    data: SendEmergencyMessageDTO
+    @Body(new ValidationPipe(sendTestEmergencyMessageSchema))
+    data: SendTestEmergencyMessageDTO
   ) {
     user = await this.userService.findByIdOrFail(user.id);
 

@@ -121,8 +121,7 @@ export class UpdateUserProfileController {
         user.id,
         data.email
       );
-
-    await this.notificationService.prepareDataAndSendEmail(
+    const emailData = this.notificationService.prepareEmailData(
       getMailTemplateId('USER_CHANGE_EMAIL'),
       {
         username: getNameOrEmail(
@@ -141,5 +140,7 @@ export class UpdateUserProfileController {
         },
       ]
     );
+
+    await this.notificationService.sendEmail(emailData);
   }
 }

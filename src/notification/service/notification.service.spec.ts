@@ -14,6 +14,9 @@ import { getRandomPhoneNumber } from '../../../test/entity/contact.mock';
 import { QUEUE } from '../../queue/constant/queue.constant';
 import { queueServiceMock } from '../../../test/mock/queue.service.mock';
 import { Email } from 'node-mailjet';
+import { MessageInstance } from 'twilio/lib/rest/api/v2010/account/message';
+import { MESSAGE_TYPE } from '../../message/enum/message-type.enum';
+import * as Bull from 'bull';
 
 describe('NotificationService', () => {
   let service: NotificationService;
@@ -62,7 +65,7 @@ describe('NotificationService', () => {
       locationAccess: true,
     });
 
-    it('sendEmergencyMessage() does call sendEmail() and sendSms() with the expected parameters', async () => {
+    it('sendEmergencyMessage() does call addJobToMessageQueueAndSendSupportMessage()', async () => {
       const contact = {
         name: `${faker.name.firstName()} ${faker.name.lastName()}`,
         email: faker.internet.email(),
@@ -70,29 +73,30 @@ describe('NotificationService', () => {
       };
       const data = {
         locationUrl: faker.internet.url(),
+        delayed: true,
+        messageType: MESSAGE_TYPE.HEART_RATE_INVALID,
       };
+      const spyOnPrepareSmsData = jest.spyOn(service, 'prepareSmsData');
+      const spyOnPrepareEmailData = jest.spyOn(service, 'prepareEmailData');
 
       jest
         .spyOn(service, 'sendEmail')
         .mockReturnValue(new Promise((res) => res({} as Email.Response)));
-
-      const spyOnPrepareDataAndSendSms = jest.spyOn(
-        service,
-        'prepareDataAndSendSms'
-      );
-      const spyOnPrepareDataAndSendEmail = jest.spyOn(
-        service,
-        'prepareDataAndSendEmail'
-      );
+      jest
+        .spyOn(service, 'sendSms')
+        .mockReturnValue(new Promise((res) => res({} as MessageInstance)));
+      jest
+        .spyOn(service, 'addJobToMessageQueueAndSendSupportMessage')
+        .mockReturnValue(new Promise((res) => res({} as Bull.Job)));
 
       await service.sendEmergencyMessage(contact, user, data);
 
-      expect(spyOnPrepareDataAndSendSms).toBeCalledWith(
+      expect(spyOnPrepareSmsData).toBeCalledWith(
         contact.phone,
         `${user.profile.emergencyMessage} ${data.locationUrl}`
       );
 
-      expect(spyOnPrepareDataAndSendEmail).toBeCalledWith(
+      expect(spyOnPrepareEmailData).toBeCalledWith(
         3057200,
         {
           contactName: contact.name,
@@ -108,6 +112,59 @@ describe('NotificationService', () => {
         ]
       );
 
+      expect(service.addJobToMessageQueueAndSendSupportMessage).toBeCalledTimes(
+        2
+      );
+      expect(service.sendEmail).toBeCalledTimes(0);
+      expect(service.sendSms).toBeCalledTimes(0);
+    });
+
+    it('sendEmergencyMessage() does call sendEmail() and sendSms() with the expected parameters', async () => {
+      const contact = {
+        name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+        email: faker.internet.email(),
+        phone: getRandomPhoneNumber(),
+      };
+      const data = {
+        locationUrl: faker.internet.url(),
+      };
+
+      jest
+        .spyOn(service, 'sendEmail')
+        .mockReturnValue(new Promise((res) => res({} as Email.Response)));
+      jest
+        .spyOn(service, 'sendSms')
+        .mockReturnValue(new Promise((res) => res({} as MessageInstance)));
+
+      const spyOnPrepareSmsData = jest.spyOn(service, 'prepareSmsData');
+      const spyOnPrepareEmailData = jest.spyOn(service, 'prepareEmailData');
+
+      await service.sendEmergencyMessage(contact, user, data);
+
+      expect(spyOnPrepareSmsData).toBeCalledWith(
+        contact.phone,
+        `${user.profile.emergencyMessage} ${data.locationUrl}`
+      );
+
+      expect(spyOnPrepareEmailData).toBeCalledWith(
+        3057200,
+        {
+          contactName: contact.name,
+          userName: `${user.profile.name} ${user.profile.surname}`,
+          message: user.profile.emergencyMessage,
+          locationUrl: data.locationUrl,
+        },
+        {},
+        [
+          {
+            Email: contact.email,
+          },
+        ]
+      );
+
+      expect(service.sendEmail).toBeCalledTimes(1);
+      expect(service.sendSms).toBeCalledTimes(1);
+
       jest.clearAllMocks();
 
       await service.sendEmergencyMessage(
@@ -122,7 +179,7 @@ describe('NotificationService', () => {
         {} as SendEmergencyMessageDTO
       );
 
-      expect(spyOnPrepareDataAndSendEmail).toBeCalledWith(
+      expect(spyOnPrepareEmailData).toBeCalledWith(
         3057128,
         {
           contactName: contact.name,
@@ -136,6 +193,9 @@ describe('NotificationService', () => {
           },
         ]
       );
+
+      expect(service.sendEmail).toBeCalledTimes(1);
+      expect(service.sendSms).toBeCalledTimes(1);
     });
 
     it('sendEmergencyMessage() does not call sendSms() fo test message', async () => {
@@ -144,15 +204,12 @@ describe('NotificationService', () => {
       jest
         .spyOn(service, 'sendEmail')
         .mockReturnValue(new Promise((res) => res({} as Email.Response)));
+      jest
+        .spyOn(service, 'sendSms')
+        .mockReturnValue(new Promise((res) => res({} as MessageInstance)));
 
-      const spyOnPrepareDataAndSendSms = jest.spyOn(
-        service,
-        'prepareDataAndSendSms'
-      );
-      const spyOnPrepareDataAndSendEmail = jest.spyOn(
-        service,
-        'prepareDataAndSendEmail'
-      );
+      const spyOnPrepareSmsData = jest.spyOn(service, 'prepareSmsData');
+      const spyOnPrepareEmailData = jest.spyOn(service, 'prepareEmailData');
       const data = {
         locationUrl: faker.internet.url(),
       };
@@ -164,8 +221,8 @@ describe('NotificationService', () => {
 
       await service.sendEmergencyMessage(contact, user, data);
 
-      expect(spyOnPrepareDataAndSendEmail).toBeCalledTimes(1);
-      expect(spyOnPrepareDataAndSendSms).toBeCalledTimes(0);
+      expect(spyOnPrepareEmailData).toBeCalledTimes(1);
+      expect(spyOnPrepareSmsData).toBeCalledTimes(0);
     });
   });
 });
