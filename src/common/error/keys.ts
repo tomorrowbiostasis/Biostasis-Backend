@@ -19,3 +19,4 @@ export const LOCATION_DATA_IS_NEEDED = 'E0018';
 export const MESSAGE_IS_NEEDED = 'E0019';
 export const PHONE_NUMBER_IS_NEEDED = 'E0020';
 export const PHONE_NUMBER_IS_INVALID = 'E0021';
+export const JOB_REMOVE_FAILED = 'E0022';
