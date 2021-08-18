@@ -17,6 +17,8 @@ import { Email } from 'node-mailjet';
 import { MessageInstance } from 'twilio/lib/rest/api/v2010/account/message';
 import { MESSAGE_TYPE } from '../../message/enum/message-type.enum';
 import * as Bull from 'bull';
+import { MessageService } from '../../queue/service/message.service';
+import { messageServiceMock } from '../../../test/mock/message.service.mock';
 
 describe('NotificationService', () => {
   let service: NotificationService;
@@ -40,6 +42,10 @@ describe('NotificationService', () => {
         {
           provide: QUEUE.MESSAGE,
           useValue: queueServiceMock,
+        },
+        {
+          provide: MessageService,
+          useValue: messageServiceMock,
         },
       ],
     }).compile();
@@ -86,7 +92,7 @@ describe('NotificationService', () => {
         .spyOn(service, 'sendSms')
         .mockReturnValue(new Promise((res) => res({} as MessageInstance)));
       jest
-        .spyOn(service, 'addJobToMessageQueueAndSendSupportMessage')
+        .spyOn(messageServiceMock, 'addJobToQueue')
         .mockReturnValue(new Promise((res) => res({} as Bull.Job)));
 
       await service.sendEmergencyMessage(contact, user, data);
@@ -112,9 +118,7 @@ describe('NotificationService', () => {
         ]
       );
 
-      expect(service.addJobToMessageQueueAndSendSupportMessage).toBeCalledTimes(
-        2
-      );
+      expect(messageServiceMock.addJobToQueue).toBeCalledTimes(2);
       expect(service.sendEmail).toBeCalledTimes(0);
       expect(service.sendSms).toBeCalledTimes(0);
     });

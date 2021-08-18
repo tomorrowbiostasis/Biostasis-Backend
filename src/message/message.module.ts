@@ -5,10 +5,16 @@ import { UserModule } from '../user/user.module';
 import { ContactModule } from '../contact/contact.module';
 import { SendSMSController } from './controller/send-sms.controller';
 import { SendEmergencyMessageController } from './controller/send-emergency-message.controller';
+import { QueueModule } from '../queue/queue.module';
+import { CancelEmergencyMessageController } from './controller/cancel-emergency-message.controller';
 
 @Module({
-  imports: [NotificationModule, UserModule, ContactModule],
-  controllers: [SendSMSController, SendEmergencyMessageController],
+  imports: [NotificationModule, UserModule, ContactModule, QueueModule],
+  controllers: [
+    SendSMSController,
+    SendEmergencyMessageController,
+    CancelEmergencyMessageController,
+  ],
   providers: [ConfigProvider],
 })
 export class MessageModule {}

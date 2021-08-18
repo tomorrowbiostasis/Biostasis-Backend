@@ -21,10 +21,9 @@ import { escapeHTML } from '../helper/escape-html';
 import { getMailTemplateId } from '../helper/get-template-id';
 import { getNameOrEmail } from '../../common/helper/get-name-or-email';
 import { SendEmergencyMessageDTO } from '../../message/request/dto/send-emergency-message.dto';
-import { QUEUE } from '../../queue/constant/queue.constant';
-import * as Bull from 'bull';
 import { MessageListInstanceCreateOptions } from 'twilio/lib/rest/api/v2010/account/message';
 import { MessageInstance } from 'twilio/lib/rest/api/v2010/account/message';
+import { MessageService } from '../../queue/service/message.service';
 
 @Injectable()
 export class NotificationService {
@@ -34,8 +33,7 @@ export class NotificationService {
     @Inject(DICTIONARY.CONFIG) private readonly config: configLib.IConfig,
     @Inject(NOTIFICATION_DI.MAIL_JET) private readonly mailJet: Email.Client,
     @Inject(twilioLibrary.Twilio) private readonly twilio: twilioLibrary.Twilio,
-    @Inject(QUEUE.MESSAGE)
-    private messageQueue: Bull.Queue
+    private readonly messageService: MessageService
   ) {}
 
   prepareSmsData(
@@ -65,7 +63,7 @@ export class NotificationService {
         return result;
       })
       .catch(async (error) => {
-        await this.addJobToMessageQueueAndSendSupportMessage(
+        await this.messageService.addJobToQueue(
           'sms',
           params,
           this.config.get('queue.sendAfterTime.repeatTryingToSendMessage')
@@ -115,18 +113,6 @@ export class NotificationService {
     };
   }
 
-  async addJobToMessageQueueAndSendSupportMessage(
-    jobName: string,
-    params: Email.SendParams | MessageListInstanceCreateOptions,
-    delay: number
-  ): Promise<Bull.Job | void> {
-    return this.messageQueue
-      .add(jobName, params, {
-        delay,
-      })
-      .catch((error) => this.logger.log(JSON.stringify(error)));
-  }
-
   async sendEmail(
     params: Email.SendParams,
     isFromQueue = false
@@ -144,7 +130,7 @@ export class NotificationService {
         return result;
       })
       .catch(async (error) => {
-        await this.addJobToMessageQueueAndSendSupportMessage(
+        await this.messageService.addJobToQueue(
           'email',
           params,
           this.config.get('queue.sendAfterTime.repeatTryingToSendMessage')
@@ -184,10 +170,11 @@ export class NotificationService {
       );
 
       if (data.delayed) {
-        await this.addJobToMessageQueueAndSendSupportMessage(
+        await this.messageService.addJobToQueue(
           'sms',
           smsData,
-          this.config.get(`queue.sendAfterTime.${data.messageType}`)
+          this.config.get(`queue.sendAfterTime.${data.messageType}`),
+          `sms-${user.id}`
         );
       } else {
         await this.sendSms(smsData);
@@ -224,10 +211,11 @@ export class NotificationService {
     );
 
     if (data.delayed) {
-      await this.addJobToMessageQueueAndSendSupportMessage(
+      await this.messageService.addJobToQueue(
         'email',
         emailData,
-        this.config.get(`queue.sendAfterTime.${data.messageType}`)
+        this.config.get(`queue.sendAfterTime.${data.messageType}`),
+        `email-${user.id}`
       );
     } else {
       await this.sendEmail(emailData);

@@ -6,9 +6,15 @@ import { QUEUE } from './constant/queue.constant';
 import { QueueMessageProvider } from './provider/message-queue.provider';
 import { NotificationModule } from '../notification/notification.module';
 import { get } from 'config';
+import { MessageService } from './service/message.service';
 
 @Module({
-  providers: [ConfigProvider, MessageConsumer, QueueMessageProvider],
+  providers: [
+    ConfigProvider,
+    MessageConsumer,
+    QueueMessageProvider,
+    MessageService,
+  ],
   imports: [
     forwardRef(() => NotificationModule),
     BullModule.registerQueue({
@@ -19,6 +25,6 @@ import { get } from 'config';
       },
     }),
   ],
-  exports: [QueueMessageProvider],
+  exports: [QueueMessageProvider, MessageService],
 })
 export class QueueModule {}
