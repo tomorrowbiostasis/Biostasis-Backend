@@ -3,6 +3,7 @@ import { clearDatabase } from './helper';
 import { getTestApp } from './mock/app.mock';
 import { initializeDataset } from './helper/user';
 import { checkUser } from './entity/user.mock';
+import { queueServiceMock } from './mock/queue.service.mock';
 
 describe('/user (integration) ', () => {
   let app;
@@ -33,7 +34,7 @@ describe('/user (integration) ', () => {
 
     it('Should return status 200 and valid body', async () => {
       const userId = dataset.user.id;
-      const { body } = await api
+      let { body } = await api
         .get('/user')
         .set('Authorization', userId)
         .send()
@@ -43,8 +44,23 @@ describe('/user (integration) ', () => {
 
       expect(body.id).toBe(userId);
       expect(body.fillLevel).toBe(100);
+      expect(body.isEmergencyTriggerActive).toBeTruthy();
 
       await checkUser(body);
+
+      jest
+        .spyOn(queueServiceMock, 'getJob')
+        .mockImplementation(jest.fn(async () => null));
+
+      ({ body } = await api
+        .get('/user')
+        .set('Authorization', userId)
+        .send()
+        .expect(async ({ status }) => {
+          expect(status).toBe(200);
+        }));
+
+      expect(body.isEmergencyTriggerActive).toBeFalsy();
     });
   });
 });
