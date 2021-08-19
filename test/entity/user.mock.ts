@@ -38,6 +38,7 @@ export const checkUser = async (response: any) => {
       'lastHospitalVisit',
       'fillLevel',
       'prefix',
+      'isEmergencyTriggerActive',
     ])
   ).toEqual(
     omit(

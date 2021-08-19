@@ -13,9 +13,10 @@ import { UnconfirmedEmailService } from './service/unconfirmed-email.service';
 import { NotificationModule } from '../notification/notification.module';
 import { SendTestMessageController } from './controller/send-test-message.controller';
 import { GoogleLibPhoneNumberProvider } from '../common/provider/google-phone-number.provider';
+import { QueueModule } from '../queue/queue.module';
 
 @Module({
-  imports: [NotificationModule],
+  imports: [NotificationModule, QueueModule],
   controllers: [
     UpdateUserProfileController,
     GetUserController,

@@ -14,6 +14,7 @@ import { UserEntity, ROLES } from '../../user/entity/user.entity';
 import { UserRO } from '../response/user.ro';
 import { AuthGuard } from '@nestjs/passport';
 import { userMapper } from '../mapper/user.mapper';
+import { MessageService } from '../../queue/service/message.service';
 
 @ApiBearerAuth()
 @UseGuards(new RolesGuard(new Reflector()))
@@ -21,15 +22,23 @@ import { userMapper } from '../mapper/user.mapper';
 @ApiTags('user')
 @Controller('user')
 export class GetUserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly messageService: MessageService
+  ) {}
 
   @ApiResponse({ status: 200, type: UserRO })
   @ApiOperation({ summary: 'Get user profile' })
   @Roles([ROLES.USER])
   @Get()
   async getUserProfile(@User() user: UserEntity) {
-    const details = await this.userService.findByIdOrFail(user.id);
+    await this.messageService.removeJobsByUserId(user.id);
 
-    return userMapper(details);
+    const [details, triggers] = await Promise.all([
+      this.userService.findByIdOrFail(user.id),
+      this.messageService.findJobsByUserId(user.id),
+    ]);
+
+    return userMapper(details, triggers);
   }
 }

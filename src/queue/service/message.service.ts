@@ -8,7 +8,7 @@ import { QUEUE } from '../constant/queue.constant';
 import * as Bull from 'bull';
 import { Email } from 'node-mailjet';
 import { MessageListInstanceCreateOptions } from 'twilio/lib/rest/api/v2010/account/message';
-import { JOB_REMOVE_FAILED } from '../../common/error/keys';
+import { JOB_REMOVE_FAILED, GET_JOB_FAILED } from '../../common/error/keys';
 
 @Injectable()
 export class MessageService {
@@ -19,7 +19,21 @@ export class MessageService {
     private messageQueue: Bull.Queue
   ) {}
 
-  async removeJobsByUserId(userId: string) {
+  async findJobsByUserId(userId: string): Promise<Bull.Job[]> {
+    return Promise.all([
+      this.messageQueue.getJob(`email-${userId}`),
+      this.messageQueue.getJob(`sms-${userId}`),
+    ])
+      .then((data) => {
+        return data.filter((job) => job);
+      })
+      .catch((error) => {
+        this.logger.log(JSON.stringify(error));
+        throw new BadRequestException(GET_JOB_FAILED, error);
+      });
+  }
+
+  async removeJobsByUserId(userId: string): Promise<void> {
     return this.messageQueue.removeJobs(`*-${userId}`).catch((error) => {
       this.logger.log(JSON.stringify(error));
       throw new BadRequestException(JOB_REMOVE_FAILED, error);
