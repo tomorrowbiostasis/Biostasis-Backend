@@ -73,4 +73,8 @@ module.exports = {
   firebase: {
     accountKey: firebaseAccountKey,
   },
+  emergencyTrigger: {
+    defaultMessage:
+      'Hey, I’m having a medical emergency. Please hide the key and burn that letter. My medical directives are attached.',
+  },
 };
