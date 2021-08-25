@@ -44,6 +44,7 @@ services:
       - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
       - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
       - TWILIO_PHONE_NUMBER=${TWILIO_PHONE_NUMBER}
+      - FIREBASE_ACCOUNT_KEY=${FIREBASE_ACCOUNT_KEY}
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_SCHEMA=${REDIS_SCHEMA}
       - REDIS_USER=${REDIS_USER}
@@ -72,4 +73,3 @@ services:
         '--collation-server=utf8mb4_unicode_ci',
         '--default-authentication-plugin=mysql_native_password',
       ]
-

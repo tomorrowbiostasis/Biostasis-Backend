@@ -43,6 +43,7 @@
     "class-transformer": "^0.4.0",
     "config": "^3.3.6",
     "dotenv": "^10.0.0",
+    "firebase-admin": "^9.11.0",
     "google-libphonenumber": "^3.2.22",
     "helmet": "^4.6.0",
     "ioredis-mock": "^5.6.0",
@@ -62,13 +63,13 @@
     "typeorm": "0.2.36"
   },
   "devDependencies": {
-    "@types/bull": "^3.15.3",
     "@nestjs/cli": "^8.1.1",
-    "@types/google-libphonenumber": "^7.4.21",
     "@nestjs/schematics": "^8.0.2",
     "@nestjs/testing": "^8.0.6",
+    "@types/bull": "^3.15.3",
     "@types/express": "^4.17.13",
     "@types/faker": "^5.5.7",
+    "@types/google-libphonenumber": "^7.4.21",
     "@types/jest": "^27.0.0",
     "@types/joi": "^17.2.3",
     "@types/node": "^16.4.13",

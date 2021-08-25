@@ -7,6 +7,8 @@ import { SendSMSController } from './controller/send-sms.controller';
 import { SendEmergencyMessageController } from './controller/send-emergency-message.controller';
 import { QueueModule } from '../queue/queue.module';
 import { CancelEmergencyMessageController } from './controller/cancel-emergency-message.controller';
+import { MessageService } from './service/mesage.service';
+import { FirebaseProvider } from './provider/firebase.provider';
 
 @Module({
   imports: [NotificationModule, UserModule, ContactModule, QueueModule],
@@ -15,6 +17,7 @@ import { CancelEmergencyMessageController } from './controller/cancel-emergency-
     SendEmergencyMessageController,
     CancelEmergencyMessageController,
   ],
-  providers: [ConfigProvider],
+  providers: [ConfigProvider, MessageService, FirebaseProvider],
+  exports: [MessageService],
 })
 export class MessageModule {}
