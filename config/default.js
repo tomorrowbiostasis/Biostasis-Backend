@@ -2,6 +2,12 @@ require('dotenv').config();
 
 const env = process.env;
 
+let firebaseAccountKey = {};
+
+try {
+  firebaseAccountKey = JSON.parse(env.FIREBASE_ACCOUNT_KEY);
+} catch {}
+
 module.exports = {
   application: {
     call_timeout: 30,
@@ -63,5 +69,8 @@ module.exports = {
   sms: {
     noConnectionToWatch: 'We have detected no connection with your watch.',
     heartRateInvalid: 'Your hear rate is invalid.',
+  },
+  firebase: {
+    accountKey: firebaseAccountKey,
   },
 };

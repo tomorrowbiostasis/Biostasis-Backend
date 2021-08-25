@@ -14,6 +14,8 @@ import { DICTIONARY as COMMON_DI } from '../../src/common/constant/dictionary.co
 import { redisMock } from './redis.mock';
 import { queueServiceMock } from './queue.service.mock';
 import { QUEUE } from '../../src/queue/constant/queue.constant';
+import { DICTIONARY as MESSAGE_DI } from '../../src/message/constant/dictionary.constant';
+import { firebaseMock } from './firebase.mock';
 
 export const getTestApp = async () => {
   let app;
@@ -33,6 +35,10 @@ export const getTestApp = async () => {
     .useValue(redisMock)
     .overrideProvider(QUEUE.MESSAGE)
     .useValue(queueServiceMock)
+    .overrideProvider(NOTIFICATION_DI.MAIL_JET)
+    .useValue(mailJetMock)
+    .overrideProvider(MESSAGE_DI.FIREBASE)
+    .useValue(firebaseMock)
     .compile();
 
   app = moduleFixture.createNestApplication();

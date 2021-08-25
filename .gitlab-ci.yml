@@ -17,7 +17,7 @@ install:
     name: 'artifacts-$CI_PIPELINE_ID'
     expire_in: 30 minutes
     paths:
-      - app/node_modules/
+      - node_modules/
 
 check:
   only:
@@ -99,6 +99,7 @@ integration-tests:
     - name: redis:5.0.7
   script:
     - yarn install
+    - yarn add mysql
     - yarn test:integration
   dependencies:
     - install
