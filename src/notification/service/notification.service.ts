@@ -157,14 +157,14 @@ export class NotificationService {
       throw new BadRequestException(EMAIL_AND_SMS_NOT_ALLOWED);
     }
 
-    if (!user.profile?.emergencyMessage) {
-      throw new BadRequestException(MESSAGE_IS_NEEDED);
-    }
+    const message =
+      user.profile?.emergencyMessage ??
+      this.config.get('emergencyTrigger.defaultMessage');
 
     if (contact.phone && user.email !== contact.email) {
       const smsData = this.prepareSmsData(
         contact.phone,
-        `${user.profile.emergencyMessage} ${
+        `${message} ${
           user.profile?.locationAccess === true ? data.locationUrl : ''
         }`.trim()
       );
@@ -188,7 +188,7 @@ export class NotificationService {
         user.profile?.surname,
         user.email
       ),
-      message: user.profile.emergencyMessage,
+      message,
     };
 
     if (user.profile?.locationAccess === true) {
