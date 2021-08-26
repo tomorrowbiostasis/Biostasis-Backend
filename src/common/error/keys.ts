@@ -22,3 +22,4 @@ export const PHONE_NUMBER_IS_INVALID = 'E0021';
 export const JOB_REMOVE_FAILED = 'E0022';
 export const GET_JOB_FAILED = 'E0023';
 export const SAVE_TIME_SLOT_FAILED = 'E0024';
+export const RETRIEVING_TIME_SLOTS_FAILED = 'E0025';

@@ -130,6 +130,7 @@ describe('/time-slot (integration) ', () => {
       let timeSlot = await getTimeSlotById(body.id);
 
       expect(timeSlot.active).toBe(true);
+      expect(timeSlot.userId).toBe(dataset.user.id);
       expect(timeSlot.id).toBe(body.id);
       expect([DAYS_OF_WEEKS.MONDAY, DAYS_OF_WEEKS.TUESDAY]).toEqual([1, 2]);
 
@@ -158,6 +159,7 @@ describe('/time-slot (integration) ', () => {
       timeSlot = await getTimeSlotById(body.id);
 
       expect(timeSlot.active).toBe(false);
+      expect(timeSlot.userId).toBe(dataset.user.id);
       expect(timeSlot.id).toBe(body.id);
     });
   });
