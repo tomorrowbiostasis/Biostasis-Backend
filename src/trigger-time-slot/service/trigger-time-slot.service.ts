@@ -1,11 +1,15 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, BadRequestException } from '@nestjs/common';
 import { TimeSlotRepository } from '../repository/time-slot.repository';
 import { TimeSlotEntity } from '../entity/time-slot.entity';
 import { AddTimeSlotDTO } from '../request/dto/add-time-slot.dto';
-import { SAVE_TIME_SLOT_FAILED } from '../../common/error/keys';
+import {
+  SAVE_TIME_SLOT_FAILED,
+  RETRIEVING_TIME_SLOTS_FAILED,
+} from '../../common/error/keys';
 import { CustomError } from '../../common/error/custom-error';
 import { omit } from '../../common/helper/omit';
 import { DAYS_OF_WEEKS } from '../enum/days-of-week.enum';
+import * as moment from 'moment';
 
 @Injectable()
 export class TriggerTimeSlotService {
@@ -14,6 +18,16 @@ export class TriggerTimeSlotService {
     private readonly timeSlotRepository: TimeSlotRepository
   ) {}
 
+  async findByUserIdOrFail(userId: string): Promise<TimeSlotEntity[]> {
+    return this.timeSlotRepository.findByUserId(userId).then((data) => {
+      if (!data) {
+        throw new BadRequestException(RETRIEVING_TIME_SLOTS_FAILED);
+      }
+
+      return data;
+    });
+  }
+
   async saveTimeSlot(
     userId: string,
     data: AddTimeSlotDTO
@@ -21,7 +35,7 @@ export class TriggerTimeSlotService {
     return this.timeSlotRepository
       .save({
         ...omit(data, ['days']),
-        from: data.from ?? userId,
+        userId,
         days: data.days.map((value) => ({
           day: DAYS_OF_WEEKS[value.toUpperCase()],
         })),
