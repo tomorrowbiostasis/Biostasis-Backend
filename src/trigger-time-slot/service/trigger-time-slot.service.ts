@@ -1,24 +1,37 @@
-import { Inject, Injectable, BadRequestException } from '@nestjs/common';
-import { DeleteResult } from 'typeorm';
+import {
+  Inject,
+  Injectable,
+  BadRequestException,
+  Logger,
+} from '@nestjs/common';
 import { TimeSlotRepository } from '../repository/time-slot.repository';
 import { TimeSlotEntity } from '../entity/time-slot.entity';
+import { TimeSlotDayEntity } from '../entity/time-slot-day.entity';
 import { AddTimeSlotDTO } from '../request/dto/add-time-slot.dto';
+import { UpdateTimeSlotDTO } from '../request/dto/update-time-slot.dto';
 import {
   SAVE_TIME_SLOT_FAILED,
-  TIME_SLOT_NOT_FOUND,
   DELETE_TIME_SLOT_FAILED,
   RETRIEVING_TIME_SLOTS_FAILED,
+  TIME_SLOT_NOT_FOUND,
+  UPDATE_TIME_SLOT_FAILED,
 } from '../../common/error/keys';
 import { CustomError } from '../../common/error/custom-error';
 import { omit } from '../../common/helper/omit';
 import { DAYS_OF_WEEKS } from '../enum/days-of-week.enum';
-import * as moment from 'moment';
+import { getEnumKeyByValue } from '../../common/helper/get-enum-key-by-value';
+import { In, Connection, DeleteResult } from 'typeorm';
+import { DICTIONARY } from '../../common/constant/dictionary.constant';
 
 @Injectable()
 export class TriggerTimeSlotService {
+  protected readonly logger = new Logger(TriggerTimeSlotService.name);
+
   constructor(
     @Inject(TimeSlotRepository)
-    private readonly timeSlotRepository: TimeSlotRepository
+    private readonly timeSlotRepository: TimeSlotRepository,
+    @Inject(DICTIONARY.CONNECTION)
+    private readonly connection: Connection
   ) {}
 
   async findByIdAndUserIdOrFail(
@@ -26,10 +39,7 @@ export class TriggerTimeSlotService {
     userId: string
   ): Promise<TimeSlotEntity> {
     return this.timeSlotRepository
-      .findOneByParams({
-        id,
-        userId,
-      })
+      .findOneByParams({ where: { id, userId }, relations: ['days'] })
       .then((data) => {
         if (!data) {
           throw new BadRequestException(TIME_SLOT_NOT_FOUND);
@@ -70,5 +80,55 @@ export class TriggerTimeSlotService {
       .catch((error) => {
         throw new CustomError(SAVE_TIME_SLOT_FAILED, error);
       });
+  }
+
+  async updateTimeSlot(
+    timeSlot: TimeSlotEntity,
+    userId: string,
+    data: UpdateTimeSlotDTO
+  ): Promise<TimeSlotEntity> {
+    const namesOfDays = timeSlot.days.map((item) =>
+      getEnumKeyByValue(DAYS_OF_WEEKS, item.day)
+    );
+
+    try {
+      await this.connection.manager.transaction(async (entityManager) => {
+        await entityManager.update(
+          TimeSlotEntity,
+          {
+            id: timeSlot.id,
+          },
+          { ...omit(data, ['days']) }
+        );
+
+        await entityManager.delete(TimeSlotDayEntity, {
+          timeSlotId: timeSlot.id,
+          day: In(
+            namesOfDays
+              .filter((value) => !data.days.includes(value))
+              .map((value) => DAYS_OF_WEEKS[value.toUpperCase()])
+          ),
+        });
+
+        await entityManager.save(
+          TimeSlotDayEntity,
+          data.days
+            .filter((value) => !namesOfDays.includes(value))
+            .map((day) => ({
+              timeSlotId: timeSlot.id,
+              day: DAYS_OF_WEEKS[day.toUpperCase()],
+            }))
+        );
+      });
+    } catch (error) {
+      this.logger.error(error);
+
+      throw new BadRequestException(UPDATE_TIME_SLOT_FAILED);
+    }
+
+    return this.timeSlotRepository.findOneByParams({
+      where: { id: timeSlot.id, userId },
+      relations: ['days'],
+    });
   }
 }

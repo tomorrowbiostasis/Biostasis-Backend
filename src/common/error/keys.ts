@@ -25,3 +25,4 @@ export const SAVE_TIME_SLOT_FAILED = 'E0024';
 export const TIME_SLOT_NOT_FOUND = 'E0025';
 export const DELETE_TIME_SLOT_FAILED = 'E0026';
 export const RETRIEVING_TIME_SLOTS_FAILED = 'E0027';
+export const UPDATE_TIME_SLOT_FAILED = 'E0028';
