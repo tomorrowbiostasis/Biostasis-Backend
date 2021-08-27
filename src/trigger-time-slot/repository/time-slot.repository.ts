@@ -6,6 +6,14 @@ import { TimeSlotEntity } from '../entity/time-slot.entity';
 export class TimeSlotRepository extends Repository<TimeSlotEntity> {
   protected readonly logger = new Logger(TimeSlotRepository.name);
 
+  findOneByParams(params: Record<string, unknown>): Promise<TimeSlotEntity> {
+    return new Promise((resolve) => {
+      this.findOne(params)
+        .then((data) => resolve(data))
+        .catch((error) => this.logger.error(error));
+    });
+  }
+
   findByUserId(userId: string): Promise<TimeSlotEntity[]> {
     return new Promise((resolve) => {
       this.find({ where: { userId }, relations: ['days'] })
