@@ -18,6 +18,7 @@ import { addTimeSlotSchema } from '../request/schema/add-time-slot.schema';
 import { ValidationPipe } from '../../common/pipe/validation.pipe';
 import { AuthGuard } from '@nestjs/passport';
 import { ErrorMessageRO } from '../../common/response/error.ro';
+import { TimeSlotEntity } from '../entity/time-slot.entity';
 
 @ApiBearerAuth()
 @UseGuards(new RolesGuard(new Reflector()))
@@ -39,10 +40,24 @@ export class AddTimeSlotController {
     @Body(new ValidationPipe(addTimeSlotSchema))
     data: AddTimeSlotDTO
   ) {
-    const timeSlot = await this.triggerTimeSlotService.saveTimeSlot(
-      user.id,
-      data
-    );
+    let timeSlot: TimeSlotEntity;
+
+    if (!data.from) {
+      timeSlot = await this.triggerTimeSlotService.findByUserIdAndPeriodStart(
+        user.id,
+        null
+      );
+    }
+
+    if (!timeSlot) {
+      timeSlot = await this.triggerTimeSlotService.saveTimeSlot(user.id, data);
+    } else {
+      timeSlot = await this.triggerTimeSlotService.updateTimeSlot(
+        timeSlot,
+        user.id,
+        data
+      );
+    }
 
     return plainToClass(TimeSlotIdRO, timeSlot);
   }

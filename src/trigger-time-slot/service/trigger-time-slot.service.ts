@@ -34,6 +34,16 @@ export class TriggerTimeSlotService {
     private readonly connection: Connection
   ) {}
 
+  async findByUserIdAndPeriodStart(
+    userId: string,
+    from: Date
+  ): Promise<TimeSlotEntity> {
+    return this.timeSlotRepository.findOneByParams({
+      where: { from, userId },
+      relations: ['days'],
+    });
+  }
+
   async findByIdAndUserIdOrFail(
     id: number,
     userId: string
@@ -85,7 +95,7 @@ export class TriggerTimeSlotService {
   async updateTimeSlot(
     timeSlot: TimeSlotEntity,
     userId: string,
-    data: UpdateTimeSlotDTO
+    data: AddTimeSlotDTO
   ): Promise<TimeSlotEntity> {
     const namesOfDays = timeSlot.days.map((item) =>
       getEnumKeyByValue(DAYS_OF_WEEKS, item.day)
