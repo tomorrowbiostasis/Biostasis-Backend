@@ -1,9 +1,12 @@
 import { Inject, Injectable, BadRequestException } from '@nestjs/common';
+import { DeleteResult } from 'typeorm';
 import { TimeSlotRepository } from '../repository/time-slot.repository';
 import { TimeSlotEntity } from '../entity/time-slot.entity';
 import { AddTimeSlotDTO } from '../request/dto/add-time-slot.dto';
 import {
   SAVE_TIME_SLOT_FAILED,
+  TIME_SLOT_NOT_FOUND,
+  DELETE_TIME_SLOT_FAILED,
   RETRIEVING_TIME_SLOTS_FAILED,
 } from '../../common/error/keys';
 import { CustomError } from '../../common/error/custom-error';
@@ -17,6 +20,30 @@ export class TriggerTimeSlotService {
     @Inject(TimeSlotRepository)
     private readonly timeSlotRepository: TimeSlotRepository
   ) {}
+
+  async findByIdAndUserIdOrFail(
+    id: number,
+    userId: string
+  ): Promise<TimeSlotEntity> {
+    return this.timeSlotRepository
+      .findOneByParams({
+        id,
+        userId,
+      })
+      .then((data) => {
+        if (!data) {
+          throw new BadRequestException(TIME_SLOT_NOT_FOUND);
+        }
+
+        return data;
+      });
+  }
+
+  async deleteTimeSlot(timeSlotId: number): Promise<DeleteResult> {
+    return this.timeSlotRepository.delete(timeSlotId).catch((error) => {
+      throw new CustomError(DELETE_TIME_SLOT_FAILED, error);
+    });
+  }
 
   async findByUserIdOrFail(userId: string): Promise<TimeSlotEntity[]> {
     return this.timeSlotRepository.findByUserId(userId).then((data) => {
