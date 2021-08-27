@@ -8,9 +8,13 @@ import {
   VALIDATION_FAILED,
   SAVE_TIME_SLOT_FAILED,
 } from '../src/common/error/keys';
-import { getTimeSlotById } from './entity/trigger-time-slot.mock';
+import {
+  checkTimeSlot,
+  getTimeSlotById,
+} from './entity/trigger-time-slot.mock';
 import { DAYS_OF_WEEKS } from '../src/trigger-time-slot/enum/days-of-week.enum';
 import { getEnumKeys } from '../src/common/helper/get-enum-keys';
+import { getEnumKeyByValue } from '../src/common/helper/get-enum-key-by-value';
 
 describe('/time-slot (integration) ', () => {
   let app;
@@ -111,7 +115,69 @@ describe('/time-slot (integration) ', () => {
         });
     });
 
-    it('Should add contact, return status 201 and valid body', async () => {
+    it('Should update time slot if time slot without start time exists', async () => {
+      let params = {
+        active: true,
+        days: [daysOfWeekKeys[1], daysOfWeekKeys[2]],
+        to: moment().add(7, 'days').toISOString(),
+      };
+
+      const { body: firstCall } = await api
+        .post('/time-slot')
+        .set('Authorization', dataset.user.id)
+        .send({
+          active: true,
+          days: [daysOfWeekKeys[1], daysOfWeekKeys[2]],
+          to: moment().add(7, 'days').toISOString(),
+        })
+        .expect(async ({ status }) => {
+          expect(status).toBe(201);
+        });
+
+      let timeSlot = await getTimeSlotById(firstCall.id);
+
+      expect({
+        ...params,
+        to: moment(params.to).format('YYYY-MM-DD HH:mm:ss'),
+      }).toEqual({
+        active: timeSlot.active,
+        days: timeSlot.days.map((item) =>
+          getEnumKeyByValue(DAYS_OF_WEEKS, item.day)
+        ),
+        to: moment(timeSlot.to).format('YYYY-MM-DD HH:mm:ss'),
+      });
+
+      params = {
+        active: false,
+        days: [daysOfWeekKeys[1], daysOfWeekKeys[2]],
+        to: moment().add(5, 'days').toISOString(),
+      };
+
+      const { body: secondCall } = await api
+        .post('/time-slot')
+        .set('Authorization', dataset.user.id)
+        .send(params)
+        .expect(async ({ status }) => {
+          expect(status).toBe(201);
+        });
+
+      timeSlot = await getTimeSlotById(firstCall.id);
+
+      expect({
+        ...params,
+        to: moment(params.to).format('YYYY-MM-DD HH:mm:ss'),
+      }).toEqual({
+        active: timeSlot.active,
+        days: timeSlot.days.map((item) =>
+          getEnumKeyByValue(DAYS_OF_WEEKS, item.day)
+        ),
+        to: moment(timeSlot.to).format('YYYY-MM-DD HH:mm:ss'),
+      });
+
+      expect(firstCall.id).toBe(secondCall.id);
+    });
+
+    it('Should add time slot, return status 201 and valid body', async () => {
       let body;
 
       ({ body } = await api

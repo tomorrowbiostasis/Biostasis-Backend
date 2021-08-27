@@ -8,7 +8,6 @@ import { TimeSlotRepository } from '../repository/time-slot.repository';
 import { TimeSlotEntity } from '../entity/time-slot.entity';
 import { TimeSlotDayEntity } from '../entity/time-slot-day.entity';
 import { AddTimeSlotDTO } from '../request/dto/add-time-slot.dto';
-import { UpdateTimeSlotDTO } from '../request/dto/update-time-slot.dto';
 import {
   SAVE_TIME_SLOT_FAILED,
   DELETE_TIME_SLOT_FAILED,
@@ -33,6 +32,16 @@ export class TriggerTimeSlotService {
     @Inject(DICTIONARY.CONNECTION)
     private readonly connection: Connection
   ) {}
+
+  async findByUserIdAndPeriodStart(
+    userId: string,
+    from: Date
+  ): Promise<TimeSlotEntity> {
+    return this.timeSlotRepository.findOneByParams({
+      where: { from, userId },
+      relations: ['days'],
+    });
+  }
 
   async findByIdAndUserIdOrFail(
     id: number,
@@ -85,7 +94,7 @@ export class TriggerTimeSlotService {
   async updateTimeSlot(
     timeSlot: TimeSlotEntity,
     userId: string,
-    data: UpdateTimeSlotDTO
+    data: AddTimeSlotDTO
   ): Promise<TimeSlotEntity> {
     const namesOfDays = timeSlot.days.map((item) =>
       getEnumKeyByValue(DAYS_OF_WEEKS, item.day)
