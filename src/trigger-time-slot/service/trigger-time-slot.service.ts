@@ -8,7 +8,6 @@ import { TimeSlotRepository } from '../repository/time-slot.repository';
 import { TimeSlotEntity } from '../entity/time-slot.entity';
 import { TimeSlotDayEntity } from '../entity/time-slot-day.entity';
 import { AddTimeSlotDTO } from '../request/dto/add-time-slot.dto';
-import { UpdateTimeSlotDTO } from '../request/dto/update-time-slot.dto';
 import {
   SAVE_TIME_SLOT_FAILED,
   DELETE_TIME_SLOT_FAILED,
