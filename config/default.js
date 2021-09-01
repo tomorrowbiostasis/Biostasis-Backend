@@ -77,4 +77,17 @@ module.exports = {
     defaultMessage:
       'Hey, I’m having a medical emergency. Please hide the key and burn that letter. My medical directives are attached.',
   },
+  s3: {
+    bucket: process.env.S3_BUCKET,
+    accessKeyId: process.env.S3_ACCESS_KEY_ID,
+    endpoint: process.env.S3_URL,
+    region: process.env.S3_REGION,
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+    fileSizeLimit: process.env.S3_FILE_SIZE_LIMIT,
+  },
+  cloudFrontSigner: {
+    accessKeyId: env.CDN_PRIV_KEY_ID,
+    privateKey: String(env.CDN_PRIV_KEY).replace(/\\n/g, '\n'),
+    url: env.CDN_PRIV_DNS,
+  },
 };

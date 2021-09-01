@@ -11,6 +11,7 @@ import { BullModule } from '@nestjs/bull';
 import { QueueModule } from './queue/queue.module';
 import { RedisProvider } from './common/provider/redis.provider';
 import { TriggerTimeSlotModule } from './trigger-time-slot/trigger-time-slot.module';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { TriggerTimeSlotModule } from './trigger-time-slot/trigger-time-slot.mod
     QueueModule,
     MessageModule,
     TriggerTimeSlotModule,
+    FileModule,
   ],
   providers: [RedisProvider],
 })

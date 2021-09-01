@@ -16,6 +16,10 @@ import { queueServiceMock } from './queue.service.mock';
 import { QUEUE } from '../../src/queue/constant/queue.constant';
 import { DICTIONARY as MESSAGE_DI } from '../../src/message/constant/dictionary.constant';
 import { firebaseMock } from './firebase.mock';
+import { configMock } from './config.mock';
+import { DICTIONARY as FILE_DI } from '../../src/file/constant/dictionary.constant';
+import { s3Mock } from './s3.mock';
+import { cloudFrontSignerMock } from './cloud-front-signer.mock';
 
 export const getTestApp = async () => {
   let app;
@@ -33,12 +37,18 @@ export const getTestApp = async () => {
     .useValue(twilioMock)
     .overrideProvider(COMMON_DI.REDIS)
     .useValue(redisMock)
+    .overrideProvider(COMMON_DI.CONFIG)
+    .useValue(configMock)
     .overrideProvider(QUEUE.MESSAGE)
     .useValue(queueServiceMock)
     .overrideProvider(NOTIFICATION_DI.MAIL_JET)
     .useValue(mailJetMock)
     .overrideProvider(MESSAGE_DI.FIREBASE)
     .useValue(firebaseMock)
+    .overrideProvider(FILE_DI.S3)
+    .useValue(s3Mock)
+    .overrideProvider(FILE_DI.CLOUD_FRONT_SIGNER)
+    .useValue(cloudFrontSignerMock)
     .compile();
 
   app = moduleFixture.createNestApplication();
