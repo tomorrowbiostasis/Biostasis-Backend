@@ -6,11 +6,11 @@ services:
     container_name: biostasis_redis
     command: ['--notify-keyspace-events KEA']
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ['CMD', 'redis-cli', 'ping']
       interval: 1s
       timeout: 3s
       retries: 30
-      
+
   biostasis_app:
     env_file:
       - .env
@@ -26,8 +26,8 @@ services:
       - biostasis_database
       - biostasis_redis
     depends_on:
-        - biostasis_database
-        - biostasis_redis
+      - biostasis_database
+      - biostasis_redis
     environment:
       - APP_PORT=${APP_PORT}
       - DB_USERNAME=${DB_USERNAME}
@@ -68,6 +68,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_HOST: '%'
       MYSQL_DATABASE: ${DB_DATABASE}
+      TZ: Europe/London
     entrypoint: sh -c "
       echo 'CREATE DATABASE IF NOT EXISTS biostasis_test;' > /docker-entrypoint-initdb.d/init.sql;
       /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password"
@@ -78,7 +79,7 @@ services:
         '--default-authentication-plugin=mysql_native_password',
       ]
     healthcheck:
-        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-        interval: 1s
-        timeout: 3s
-        retries: 30
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      interval: 1s
+      timeout: 3s
+      retries: 30

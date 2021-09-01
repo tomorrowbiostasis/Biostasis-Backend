@@ -21,6 +21,6 @@ import { ConnectionProvider } from '../common/provider/connection.provider';
     TimeSlotDayRepositoryProvider,
     ConnectionProvider,
   ],
-  exports: [TriggerTimeSlotService],
+  exports: [TriggerTimeSlotService, TimeSlotRepositoryProvider],
 })
 export class TriggerTimeSlotModule {}

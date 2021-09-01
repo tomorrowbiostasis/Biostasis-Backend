@@ -44,12 +44,12 @@ const calculatePercentByWeight = (user: UserEntity): number => {
   return (weightOfValues / sumOfWeights) * 100;
 };
 
-export const userMapper = (user: UserEntity, triggers: Bull.Job[]): UserRO => {
+export const userMapper = (user: UserEntity, trigger: Bull.Job): UserRO => {
   return plainToClass(UserRO, {
     ...user.profile,
     ...getProfileDefaultValues(user?.profile),
     ...user,
     fillLevel: Math.round(calculatePercentByWeight(user)),
-    isEmergencyTriggerActive: !!triggers.length,
+    isEmergencyTriggerActive: !!trigger,
   });
 };

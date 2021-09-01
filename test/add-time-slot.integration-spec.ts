@@ -198,7 +198,7 @@ describe('/time-slot (integration) ', () => {
       expect(timeSlot.active).toBe(true);
       expect(timeSlot.userId).toBe(dataset.user.id);
       expect(timeSlot.id).toBe(body.id);
-      expect([DAYS_OF_WEEKS.MONDAY, DAYS_OF_WEEKS.TUESDAY]).toEqual([1, 2]);
+      expect([DAYS_OF_WEEKS.MONDAY, DAYS_OF_WEEKS.TUESDAY]).toEqual([2, 3]);
 
       ({ body } = await api
         .post('/time-slot')
