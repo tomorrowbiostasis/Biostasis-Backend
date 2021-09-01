@@ -6,9 +6,11 @@ export const clearDatabase = async (): Promise<void> => {
   try {
     await connection.query(`SET FOREIGN_KEY_CHECKS = 0;`);
     for (const entity of connection.entityMetadatas) {
-      await connection
-        .getRepository(entity.name)
-        .query(`TRUNCATE table ${entity.tableMetadataArgs.name};`);
+      if (entity.tableMetadataArgs.name !== 'file_category') {
+        await connection
+          .getRepository(entity.name)
+          .query(`TRUNCATE table ${entity.tableMetadataArgs.name};`);
+      }
     }
 
     await connection.query(`SET FOREIGN_KEY_CHECKS = 1;`);
