@@ -1,4 +1,9 @@
-import { Inject, Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  BadRequestException,
+  Logger,
+} from '@nestjs/common';
 import * as uuid from 'uuid';
 import * as AWS from 'aws-sdk';
 import { UnconfirmedEmailRepository } from '../repository/unconfirmed-email.repository';
@@ -16,6 +21,8 @@ import * as configLib from 'config';
 
 @Injectable()
 export class UnconfirmedEmailService {
+  private readonly logger = new Logger(UnconfirmedEmailService.name);
+
   constructor(
     @Inject(UnconfirmedEmailRepository)
     private readonly unconfirmedEmailRepository: UnconfirmedEmailRepository,
@@ -31,7 +38,8 @@ export class UnconfirmedEmailService {
     return this.unconfirmedEmailRepository
       .save({ userId, code: uuid.v4(), email })
       .catch((error) => {
-        throw new CustomError(SAVE_UNCONFIRMED_EMAIL_FAILED, error);
+        this.logger.error(error);
+        throw new BadRequestException(SAVE_UNCONFIRMED_EMAIL_FAILED);
       });
   }
 

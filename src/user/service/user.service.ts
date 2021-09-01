@@ -1,4 +1,9 @@
-import { Inject, Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  BadRequestException,
+  Logger,
+} from '@nestjs/common';
 import { UpdateResult } from 'typeorm';
 import { UserRepository } from '../repository/user.repository';
 import { UserEntity } from '../entity/user.entity';
@@ -11,6 +16,8 @@ import { CustomError } from '../../common/error/custom-error';
 
 @Injectable()
 export class UserService {
+  private readonly logger = new Logger(UserService.name);
+
   constructor(
     @Inject(UserRepository) private readonly userRepository: UserRepository
   ) {}
@@ -40,7 +47,8 @@ export class UserService {
         email,
       })
       .catch((error) => {
-        throw new CustomError(SAVE_USER_FAILED, error);
+        this.logger.error(error);
+        throw new BadRequestException(SAVE_USER_FAILED);
       });
   }
 
@@ -53,7 +61,8 @@ export class UserService {
         { email }
       )
       .catch((error) => {
-        throw new CustomError(UPDATE_USER_EMAIL_FAILED, error);
+        this.logger.error(error);
+        throw new BadRequestException(UPDATE_USER_EMAIL_FAILED);
       });
   }
 }

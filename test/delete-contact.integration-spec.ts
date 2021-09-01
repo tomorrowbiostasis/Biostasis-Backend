@@ -38,9 +38,6 @@ describe('/contact (integration) ', () => {
     await api
       .delete(`/contact/${dataset.contacts[1].id}`)
       .set('Authorization', dataset.users[0].id)
-      .send({
-        surname: faker.name.lastName(),
-      })
       .then((result) => {
         expect(result.status).toBe(400);
         expect(result.body.error.code).toBe(CONTACT_NOT_FOUND);
@@ -49,9 +46,6 @@ describe('/contact (integration) ', () => {
     return api
       .delete(`/contact/${faker.datatype.number()}`)
       .set('Authorization', dataset.users[0].id)
-      .send({
-        surname: faker.name.lastName(),
-      })
       .then((result) => {
         expect(result.status).toBe(400);
         expect(result.body.error.code).toBe(CONTACT_NOT_FOUND);

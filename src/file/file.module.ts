@@ -7,9 +7,10 @@ import { AWSCloudFrontSignerProvider } from './provider/aws-cloud-front-sign.pro
 import { FileRepositoryProvider } from './provider/file-repository.provider';
 import { FileCategoryRepositoryProvider } from './provider/file-category-repository.provider';
 import { FileCategoryService } from './service/file-category.service';
+import { DeleteContactController } from './controller/delete-file.controller';
 
 @Module({
-  controllers: [UploadFileController],
+  controllers: [UploadFileController, DeleteContactController],
   providers: [
     FileService,
     ConfigProvider,

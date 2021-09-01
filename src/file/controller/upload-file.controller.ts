@@ -45,7 +45,7 @@ export class UploadFileController {
 
   @ApiResponse({ status: 400, type: ErrorMessageRO })
   @ApiConsumes('multipart/form-data')
-  @ApiOperation({ summary: 'Add contact by user' })
+  @ApiOperation({ summary: 'Upload file by user' })
   @Roles([ROLES.USER])
   @ApiBody({
     schema: {
