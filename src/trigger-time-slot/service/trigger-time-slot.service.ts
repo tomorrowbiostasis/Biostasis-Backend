@@ -60,7 +60,8 @@ export class TriggerTimeSlotService {
 
   async deleteTimeSlot(timeSlotId: number): Promise<DeleteResult> {
     return this.timeSlotRepository.delete(timeSlotId).catch((error) => {
-      throw new CustomError(DELETE_TIME_SLOT_FAILED, error);
+      this.logger.error(error);
+      throw new BadRequestException(DELETE_TIME_SLOT_FAILED);
     });
   }
 
@@ -87,7 +88,8 @@ export class TriggerTimeSlotService {
         })),
       })
       .catch((error) => {
-        throw new CustomError(SAVE_TIME_SLOT_FAILED, error);
+        this.logger.error(error);
+        throw new BadRequestException(SAVE_TIME_SLOT_FAILED);
       });
   }
 
@@ -131,7 +133,6 @@ export class TriggerTimeSlotService {
       });
     } catch (error) {
       this.logger.error(error);
-
       throw new BadRequestException(UPDATE_TIME_SLOT_FAILED);
     }
 

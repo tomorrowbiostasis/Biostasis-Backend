@@ -1,4 +1,9 @@
-import { Inject, Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  BadRequestException,
+  Logger,
+} from '@nestjs/common';
 import { UpdateResult, DeleteResult } from 'typeorm';
 import { ContactRepository } from '../repository/contact.repository';
 import { ContactEntity } from '../entity/contact.entity';
@@ -11,10 +16,11 @@ import {
   DELETE_CONTACT_FAILED,
   UPDATE_CONTACT_FAILED,
 } from '../../common/error/keys';
-import { CustomError } from '../../common/error/custom-error';
 
 @Injectable()
 export class ContactService {
+  private readonly logger = new Logger(ContactService.name);
+
   constructor(
     @Inject(ContactRepository)
     private readonly contactRepository: ContactRepository
@@ -54,7 +60,8 @@ export class ContactService {
 
   async deleteContact(contactId: number): Promise<DeleteResult> {
     return this.contactRepository.delete(contactId).catch((error) => {
-      throw new CustomError(DELETE_CONTACT_FAILED, error);
+      this.logger.error(error);
+      throw new BadRequestException(DELETE_CONTACT_FAILED);
     });
   }
 
@@ -68,7 +75,8 @@ export class ContactService {
         userId,
       })
       .catch((error) => {
-        throw new CustomError(SAVE_CONTACT_FAILED, error);
+        this.logger.error(error);
+        throw new BadRequestException(SAVE_CONTACT_FAILED);
       });
   }
 
@@ -94,7 +102,8 @@ export class ContactService {
         { ...data }
       )
       .catch((error) => {
-        throw new CustomError(UPDATE_CONTACT_FAILED, error);
+        this.logger.error(error);
+        throw new BadRequestException(UPDATE_CONTACT_FAILED);
       });
   }
 }

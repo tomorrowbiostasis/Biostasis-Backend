@@ -38,7 +38,7 @@ describe('/time-slot (integration) ', () => {
   describe('/time-slot/:id (PATCH)', () => {
     it('Should return status 403', async () => {
       return api
-        .patch(`/contact/${faker.datatype.number()}`)
+        .patch(`/time-slot/${faker.datatype.number()}`)
         .send()
         .expect(({ status }) => {
           expect(status).toBe(403);

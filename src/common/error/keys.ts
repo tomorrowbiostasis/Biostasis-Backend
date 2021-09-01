@@ -32,3 +32,6 @@ export const FILE_TYPE_IS_INVALID = 'E0031';
 export const FILE_IS_TOO_BIG = 'E0032';
 export const FILE_CATEGORY_NOT_FOUND = 'E0033';
 export const SAVE_FILE_FAILED = 'E0034';
+export const FILE_NOT_FOUND = 'E0035';
+export const DELETE_FILE_FROM_S3_FAILED = 'E0036';
+export const DELETE_FILE_FROM_DB_FAILED = 'E0037';

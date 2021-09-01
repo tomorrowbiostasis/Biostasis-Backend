@@ -18,9 +18,13 @@ import {
   FILE_TYPE_IS_INVALID,
   FILE_IS_TOO_BIG,
   SAVE_FILE_FAILED,
+  FILE_NOT_FOUND,
+  DELETE_FILE_FROM_DB_FAILED,
+  DELETE_FILE_FROM_S3_FAILED,
 } from '../../common/error/keys';
 import { FileEntity } from '../entity/file.entity';
 import { FileRepository } from '../repository/file.repository';
+import { DeleteResult } from 'typeorm';
 
 @Injectable()
 export class FileService {
@@ -57,8 +61,7 @@ export class FileService {
 
     return this.uploadFile(file).catch((error) => {
       this.logger.error(error);
-
-      throw new CustomError(FILE_UPLOAD_FAILED, error);
+      throw new BadRequestException(FILE_UPLOAD_FAILED);
     });
   }
 
@@ -98,7 +101,52 @@ export class FileService {
         mimeType: file.mimetype,
       })
       .catch((error) => {
-        throw new CustomError(SAVE_FILE_FAILED, error);
+        this.logger.error(error);
+        throw new BadRequestException(SAVE_FILE_FAILED);
       });
+  }
+
+  async findByIdAndUserIdOrFail(
+    id: number,
+    userId: string
+  ): Promise<FileEntity> {
+    return this.fileRepository
+      .findOneByParams({
+        id,
+        userId,
+      })
+      .then((data) => {
+        if (!data) {
+          throw new BadRequestException(FILE_NOT_FOUND);
+        }
+
+        return data;
+      });
+  }
+
+  async deleteFile(file: FileEntity): Promise<DeleteResult> {
+    await new Promise((resolve, reject) => {
+      this.s3.deleteObject(
+        {
+          Bucket: this.config.get('s3.bucket'),
+          Key: file.key,
+        },
+        (error, data) => {
+          if (!error) {
+            resolve(data);
+          } else {
+            reject(error);
+          }
+        }
+      );
+    }).catch((error) => {
+      this.logger.error(error);
+      throw new BadRequestException(DELETE_FILE_FROM_S3_FAILED);
+    });
+
+    return this.fileRepository.delete(file.id).catch((error) => {
+      this.logger.error(error);
+      throw new BadRequestException(DELETE_FILE_FROM_DB_FAILED);
+    });
   }
 }
