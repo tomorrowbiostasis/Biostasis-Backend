@@ -7,6 +7,7 @@ import { QueueMessageProvider } from './provider/message-queue.provider';
 import { NotificationModule } from '../notification/notification.module';
 import { get } from 'config';
 import { MessageService } from './service/message.service';
+import { TriggerTimeSlotModule } from '../trigger-time-slot/trigger-time-slot.module';
 
 @Module({
   providers: [
@@ -17,6 +18,7 @@ import { MessageService } from './service/message.service';
   ],
   imports: [
     forwardRef(() => NotificationModule),
+    forwardRef(() => TriggerTimeSlotModule),
     BullModule.registerQueue({
       name: QUEUE.MESSAGE,
       defaultJobOptions: {

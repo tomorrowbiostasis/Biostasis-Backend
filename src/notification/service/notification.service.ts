@@ -11,7 +11,6 @@ import {
   SEND_MAIL_FAILED,
   SEND_SMS_FAILED,
   EMAIL_AND_SMS_NOT_ALLOWED,
-  MESSAGE_IS_NEEDED,
 } from '../../common/error/keys';
 import { CustomError } from '../../common/error/custom-error';
 import { DICTIONARY as NOTIFICATION_DI } from '../constant/dictionary.constant';
@@ -24,6 +23,7 @@ import { SendEmergencyMessageDTO } from '../../message/request/dto/send-emergenc
 import { MessageListInstanceCreateOptions } from 'twilio/lib/rest/api/v2010/account/message';
 import { MessageInstance } from 'twilio/lib/rest/api/v2010/account/message';
 import { MessageService } from '../../queue/service/message.service';
+import { PROCESS } from '../../queue/constant/process.constant';
 
 @Injectable()
 export class NotificationService {
@@ -47,34 +47,48 @@ export class NotificationService {
     };
   }
 
+  async handleSmsException(
+    error: Record<string, unknown>,
+    params: MessageListInstanceCreateOptions,
+    isFromQueue = false
+  ) {
+    await this.messageService.addJobToQueue(
+      PROCESS.SMS,
+      {
+        params,
+      },
+      this.config.get('queue.sendAfterTime.repeatTryingToSendMessage')
+    );
+
+    if (isFromQueue) {
+      this.logger.error(error, params);
+    } else {
+      throw new CustomError(SEND_SMS_FAILED, error);
+    }
+  }
+
   async sendSms(
     params: MessageListInstanceCreateOptions,
     isFromQueue = false
   ): Promise<MessageInstance | void> {
-    return this.twilio.messages
-      .create(params)
-      .then((result) => {
-        if (result.errorMessage) {
-          throw result;
-        } else {
-          this.logger.log(JSON.stringify(result));
-        }
+    try {
+      return this.twilio.messages
+        .create(params)
+        .then((result) => {
+          if (result.errorMessage) {
+            throw result;
+          } else {
+            this.logger.log(JSON.stringify(result));
+          }
 
-        return result;
-      })
-      .catch(async (error) => {
-        await this.messageService.addJobToQueue(
-          'sms',
-          params,
-          this.config.get('queue.sendAfterTime.repeatTryingToSendMessage')
-        );
-
-        if (isFromQueue) {
-          this.logger.log(JSON.stringify(error));
-        } else {
-          throw new CustomError(SEND_SMS_FAILED, error);
-        }
-      });
+          return result;
+        })
+        .catch(async (error) => {
+          await this.handleSmsException(error, params, isFromQueue);
+        });
+    } catch (error) {
+      await this.handleSmsException(error, params, isFromQueue);
+    }
   }
 
   prepareEmailData(
@@ -131,13 +145,15 @@ export class NotificationService {
       })
       .catch(async (error) => {
         await this.messageService.addJobToQueue(
-          'email',
-          params,
+          PROCESS.EMAIL,
+          {
+            params,
+          },
           this.config.get('queue.sendAfterTime.repeatTryingToSendMessage')
         );
 
         if (isFromQueue) {
-          this.logger.log(JSON.stringify(error));
+          this.logger.error(error, params);
         } else {
           throw new CustomError(SEND_MAIL_FAILED, error);
         }
@@ -161,22 +177,17 @@ export class NotificationService {
       user.profile?.emergencyMessage ??
       this.config.get('emergencyTrigger.defaultMessage');
 
+    let smsData: MessageListInstanceCreateOptions;
+
     if (contact.phone && user.email !== contact.email) {
-      const smsData = this.prepareSmsData(
+      smsData = this.prepareSmsData(
         contact.phone,
         `${message} ${
           user.profile?.locationAccess === true ? data.locationUrl : ''
         }`.trim()
       );
 
-      if (data.delayed) {
-        await this.messageService.addJobToQueue(
-          'sms',
-          smsData,
-          this.config.get(`queue.sendAfterTime.${data.messageType}`),
-          `sms-${user.id}`
-        );
-      } else {
+      if (!data.delayed) {
         await this.sendSms(smsData);
       }
     }
@@ -210,15 +221,20 @@ export class NotificationService {
       ]
     );
 
+    if (!data.delayed) {
+      await this.sendEmail(emailData);
+    }
+
     if (data.delayed) {
       await this.messageService.addJobToQueue(
-        'email',
-        emailData,
+        PROCESS.EMERGENCY,
+        {
+          sms: smsData,
+          email: emailData,
+        },
         this.config.get(`queue.sendAfterTime.${data.messageType}`),
-        `email-${user.id}`
+        `${PROCESS.EMERGENCY}_${user.id}`
       );
-    } else {
-      await this.sendEmail(emailData);
     }
   }
 }

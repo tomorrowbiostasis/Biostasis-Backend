@@ -71,7 +71,7 @@ describe('NotificationService', () => {
       locationAccess: true,
     });
 
-    it('sendEmergencyMessage() does call addJobToMessageQueueAndSendSupportMessage()', async () => {
+    it('sendEmergencyMessage() does call addJobToQueue()', async () => {
       const contact = {
         name: `${faker.name.firstName()} ${faker.name.lastName()}`,
         email: faker.internet.email(),
@@ -118,7 +118,7 @@ describe('NotificationService', () => {
         ]
       );
 
-      expect(messageServiceMock.addJobToQueue).toBeCalledTimes(2);
+      expect(messageServiceMock.addJobToQueue).toBeCalledTimes(1);
       expect(service.sendEmail).toBeCalledTimes(0);
       expect(service.sendSms).toBeCalledTimes(0);
     });

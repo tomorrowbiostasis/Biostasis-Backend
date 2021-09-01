@@ -32,13 +32,11 @@ export class GetUserController {
   @Roles([ROLES.USER])
   @Get()
   async getUserProfile(@User() user: UserEntity) {
-    await this.messageService.removeJobsByUserId(user.id);
-
-    const [details, triggers] = await Promise.all([
+    const [details, trigger] = await Promise.all([
       this.userService.findByIdOrFail(user.id),
-      this.messageService.findJobsByUserId(user.id),
+      this.messageService.findJobByUserId(user.id),
     ]);
 
-    return userMapper(details, triggers);
+    return userMapper(details, trigger);
   }
 }

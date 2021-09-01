@@ -64,6 +64,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_HOST: '%'
       MYSQL_DATABASE: ${DB_DATABASE}
+      TZ: Europe/London
     entrypoint: sh -c "
       echo 'CREATE DATABASE IF NOT EXISTS biostasis_test;' > /docker-entrypoint-initdb.d/init.sql;
       /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password"

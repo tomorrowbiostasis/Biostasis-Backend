@@ -19,6 +19,7 @@ import { TriggerTimeSlotModule } from './trigger-time-slot/trigger-time-slot.mod
       entities: [`${__dirname}/**/*.entity{.ts,.js}`],
       migrationsRun: process.env.NODE_ENV === 'test',
       migrations: [`${__dirname}/migrations/*{.ts,.js}`],
+      timezone: 'Z',
     }),
     ThrottlerModule.forRoot({
       ttl: 10,
