@@ -6,9 +6,10 @@ export const cognitoIdentityServiceMock = {
   listUsers: jest.fn(
     async (
       params: AWS.CognitoIdentityServiceProvider.Types.ListUsersRequest,
-      callback: () => void,
-    ) => ({}),
+      callback: () => void
+    ) => ({})
   ),
-  adminDeleteUser: jest.fn(async () => ({})),
+  adminDeleteUser: jest.fn((params, cb) => cb()),
   adminSetUserPassword: jest.fn(async () => ({})),
+  adminUpdateUserAttributes: jest.fn((params, cb) => cb()),
 };

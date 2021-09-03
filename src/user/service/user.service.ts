@@ -4,21 +4,28 @@ import {
   BadRequestException,
   Logger,
 } from '@nestjs/common';
-import { UpdateResult } from 'typeorm';
+import { UpdateResult, DeleteResult } from 'typeorm';
 import { UserRepository } from '../repository/user.repository';
 import { UserEntity } from '../entity/user.entity';
 import {
   UPDATE_USER_EMAIL_FAILED,
   USER_NOT_FOUND,
   SAVE_USER_FAILED,
+  DELETE_USER_FROM_COGNITO_FAILED,
+  DELETE_USER_FROM_DB_FAILED,
 } from '../../common/error/keys';
-import { CustomError } from '../../common/error/custom-error';
+import * as AWS from 'aws-sdk';
+import * as configLib from 'config';
+import { DICTIONARY } from '../../common/constant/dictionary.constant';
 
 @Injectable()
 export class UserService {
   private readonly logger = new Logger(UserService.name);
 
   constructor(
+    @Inject(AWS.CognitoIdentityServiceProvider)
+    private readonly cognito: AWS.CognitoIdentityServiceProvider,
+    @Inject(DICTIONARY.CONFIG) private readonly config: configLib.IConfig,
     @Inject(UserRepository) private readonly userRepository: UserRepository
   ) {}
 
@@ -64,5 +71,30 @@ export class UserService {
         this.logger.error(error);
         throw new BadRequestException(UPDATE_USER_EMAIL_FAILED);
       });
+  }
+
+  async deleteUser(user: UserEntity): Promise<DeleteResult> {
+    await new Promise((resolve, reject) => {
+      this.cognito.adminDeleteUser(
+        {
+          UserPoolId: this.config.get('authorization.userPoolId'),
+          Username: user.id,
+        },
+        (error, result) => {
+          if (!error) {
+            resolve(result);
+          }
+          reject(error);
+        }
+      );
+    }).catch((error) => {
+      this.logger.error(error, JSON.stringify(user));
+      throw new BadRequestException(DELETE_USER_FROM_COGNITO_FAILED, error);
+    });
+
+    return this.userRepository.delete(user.id).catch((error) => {
+      this.logger.error(error);
+      throw new BadRequestException(DELETE_USER_FROM_DB_FAILED, error);
+    });
   }
 }

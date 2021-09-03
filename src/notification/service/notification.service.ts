@@ -61,7 +61,7 @@ export class NotificationService {
     );
 
     if (isFromQueue) {
-      this.logger.error(error, params);
+      this.logger.error(error, JSON.stringify(params));
     } else {
       throw new CustomError(SEND_SMS_FAILED, error);
     }
@@ -153,7 +153,7 @@ export class NotificationService {
         );
 
         if (isFromQueue) {
-          this.logger.error(error, params);
+          this.logger.error(error, JSON.stringify(params));
         } else {
           throw new CustomError(SEND_MAIL_FAILED, error);
         }

@@ -5,7 +5,7 @@ import { authGuardMock } from './auth.guard.mock';
 import { CognitoStrategy } from '../../src/authentication/strategy/cognito.strategy';
 import { AppModule } from '../../src/app.module';
 import * as AWS from 'aws-sdk';
-import { awsCognitoMock } from './aws-cognito.mock';
+import { cognitoIdentityServiceMock } from './cognito-identit-service.mock';
 import { DICTIONARY as NOTIFICATION_DI } from '../../src/notification/constant/dictionary.constant';
 import { mailJetMock } from './mailjet.mock';
 import * as twilioLibrary from 'twilio';
@@ -30,7 +30,7 @@ export const getTestApp = async () => {
     .overrideGuard(AuthGuard('cognito'))
     .useValue(authGuardMock)
     .overrideProvider(AWS.CognitoIdentityServiceProvider)
-    .useValue(awsCognitoMock)
+    .useValue(cognitoIdentityServiceMock)
     .overrideProvider(NOTIFICATION_DI.MAIL_JET)
     .useValue(mailJetMock)
     .overrideProvider(twilioLibrary.Twilio)

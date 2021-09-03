@@ -39,7 +39,7 @@ export class MessageService {
         throw result;
       })
       .catch((error) => {
-        this.logger.error(error, data, deviceId);
+        this.logger.error(error, JSON.stringify(data), deviceId);
       });
   }
 }
