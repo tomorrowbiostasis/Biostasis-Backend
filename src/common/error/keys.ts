@@ -35,3 +35,5 @@ export const SAVE_FILE_FAILED = 'E0034';
 export const FILE_NOT_FOUND = 'E0035';
 export const DELETE_FILE_FROM_S3_FAILED = 'E0036';
 export const DELETE_FILE_FROM_DB_FAILED = 'E0037';
+export const DELETE_USER_FROM_COGNITO_FAILED = 'E0038';
+export const DELETE_USER_FROM_DB_FAILED = 'E0038';

@@ -14,6 +14,7 @@ import { NotificationModule } from '../notification/notification.module';
 import { SendTestMessageController } from './controller/send-test-message.controller';
 import { GoogleLibPhoneNumberProvider } from '../common/provider/google-phone-number.provider';
 import { QueueModule } from '../queue/queue.module';
+import { DeleteUserController } from './controller/delete-account.controller';
 
 @Module({
   imports: [NotificationModule, QueueModule],
@@ -22,6 +23,7 @@ import { QueueModule } from '../queue/queue.module';
     GetUserController,
     ConfirmUserEmailController,
     SendTestMessageController,
+    DeleteUserController,
   ],
   providers: [
     UserService,
