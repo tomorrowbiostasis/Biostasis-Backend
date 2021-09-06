@@ -1,5 +1,8 @@
 import { Inject, Injectable, BadRequestException } from '@nestjs/common';
-import { FILE_CATEGORY_NOT_FOUND } from '../../common/error/keys';
+import {
+  FILE_CATEGORY_NOT_FOUND,
+  GET_FILE_CATEGORIES_FAILED,
+} from '../../common/error/keys';
 import { FileCategoryEntity } from '../entity/file-category.entity';
 import { FileCategoryRepository } from '../repository/file-category.repository';
 
@@ -8,6 +11,12 @@ export class FileCategoryService {
   constructor(
     private readonly fileCategoryRepository: FileCategoryRepository
   ) {}
+
+  async findAll(): Promise<FileCategoryEntity[]> {
+    return this.fileCategoryRepository.findManyByParams({
+      order: { id: 'ASC' },
+    });
+  }
 
   async findByCodeOrFail(code: string): Promise<FileCategoryEntity> {
     return this.fileCategoryRepository

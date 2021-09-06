@@ -6,6 +6,14 @@ import { FileEntity } from '../entity/file.entity';
 export class FileRepository extends Repository<FileEntity> {
   private readonly logger = new Logger(FileRepository.name);
 
+  findManyByParams(params: Record<string, unknown>): Promise<FileEntity[]> {
+    return new Promise((resolve) => {
+      this.find(params)
+        .then((data) => resolve(data))
+        .catch((error) => this.logger.error(error));
+    });
+  }
+
   findOneByParams(params: Record<string, unknown>): Promise<FileEntity> {
     return new Promise((resolve) => {
       this.findOne(params)

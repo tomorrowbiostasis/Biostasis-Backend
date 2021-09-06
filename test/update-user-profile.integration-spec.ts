@@ -41,167 +41,167 @@ describe('/user (integration) ', () => {
           expect(status).toBe(403);
         });
     });
-  });
 
-  it('Should return status 400 and error VALIDATION_FAILED for invalid dataset', async () => {
-    await api
-      .patch('/user')
-      .set('Authorization', dataset.user.id)
-      .send({
-        phone: null,
-      })
-      .then((result) => {
-        expect(result.status).toBe(400);
-        expect(result.body.error.code).toBe(VALIDATION_FAILED);
-      });
+    it('Should return status 400 and error VALIDATION_FAILED for invalid dataset', async () => {
+      await api
+        .patch('/user')
+        .set('Authorization', dataset.user.id)
+        .send({
+          phone: null,
+        })
+        .then((result) => {
+          expect(result.status).toBe(400);
+          expect(result.body.error.code).toBe(VALIDATION_FAILED);
+        });
 
-    await api
-      .patch('/user')
-      .set('Authorization', dataset.user.id)
-      .send({
-        prefix: null,
-      })
-      .then((result) => {
-        expect(result.status).toBe(400);
-        expect(result.body.error.code).toBe(VALIDATION_FAILED);
-      });
+      await api
+        .patch('/user')
+        .set('Authorization', dataset.user.id)
+        .send({
+          prefix: null,
+        })
+        .then((result) => {
+          expect(result.status).toBe(400);
+          expect(result.body.error.code).toBe(VALIDATION_FAILED);
+        });
 
-    await api
-      .patch('/api/v2/user')
-      .set('Authorization', dataset.user.id)
-      .send({
+      await api
+        .patch('/api/v2/user')
+        .set('Authorization', dataset.user.id)
+        .send({
+          prefix: getRandomPhonePrefix(),
+          phone: getRandomPhoneNumber(),
+        })
+        .then(({ status, body }) => {
+          expect(status).toBe(400);
+          expect(body.error.code).toBe(VALIDATION_FAILED);
+        });
+    });
+
+    it('Should return status 400 and error PHONE_NUMBER_IS_INVALID', async () => {
+      await api
+        .patch('/api/v2/user')
+        .set('Authorization', dataset.user.id)
+        .send({
+          prefix: 48,
+          phone: '111456789',
+          countryCode: 'pl',
+        })
+        .then(({ status, body }) => {
+          expect(status).toBe(400);
+          expect(body.error.code).toBe(PHONE_NUMBER_IS_INVALID);
+        });
+    });
+
+    it('Should update user profile, return status 200 and valid body', async () => {
+      const data = {
         prefix: getRandomPhonePrefix(),
         phone: getRandomPhoneNumber(),
-      })
-      .then(({ status, body }) => {
-        expect(status).toBe(400);
-        expect(body.error.code).toBe(VALIDATION_FAILED);
-      });
-  });
+        name: faker.name.findName(),
+        surname: faker.name.lastName(),
+        address: `${faker.address.streetName()}, ${faker.address.city()}, ${faker.address.country()}`,
+        dateOfBirth: moment().format('DD/MM/YYYY'),
+        primaryPhysician: `${faker.name.firstName()} ${faker.name.lastName()}`,
+        primaryPhysicianAddress: `${faker.address.streetName()}, ${faker.address.city()}, ${faker.address.country()}`,
+        seriousMedicalIssues: true,
+        mostRecentDiagnosis: faker.lorem.sentence(),
+        lastHospitalVisit: moment().subtract(2, 'days').format('DD/MM/YYYY'),
+        allowNotifications: true,
+        tipsAndTricks: true,
+        emergencyEmailAndSms: true,
+        automatedVoiceCall: true,
+        locationAccess: true,
+        uploadedDocumentsAccess: true,
+        readManual: true,
+        automatedEmergency: true,
+        emergencyMessage: faker.lorem.sentence(),
+      };
 
-  it('Should return status 400 and error PHONE_NUMBER_IS_INVALID', async () => {
-    await api
-      .patch('/api/v2/user')
-      .set('Authorization', dataset.user.id)
-      .send({
-        prefix: 48,
-        phone: '111456789',
-        countryCode: 'pl',
-      })
-      .then(({ status, body }) => {
-        expect(status).toBe(400);
-        expect(body.error.code).toBe(PHONE_NUMBER_IS_INVALID);
-      });
-  });
+      let { body } = await api
+        .patch('/user')
+        .set('Authorization', dataset.user.id)
+        .send(data)
+        .expect(async ({ status }) => {
+          expect(status).toBe(200);
+        });
 
-  it('Should update user profile, return status 200 and valid body', async () => {
-    const data = {
-      prefix: getRandomPhonePrefix(),
-      phone: getRandomPhoneNumber(),
-      name: faker.name.findName(),
-      surname: faker.name.lastName(),
-      address: `${faker.address.streetName()}, ${faker.address.city()}, ${faker.address.country()}`,
-      dateOfBirth: moment().format('DD/MM/YYYY'),
-      primaryPhysician: `${faker.name.firstName()} ${faker.name.lastName()}`,
-      primaryPhysicianAddress: `${faker.address.streetName()}, ${faker.address.city()}, ${faker.address.country()}`,
-      seriousMedicalIssues: true,
-      mostRecentDiagnosis: faker.lorem.sentence(),
-      lastHospitalVisit: moment().subtract(2, 'days').format('DD/MM/YYYY'),
-      allowNotifications: true,
-      tipsAndTricks: true,
-      emergencyEmailAndSms: true,
-      automatedVoiceCall: true,
-      locationAccess: true,
-      uploadedDocumentsAccess: true,
-      readManual: true,
-      automatedEmergency: true,
-      emergencyMessage: faker.lorem.sentence(),
-    };
+      await checkProfile(body);
 
-    let { body } = await api
-      .patch('/user')
-      .set('Authorization', dataset.user.id)
-      .send(data)
-      .expect(async ({ status }) => {
-        expect(status).toBe(200);
-      });
+      expect(body.userId).toBe(dataset.user.id);
+      expect(body.name).toBe(data.name);
+      expect(body.surname).toBe(data.surname);
+      expect(body.address).toBe(data.address);
+      expect(body.dateOfBirth).toBe(data.dateOfBirth);
+      expect(body.prefix).toBe(data.prefix);
+      expect(body.phone).toBe(data.phone);
+      expect(body.primaryPhysician).toBe(data.primaryPhysician);
+      expect(body.primaryPhysicianAddress).toBe(data.primaryPhysicianAddress);
+      expect(body.seriousMedicalIssues).toBe(data.seriousMedicalIssues);
+      expect(body.mostRecentDiagnosis).toBe(data.mostRecentDiagnosis);
+      expect(body.lastHospitalVisit).toBe(data.lastHospitalVisit);
+      expect(body.allowNotifications).toBe(data.allowNotifications);
+      expect(body.tipsAndTricks).toBe(data.tipsAndTricks);
+      expect(body.emergencyEmailAndSms).toBe(data.emergencyEmailAndSms);
+      expect(body.automatedVoiceCall).toBe(data.automatedVoiceCall);
+      expect(body.locationAccess).toBe(data.locationAccess);
+      expect(body.uploadedDocumentsAccess).toBe(data.uploadedDocumentsAccess);
+      expect(body.readManual).toBe(data.readManual);
+      expect(body.automatedEmergency).toBe(data.automatedEmergency);
+      expect(body.emergencyMessage).toBe(data.emergencyMessage);
 
-    await checkProfile(body);
+      await api
+        .patch('/user')
+        .set('Authorization', dataset.user.id)
+        .send()
+        .expect(async ({ status }) => {
+          expect(status).toBe(200);
+        });
 
-    expect(body.userId).toBe(dataset.user.id);
-    expect(body.name).toBe(data.name);
-    expect(body.surname).toBe(data.surname);
-    expect(body.address).toBe(data.address);
-    expect(body.dateOfBirth).toBe(data.dateOfBirth);
-    expect(body.prefix).toBe(data.prefix);
-    expect(body.phone).toBe(data.phone);
-    expect(body.primaryPhysician).toBe(data.primaryPhysician);
-    expect(body.primaryPhysicianAddress).toBe(data.primaryPhysicianAddress);
-    expect(body.seriousMedicalIssues).toBe(data.seriousMedicalIssues);
-    expect(body.mostRecentDiagnosis).toBe(data.mostRecentDiagnosis);
-    expect(body.lastHospitalVisit).toBe(data.lastHospitalVisit);
-    expect(body.allowNotifications).toBe(data.allowNotifications);
-    expect(body.tipsAndTricks).toBe(data.tipsAndTricks);
-    expect(body.emergencyEmailAndSms).toBe(data.emergencyEmailAndSms);
-    expect(body.automatedVoiceCall).toBe(data.automatedVoiceCall);
-    expect(body.locationAccess).toBe(data.locationAccess);
-    expect(body.uploadedDocumentsAccess).toBe(data.uploadedDocumentsAccess);
-    expect(body.readManual).toBe(data.readManual);
-    expect(body.automatedEmergency).toBe(data.automatedEmergency);
-    expect(body.emergencyMessage).toBe(data.emergencyMessage);
+      const prefix = getRandomPhonePrefix();
+      const phone = getRandomPhoneNumber();
 
-    await api
-      .patch('/user')
-      .set('Authorization', dataset.user.id)
-      .send()
-      .expect(async ({ status }) => {
-        expect(status).toBe(200);
-      });
+      ({ body } = await api
+        .patch('/user')
+        .set('Authorization', dataset.user.id)
+        .send({ prefix, phone })
+        .expect(async ({ status }) => {
+          expect(status).toBe(200);
+        }));
 
-    const prefix = getRandomPhonePrefix();
-    const phone = getRandomPhoneNumber();
+      expect(body.prefix).toBe(prefix);
+      expect(body.phone).toBe(phone.toString());
 
-    ({ body } = await api
-      .patch('/user')
-      .set('Authorization', dataset.user.id)
-      .send({ prefix, phone })
-      .expect(async ({ status }) => {
-        expect(status).toBe(200);
-      }));
+      const user = await addUser();
+      const randomName = faker.name.firstName();
 
-    expect(body.prefix).toBe(prefix);
-    expect(body.phone).toBe(phone.toString());
+      ({ body } = await api
+        .patch('/user')
+        .set('Authorization', user.id)
+        .send({ name: randomName, seriousMedicalIssues: false, prefix, phone })
+        .expect(async ({ status }) => {
+          expect(status).toBe(200);
+        }));
 
-    const user = await addUser();
-    const randomName = faker.name.firstName();
+      ({ body } = await api
+        .get('/user')
+        .set('Authorization', user.id)
+        .send()
+        .expect(async ({ status }) => {
+          expect(status).toBe(200);
+        }));
 
-    ({ body } = await api
-      .patch('/user')
-      .set('Authorization', user.id)
-      .send({ name: randomName, seriousMedicalIssues: false, prefix, phone })
-      .expect(async ({ status }) => {
-        expect(status).toBe(200);
-      }));
+      expect(body.name).toBe(randomName);
+      expect(body.seriousMedicalIssues).toBe(false);
+      expect(body.prefix).toBe(prefix);
+      expect(body.phone).toBe(phone);
 
-    ({ body } = await api
-      .get('/user')
-      .set('Authorization', user.id)
-      .send()
-      .expect(async ({ status }) => {
-        expect(status).toBe(200);
-      }));
-
-    expect(body.name).toBe(randomName);
-    expect(body.seriousMedicalIssues).toBe(false);
-    expect(body.prefix).toBe(prefix);
-    expect(body.phone).toBe(phone);
-
-    ({ body } = await api
-      .patch('/api/v2/user')
-      .set('Authorization', user.id)
-      .send({ prefix: 48, phone: '654321123', countryCode: 'pl' })
-      .expect(async ({ status }) => {
-        expect(status).toBe(200);
-      }));
+      ({ body } = await api
+        .patch('/api/v2/user')
+        .set('Authorization', user.id)
+        .send({ prefix: 48, phone: '654321123', countryCode: 'pl' })
+        .expect(async ({ status }) => {
+          expect(status).toBe(200);
+        }));
+    });
   });
 });

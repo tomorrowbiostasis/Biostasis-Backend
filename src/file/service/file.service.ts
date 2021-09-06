@@ -4,13 +4,13 @@ import {
   BadRequestException,
   Logger,
 } from '@nestjs/common';
-import { CustomError } from '../../common/error/custom-error';
 import UploadResult from '../type/upload-result';
 import { DICTIONARY } from '../constant/dictionary.constant';
 import { DICTIONARY as COMMON_DI } from '../../common/constant/dictionary.constant';
 import * as AWS from 'aws-sdk';
 import * as configLib from 'config';
 import * as uuid from 'uuid';
+import * as moment from 'moment';
 import File from '../type/file';
 import {
   FILE_UPLOAD_FAILED,
@@ -21,6 +21,7 @@ import {
   FILE_NOT_FOUND,
   DELETE_FILE_FROM_DB_FAILED,
   DELETE_FILE_FROM_S3_FAILED,
+  GET_FILE_URL_FAILED,
 } from '../../common/error/keys';
 import { FileEntity } from '../entity/file.entity';
 import { FileRepository } from '../repository/file.repository';
@@ -32,10 +33,30 @@ export class FileService {
 
   constructor(
     @Inject(DICTIONARY.S3) private readonly s3: AWS.S3,
+    @Inject(DICTIONARY.CLOUD_FRONT_SIGNER)
+    private readonly cloudFrontSigner: AWS.CloudFront.Signer,
     @Inject(COMMON_DI.CONFIG) private readonly config: configLib.IConfig,
     @Inject(FileRepository)
     private readonly fileRepository: FileRepository
   ) {}
+
+  async findFilesByUserId(userId: string) {
+    return this.fileRepository.findManyByParams({ userId });
+  }
+
+  getFileURL(key: string): string {
+    try {
+      return this.cloudFrontSigner.getSignedUrl({
+        url: `${this.config.get('cloudFrontSigner.url')}/${key}`,
+        expires: moment()
+          .add(this.config.get('cloudFrontSigner.validityTime'), 'hours')
+          .unix(),
+      });
+    } catch (error) {
+      this.logger.error(error);
+      throw new BadRequestException(GET_FILE_URL_FAILED);
+    }
+  }
 
   async uploadFileOrFail(file: File): Promise<UploadResult> {
     if (!file) {
