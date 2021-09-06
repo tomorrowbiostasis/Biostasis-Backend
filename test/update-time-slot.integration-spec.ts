@@ -44,102 +44,102 @@ describe('/time-slot (integration) ', () => {
           expect(status).toBe(403);
         });
     });
-  });
 
-  it('Should return status 400 and error TIME_SLOT_NOT_FOUND for invalid dataset', async () => {
-    await api
-      .patch(`/time-slot/${faker.datatype.number()}`)
-      .set('Authorization', dataset.users[0].id)
-      .send({
+    it('Should return status 400 and error TIME_SLOT_NOT_FOUND for invalid dataset', async () => {
+      await api
+        .patch(`/time-slot/${faker.datatype.number()}`)
+        .set('Authorization', dataset.users[0].id)
+        .send({
+          active: true,
+          days: [daysOfWeekKeys[1], daysOfWeekKeys[2]],
+          from: moment().toISOString(),
+          to: moment().add(1, 'days').toISOString(),
+        })
+        .then((result) => {
+          expect(result.status).toBe(400);
+          expect(result.body.error.code).toBe(TIME_SLOT_NOT_FOUND);
+        });
+    });
+
+    it('Should not modify data, return status 400 and error UPDATE_TIME_SLOT_FAILED', async () => {
+      jest.spyOn(EntityManager.prototype, 'delete').mockImplementationOnce(
+        jest.fn(async () => {
+          throw new Error();
+        })
+      );
+
+      let body;
+      const params = {
         active: true,
         days: [daysOfWeekKeys[1], daysOfWeekKeys[2]],
         from: moment().toISOString(),
-        to: moment().add(1, 'days').toISOString(),
-      })
-      .then((result) => {
-        expect(result.status).toBe(400);
-        expect(result.body.error.code).toBe(TIME_SLOT_NOT_FOUND);
+        to: moment().add(2, 'days').toISOString(),
+      };
+
+      ({ body } = await api
+        .post('/time-slot')
+        .set('Authorization', dataset.users[0].id)
+        .send(params)
+        .expect(async ({ status }) => {
+          expect(status).toBe(201);
+        }));
+
+      await api
+        .patch(`/time-slot/${body.id}`)
+        .set('Authorization', dataset.users[0].id)
+        .send({
+          active: false,
+          days: [daysOfWeekKeys[1], daysOfWeekKeys[2], daysOfWeekKeys[3]],
+          from: moment().toISOString(),
+          to: moment().add(1, 'days').toISOString(),
+        })
+        .then((result) => {
+          expect(result.status).toBe(400);
+          expect(result.body.error.code).toBe(UPDATE_TIME_SLOT_FAILED);
+        });
+
+      const timeSlot = await getTimeSlotById(body.id);
+
+      expect(params).toEqual({
+        active: timeSlot.active,
+        days: timeSlot.days.map((item) =>
+          getEnumKeyByValue(DAYS_OF_WEEKS, item.day)
+        ),
+        from: timeSlot.from.toISOString(),
+        to: timeSlot.to.toISOString(),
       });
-  });
-
-  it('Should not modify data, return status 400 and error UPDATE_TIME_SLOT_FAILED', async () => {
-    jest.spyOn(EntityManager.prototype, 'delete').mockImplementationOnce(
-      jest.fn(async () => {
-        throw new Error();
-      })
-    );
-
-    let body;
-    const params = {
-      active: true,
-      days: [daysOfWeekKeys[1], daysOfWeekKeys[2]],
-      from: moment().toISOString(),
-      to: moment().add(2, 'days').toISOString(),
-    };
-
-    ({ body } = await api
-      .post('/time-slot')
-      .set('Authorization', dataset.users[0].id)
-      .send(params)
-      .expect(async ({ status }) => {
-        expect(status).toBe(201);
-      }));
-
-    await api
-      .patch(`/time-slot/${body.id}`)
-      .set('Authorization', dataset.users[0].id)
-      .send({
-        active: false,
-        days: [daysOfWeekKeys[1], daysOfWeekKeys[2], daysOfWeekKeys[3]],
-        from: moment().toISOString(),
-        to: moment().add(1, 'days').toISOString(),
-      })
-      .then((result) => {
-        expect(result.status).toBe(400);
-        expect(result.body.error.code).toBe(UPDATE_TIME_SLOT_FAILED);
-      });
-
-    const timeSlot = await getTimeSlotById(body.id);
-
-    expect(params).toEqual({
-      active: timeSlot.active,
-      days: timeSlot.days.map((item) =>
-        getEnumKeyByValue(DAYS_OF_WEEKS, item.day)
-      ),
-      from: timeSlot.from.toISOString(),
-      to: timeSlot.to.toISOString(),
     });
-  });
 
-  it('Should update time slot, return status 200 and valid body', async () => {
-    let body;
-    const params = {
-      active: true,
-      days: [daysOfWeekKeys[1], daysOfWeekKeys[2]],
-      from: moment().toISOString(),
-      to: moment().add(2, 'days').toISOString(),
-    };
-
-    ({ body } = await api
-      .post('/time-slot')
-      .set('Authorization', dataset.users[0].id)
-      .send(params)
-      .expect(async ({ status }) => {
-        expect(status).toBe(201);
-      }));
-
-    await api
-      .patch(`/time-slot/${body.id}`)
-      .set('Authorization', dataset.users[0].id)
-      .send({
-        active: false,
-        days: [daysOfWeekKeys[1], daysOfWeekKeys[2], daysOfWeekKeys[3]],
+    it('Should update time slot, return status 200 and valid body', async () => {
+      let body;
+      const params = {
+        active: true,
+        days: [daysOfWeekKeys[1], daysOfWeekKeys[2]],
         from: moment().toISOString(),
-        to: moment().add(1, 'days').toISOString(),
-      })
-      .then(({ status, body }) => {
-        expect(status).toBe(200);
-        checkTimeSlot(body);
-      });
+        to: moment().add(2, 'days').toISOString(),
+      };
+
+      ({ body } = await api
+        .post('/time-slot')
+        .set('Authorization', dataset.users[0].id)
+        .send(params)
+        .expect(async ({ status }) => {
+          expect(status).toBe(201);
+        }));
+
+      await api
+        .patch(`/time-slot/${body.id}`)
+        .set('Authorization', dataset.users[0].id)
+        .send({
+          active: false,
+          days: [daysOfWeekKeys[1], daysOfWeekKeys[2], daysOfWeekKeys[3]],
+          from: moment().toISOString(),
+          to: moment().add(1, 'days').toISOString(),
+        })
+        .then(({ status, body }) => {
+          expect(status).toBe(200);
+          checkTimeSlot(body);
+        });
+    });
   });
 });

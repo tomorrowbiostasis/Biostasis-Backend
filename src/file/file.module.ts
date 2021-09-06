@@ -8,9 +8,14 @@ import { FileRepositoryProvider } from './provider/file-repository.provider';
 import { FileCategoryRepositoryProvider } from './provider/file-category-repository.provider';
 import { FileCategoryService } from './service/file-category.service';
 import { DeleteContactController } from './controller/delete-file.controller';
+import { FileListController } from './controller/file-list.controller';
 
 @Module({
-  controllers: [UploadFileController, DeleteContactController],
+  controllers: [
+    UploadFileController,
+    DeleteContactController,
+    FileListController,
+  ],
   providers: [
     FileService,
     ConfigProvider,

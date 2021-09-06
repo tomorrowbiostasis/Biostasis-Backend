@@ -54,14 +54,12 @@ export class NotificationService {
   ) {
     await this.messageService.addJobToQueue(
       PROCESS.SMS,
-      {
-        params,
-      },
+      params,
       this.config.get('queue.sendAfterTime.repeatTryingToSendMessage')
     );
 
     if (isFromQueue) {
-      this.logger.error(error, JSON.stringify(params));
+      this.logger.error(JSON.stringify(error), JSON.stringify(params));
     } else {
       throw new CustomError(SEND_SMS_FAILED, error);
     }
@@ -146,14 +144,12 @@ export class NotificationService {
       .catch(async (error) => {
         await this.messageService.addJobToQueue(
           PROCESS.EMAIL,
-          {
-            params,
-          },
+          params,
           this.config.get('queue.sendAfterTime.repeatTryingToSendMessage')
         );
 
         if (isFromQueue) {
-          this.logger.error(error, JSON.stringify(params));
+          this.logger.error(JSON.stringify(error), JSON.stringify(params));
         } else {
           throw new CustomError(SEND_MAIL_FAILED, error);
         }

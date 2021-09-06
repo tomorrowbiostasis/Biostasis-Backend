@@ -32,43 +32,43 @@ describe('/contact (integration) ', () => {
           expect(status).toBe(403);
         });
     });
-  });
 
-  it('Should return status 400 and error CONTACT_NOT_FOUND for invalid dataset', async () => {
-    await api
-      .delete(`/contact/${dataset.contacts[1].id}`)
-      .set('Authorization', dataset.users[0].id)
-      .then((result) => {
-        expect(result.status).toBe(400);
-        expect(result.body.error.code).toBe(CONTACT_NOT_FOUND);
-      });
+    it('Should return status 400 and error CONTACT_NOT_FOUND for invalid dataset', async () => {
+      await api
+        .delete(`/contact/${dataset.contacts[1].id}`)
+        .set('Authorization', dataset.users[0].id)
+        .then((result) => {
+          expect(result.status).toBe(400);
+          expect(result.body.error.code).toBe(CONTACT_NOT_FOUND);
+        });
 
-    return api
-      .delete(`/contact/${faker.datatype.number()}`)
-      .set('Authorization', dataset.users[0].id)
-      .then((result) => {
-        expect(result.status).toBe(400);
-        expect(result.body.error.code).toBe(CONTACT_NOT_FOUND);
-      });
-  });
-
-  it('Should delete contact, return status 200 and valid body', async () => {
-    const contact = await addContact({
-      userId: dataset.users[0].id,
+      return api
+        .delete(`/contact/${faker.datatype.number()}`)
+        .set('Authorization', dataset.users[0].id)
+        .then((result) => {
+          expect(result.status).toBe(400);
+          expect(result.body.error.code).toBe(CONTACT_NOT_FOUND);
+        });
     });
 
-    expect(contact).toBeDefined();
-
-    await api
-      .delete(`/contact/${contact.id}`)
-      .set('Authorization', dataset.users[0].id)
-      .send()
-      .expect(async ({ status }) => {
-        expect(status).toBe(200);
+    it('Should delete contact, return status 200 and valid body', async () => {
+      const contact = await addContact({
+        userId: dataset.users[0].id,
       });
 
-    const contactDB = await getContactById(contact.id);
+      expect(contact).toBeDefined();
 
-    expect(contactDB).toBeUndefined();
+      await api
+        .delete(`/contact/${contact.id}`)
+        .set('Authorization', dataset.users[0].id)
+        .send()
+        .expect(async ({ status }) => {
+          expect(status).toBe(200);
+        });
+
+      const contactDB = await getContactById(contact.id);
+
+      expect(contactDB).toBeUndefined();
+    });
   });
 });

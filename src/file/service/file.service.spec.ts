@@ -6,6 +6,7 @@ import { FileRepository } from '../repository/file.repository';
 import { fileRepositoryMock } from '../../../test/mock/file.repository.mock';
 import { s3Mock } from '../../../test/mock/s3.mock';
 import { DICTIONARY } from '../constant/dictionary.constant';
+import { cloudFrontSignerMock } from '../../../test/mock/cloud-front-signer.mock';
 
 describe('FileService', () => {
   let service: FileService;
@@ -21,6 +22,10 @@ describe('FileService', () => {
         {
           provide: DICTIONARY.S3,
           useValue: s3Mock,
+        },
+        {
+          provide: DICTIONARY.CLOUD_FRONT_SIGNER,
+          useValue: cloudFrontSignerMock,
         },
         {
           provide: FileRepository,

@@ -41,56 +41,56 @@ describe('/time-slot (integration) ', () => {
           expect(status).toBe(403);
         });
     });
-  });
 
-  it('Should return status 400 and error TIME_SLOT_NOT_FOUND for invalid dataset', async () => {
-    const timeSlot = await addTimeSlot({
-      userId: dataset.users[1].id,
-      days: [{ day: DAYS_OF_WEEKS.MONDAY }],
+    it('Should return status 400 and error TIME_SLOT_NOT_FOUND for invalid dataset', async () => {
+      const timeSlot = await addTimeSlot({
+        userId: dataset.users[1].id,
+        days: [{ day: DAYS_OF_WEEKS.MONDAY }],
+      });
+
+      await api
+        .delete(`/time-slot/${timeSlot.id}`)
+        .set('Authorization', dataset.users[0].id)
+        .send({
+          surname: faker.name.lastName(),
+        })
+        .then((result) => {
+          expect(result.status).toBe(400);
+          expect(result.body.error.code).toBe(TIME_SLOT_NOT_FOUND);
+        });
+
+      return api
+        .delete(`/time-slot/${faker.datatype.number()}`)
+        .set('Authorization', dataset.users[0].id)
+        .send({
+          surname: faker.name.lastName(),
+        })
+        .then((result) => {
+          expect(result.status).toBe(400);
+          expect(result.body.error.code).toBe(TIME_SLOT_NOT_FOUND);
+        });
     });
 
-    await api
-      .delete(`/time-slot/${timeSlot.id}`)
-      .set('Authorization', dataset.users[0].id)
-      .send({
-        surname: faker.name.lastName(),
-      })
-      .then((result) => {
-        expect(result.status).toBe(400);
-        expect(result.body.error.code).toBe(TIME_SLOT_NOT_FOUND);
+    it('Should delete time slot, return status 200 and valid body', async () => {
+      const timeSlot = await addTimeSlot({
+        userId: dataset.users[0].id,
+        days: [{ day: DAYS_OF_WEEKS.MONDAY }],
       });
 
-    return api
-      .delete(`/time-slot/${faker.datatype.number()}`)
-      .set('Authorization', dataset.users[0].id)
-      .send({
-        surname: faker.name.lastName(),
-      })
-      .then((result) => {
-        expect(result.status).toBe(400);
-        expect(result.body.error.code).toBe(TIME_SLOT_NOT_FOUND);
-      });
-  });
+      expect(timeSlot).toBeDefined();
 
-  it('Should delete time slot, return status 200 and valid body', async () => {
-    const timeSlot = await addTimeSlot({
-      userId: dataset.users[0].id,
-      days: [{ day: DAYS_OF_WEEKS.MONDAY }],
+      await api
+        .delete(`/time-slot/${timeSlot.id}`)
+        .set('Authorization', dataset.users[0].id)
+        .send()
+        .expect(async ({ status, body }) => {
+          expect(status).toBe(200);
+          expect(body.success).toBeTruthy();
+        });
+
+      const timeSlotDB = await getTimeSlotById(timeSlot.id);
+
+      expect(timeSlotDB).toBeUndefined();
     });
-
-    expect(timeSlot).toBeDefined();
-
-    await api
-      .delete(`/time-slot/${timeSlot.id}`)
-      .set('Authorization', dataset.users[0].id)
-      .send()
-      .expect(async ({ status, body }) => {
-        expect(status).toBe(200);
-        expect(body.success).toBeTruthy();
-      });
-
-    const timeSlotDB = await getTimeSlotById(timeSlot.id);
-
-    expect(timeSlotDB).toBeUndefined();
   });
 });
