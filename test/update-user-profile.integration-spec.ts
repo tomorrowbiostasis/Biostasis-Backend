@@ -202,6 +202,22 @@ describe('/user (integration) ', () => {
         .expect(async ({ status }) => {
           expect(status).toBe(200);
         }));
+
+      ({ body } = await api
+        .patch('/api/v2/user')
+        .set('Authorization', user.id)
+        .send({ mostRecentDiagnosis: '', lastHospitalVisit: null })
+        .expect(async ({ status }) => {
+          expect(status).toBe(200);
+        }));
+
+      ({ body } = await api
+        .patch('/api/v2/user')
+        .set('Authorization', user.id)
+        .send({ mostRecentDiagnosis: null, lastHospitalVisit: null })
+        .expect(async ({ status }) => {
+          expect(status).toBe(200);
+        }));
     });
   });
 });
