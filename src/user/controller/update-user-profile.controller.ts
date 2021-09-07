@@ -141,6 +141,8 @@ export class UpdateUserProfileController {
       ]
     );
 
-    await this.notificationService.sendEmail(emailData);
+    await this.notificationService.sendEmail({
+      data: emailData,
+    });
   }
 }

@@ -11,6 +11,7 @@ import {
   SEND_MAIL_FAILED,
   SEND_SMS_FAILED,
   EMAIL_AND_SMS_NOT_ALLOWED,
+  EXPORT_DATA_FAILED,
 } from '../../common/error/keys';
 import { CustomError } from '../../common/error/custom-error';
 import { DICTIONARY as NOTIFICATION_DI } from '../constant/dictionary.constant';
@@ -24,6 +25,7 @@ import { MessageListInstanceCreateOptions } from 'twilio/lib/rest/api/v2010/acco
 import { MessageInstance } from 'twilio/lib/rest/api/v2010/account/message';
 import { MessageService } from '../../queue/service/message.service';
 import { PROCESS } from '../../queue/constant/process.constant';
+import { ExportService } from '../../user/service/export.service';
 
 @Injectable()
 export class NotificationService {
@@ -33,7 +35,8 @@ export class NotificationService {
     @Inject(DICTIONARY.CONFIG) private readonly config: configLib.IConfig,
     @Inject(NOTIFICATION_DI.MAIL_JET) private readonly mailJet: Email.Client,
     @Inject(twilioLibrary.Twilio) private readonly twilio: twilioLibrary.Twilio,
-    private readonly messageService: MessageService
+    private readonly messageService: MessageService,
+    private readonly exportService: ExportService
   ) {}
 
   prepareSmsData(
@@ -125,13 +128,49 @@ export class NotificationService {
     };
   }
 
-  async sendEmail(
-    params: Email.SendParams,
-    isFromQueue = false
-  ): Promise<Email.Response> {
+  async prepareAttachmentWithExportedData(
+    userId: string,
+    isFromQueue: boolean
+  ): Promise<Email.Attachment> {
+    const content = await this.exportService.exportDataAsBase64(userId);
+
+    if (!content) {
+      this.logger.error('Exported content is empty');
+
+      if (!isFromQueue) {
+        throw new BadRequestException(EXPORT_DATA_FAILED);
+      }
+    }
+
+    return {
+      ContentType: 'application/vnd.ms-excel',
+      Filename: 'exported-data.xls',
+      Base64Content: content,
+    };
+  }
+
+  async sendEmail(params?: {
+    data: Email.SendParams;
+    isFromQueue?: boolean;
+    exportedData?: boolean;
+    userId?: string;
+  }): Promise<Email.Response> {
+    let attachments: Email.Attachment[] = [];
+
+    if (params?.exportedData) {
+      const attachment = await this.prepareAttachmentWithExportedData(
+        params?.userId,
+        params?.isFromQueue
+      );
+
+      attachments.push(attachment);
+    }
+
+    params.data.Messages[0].Attachments = attachments;
+
     return this.mailJet
       .post('send', { version: 'v3.1' })
-      .request(params)
+      .request(params.data)
       .then((result: any) => {
         if (result.body.Messages[0].Status !== 'success') {
           throw result.body;
@@ -148,7 +187,7 @@ export class NotificationService {
           this.config.get('queue.sendAfterTime.repeatTryingToSendMessage')
         );
 
-        if (isFromQueue) {
+        if (params?.isFromQueue) {
           this.logger.error(JSON.stringify(error), JSON.stringify(params));
         } else {
           throw new CustomError(SEND_MAIL_FAILED, error);
@@ -218,7 +257,7 @@ export class NotificationService {
     );
 
     if (!data.delayed) {
-      await this.sendEmail(emailData);
+      await this.sendEmail({ data: emailData });
     }
 
     if (data.delayed) {

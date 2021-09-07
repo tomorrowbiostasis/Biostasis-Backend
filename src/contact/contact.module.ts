@@ -21,6 +21,6 @@ import { GoogleLibPhoneNumberProvider } from '../common/provider/google-phone-nu
     ContactRepositoryProvider,
     GoogleLibPhoneNumberProvider,
   ],
-  exports: [ContactService],
+  exports: [ContactService, ContactRepositoryProvider],
 })
 export class ContactModule {}

@@ -44,6 +44,7 @@
     "config": "^3.3.6",
     "dotenv": "^10.0.0",
     "firebase-admin": "^9.11.0",
+    "fs": "^0.0.1-security",
     "google-libphonenumber": "^3.2.22",
     "helmet": "^4.6.0",
     "ioredis-mock": "^5.6.0",
