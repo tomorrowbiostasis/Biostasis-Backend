@@ -19,6 +19,8 @@ import { MESSAGE_TYPE } from '../../message/enum/message-type.enum';
 import * as Bull from 'bull';
 import { MessageService } from '../../queue/service/message.service';
 import { messageServiceMock } from '../../../test/mock/message.service.mock';
+import { ExportService } from '../../user/service/export.service';
+import { exportServiceMock } from '../../../test/mock/export.service.mock';
 
 describe('NotificationService', () => {
   let service: NotificationService;
@@ -46,6 +48,10 @@ describe('NotificationService', () => {
         {
           provide: MessageService,
           useValue: messageServiceMock,
+        },
+        {
+          provide: ExportService,
+          useValue: exportServiceMock,
         },
       ],
     }).compile();

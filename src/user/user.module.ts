@@ -15,14 +15,26 @@ import { SendTestMessageController } from './controller/send-test-message.contro
 import { GoogleLibPhoneNumberProvider } from '../common/provider/google-phone-number.provider';
 import { QueueModule } from '../queue/queue.module';
 import { DeleteUserController } from './controller/delete-account.controller';
+import { ExportUserDataController } from './controller/export-user-data.controller';
+import { ContactModule } from '../contact/contact.module';
+import { ExportService } from './service/export.service';
+import { TriggerTimeSlotModule } from '../trigger-time-slot/trigger-time-slot.module';
+import { FileModule } from '../file/file.module';
 
 @Module({
-  imports: [NotificationModule, QueueModule],
+  imports: [
+    NotificationModule,
+    QueueModule,
+    ContactModule,
+    TriggerTimeSlotModule,
+    FileModule,
+  ],
   controllers: [
     UpdateUserProfileController,
     GetUserController,
     ConfirmUserEmailController,
     SendTestMessageController,
+    ExportUserDataController,
     DeleteUserController,
   ],
   providers: [
@@ -35,7 +47,8 @@ import { DeleteUserController } from './controller/delete-account.controller';
     ConfigProvider,
     UserRepositoryProvider,
     UnconfirmedEmailService,
+    ExportService,
   ],
-  exports: [UserService, ProfileService],
+  exports: [UserService, ProfileService, ExportService],
 })
 export class UserModule {}

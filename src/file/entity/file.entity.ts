@@ -45,5 +45,5 @@ export class FileEntity {
     () => FileCategoryEntity,
     (category: FileCategoryEntity) => category.files
   )
-  category: UserEntity;
+  category: FileCategoryEntity;
 }

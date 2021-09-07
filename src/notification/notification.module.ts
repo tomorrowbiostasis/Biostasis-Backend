@@ -1,12 +1,13 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { NotificationService } from './service/notification.service';
 import { MailJetProvider } from './provider/mail-jet.provider';
 import { ConfigProvider } from '../common/provider/config.provider';
 import { TwilioProvider } from './provider/twilio.provider';
 import { QueueModule } from '../queue/queue.module';
+import { UserModule } from '../user/user.module';
 
 @Module({
-  imports: [QueueModule],
+  imports: [QueueModule, forwardRef(() => UserModule)],
   providers: [
     NotificationService,
     MailJetProvider,

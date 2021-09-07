@@ -12,6 +12,7 @@ ignores: [
   "ts-loader",
   "tsconfig-paths",
   "mysql",
-  "@nestjs/typeorm"
+  "@nestjs/typeorm",
+  "fs"
 ]
 skip-missing: true
