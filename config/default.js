@@ -89,6 +89,6 @@ module.exports = {
     accessKeyId: env.CDN_PRIV_KEY_ID,
     privateKey: String(env.CDN_PRIV_KEY).replace(/\\n/g, '\n'),
     url: env.CDN_PRIV_DNS,
-    validityTime: 1000,
+    validityTime: 200000,
   },
 };
