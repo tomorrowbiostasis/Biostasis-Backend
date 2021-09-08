@@ -106,6 +106,25 @@ export class FileService {
     });
   }
 
+  async getFileAsBase64(key: string): Promise<any> {
+    return new Promise((resolve) => {
+      this.s3.getObject(
+        {
+          Bucket: this.config.get('s3.bucket'),
+          Key: key,
+        },
+        (error, data) => {
+          if (!error) {
+            resolve(data.Body.toString('base64'));
+          } else {
+            this.logger.error(JSON.stringify(error));
+            resolve(null);
+          }
+        }
+      );
+    });
+  }
+
   async saveFile(
     userId: string,
     file: File,

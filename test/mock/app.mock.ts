@@ -5,7 +5,7 @@ import { authGuardMock } from './auth.guard.mock';
 import { CognitoStrategy } from '../../src/authentication/strategy/cognito.strategy';
 import { AppModule } from '../../src/app.module';
 import * as AWS from 'aws-sdk';
-import { cognitoIdentityServiceMock } from './cognito-identit-service.mock';
+import { cognitoIdentityServiceMock } from './cognito-identity-service.mock';
 import { DICTIONARY as NOTIFICATION_DI } from '../../src/notification/constant/dictionary.constant';
 import { mailJetMock } from './mailjet.mock';
 import * as twilioLibrary from 'twilio';

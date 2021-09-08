@@ -5,9 +5,10 @@ import { ConfigProvider } from '../common/provider/config.provider';
 import { TwilioProvider } from './provider/twilio.provider';
 import { QueueModule } from '../queue/queue.module';
 import { UserModule } from '../user/user.module';
+import { FileModule } from '../file/file.module';
 
 @Module({
-  imports: [QueueModule, forwardRef(() => UserModule)],
+  imports: [QueueModule, FileModule, forwardRef(() => UserModule)],
   providers: [
     NotificationService,
     MailJetProvider,

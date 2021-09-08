@@ -61,6 +61,8 @@ export class MessageConsumer extends BasicConsumer {
       this.notificationService.sendEmail({
         data: job.data.email,
         isFromQueue: true,
+        emergencyMessage: true,
+        userId: userId,
       });
     }
   }

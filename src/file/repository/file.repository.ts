@@ -21,4 +21,21 @@ export class FileRepository extends Repository<FileEntity> {
         .catch((error) => this.logger.error(error));
     });
   }
+
+  findByCategoryCodeAndUserId(
+    codes: string[],
+    userId: string
+  ): Promise<FileEntity[]> {
+    return this.createQueryBuilder('file')
+      .innerJoin(
+        'file_category',
+        'category',
+        'category.id = file.category_id and category.code IN (:codes)',
+        {
+          codes,
+        }
+      )
+      .where('file.user_id = :userId', { userId })
+      .getMany();
+  }
 }

@@ -25,6 +25,11 @@ import { FileListController } from './controller/file-list.controller';
     FileCategoryRepositoryProvider,
     FileCategoryService,
   ],
-  exports: [FileService, FileCategoryService, FileRepositoryProvider],
+  exports: [
+    FileService,
+    FileCategoryService,
+    FileRepositoryProvider,
+    FileCategoryRepositoryProvider,
+  ],
 })
 export class FileModule {}

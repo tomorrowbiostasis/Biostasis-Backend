@@ -21,6 +21,10 @@ import { MessageService } from '../../queue/service/message.service';
 import { messageServiceMock } from '../../../test/mock/message.service.mock';
 import { ExportService } from '../../user/service/export.service';
 import { exportServiceMock } from '../../../test/mock/export.service.mock';
+import { FileService } from '../../file/service/file.service';
+import { FileRepository } from '../../file/repository/file.repository';
+import { fileRepositoryMock } from '../../../test/mock/file.repository.mock';
+import { fileServiceMock } from '../../../test/mock/file.service.mock';
 
 describe('NotificationService', () => {
   let service: NotificationService;
@@ -52,6 +56,15 @@ describe('NotificationService', () => {
         {
           provide: ExportService,
           useValue: exportServiceMock,
+        },
+
+        {
+          provide: FileService,
+          useValue: fileServiceMock,
+        },
+        {
+          provide: FileRepository,
+          useValue: fileRepositoryMock,
         },
       ],
     }).compile();

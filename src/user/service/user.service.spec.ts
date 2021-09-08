@@ -5,7 +5,7 @@ import { userRepositoryMock } from '../../../test/mock/user.repository.mock';
 import * as AWS from 'aws-sdk';
 import { DICTIONARY } from '../../common/constant/dictionary.constant';
 import { configMock } from '../../../test/mock/config.mock';
-import { cognitoIdentityServiceMock } from '../../../test/mock/cognito-identit-service.mock';
+import { cognitoIdentityServiceMock } from '../../../test/mock/cognito-identity-service.mock';
 
 describe('UserService', () => {
   let service: UserService;
