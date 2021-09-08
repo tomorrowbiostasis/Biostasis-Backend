@@ -5,12 +5,8 @@ import { initializeDataset } from './helper/user';
 import * as faker from 'faker';
 import {
   VALIDATION_FAILED,
-  LOCATION_DATA_IS_NEEDED,
-  EMAIL_AND_SMS_NOT_ALLOWED,
   EXPORT_DATA_FAILED,
 } from '../src/common/error/keys';
-import { addUser } from './entity/user.mock';
-import { addProfile } from './entity/profile.mock';
 import { ExportService } from '../src/user/service/export.service';
 
 describe('/user/export (integration) ', () => {
@@ -48,6 +44,17 @@ describe('/user/export (integration) ', () => {
         });
     });
 
+    it('Should return status 400 and error VALIDATION_FAILED', async () => {
+      return api
+        .post('/user/export')
+        .set('Authorization', dataset.user.id)
+        .send()
+        .then((result) => {
+          expect(result.status).toBe(400);
+          expect(result.body.error.code).toBe(VALIDATION_FAILED);
+        });
+    });
+
     it('Should return status 400 and error EXPORT_DATA_FAILED for invalid dataset', async () => {
       jest
         .spyOn(ExportService.prototype, 'exportDataAsBase64')
@@ -56,7 +63,7 @@ describe('/user/export (integration) ', () => {
       await api
         .post('/user/export')
         .set('Authorization', dataset.user.id)
-        .send({})
+        .send({ email: faker.internet.email() })
         .then((result) => {
           expect(result.status).toBe(400);
           expect(result.body.error.code).toBe(EXPORT_DATA_FAILED);
@@ -68,7 +75,7 @@ describe('/user/export (integration) ', () => {
         .post('/user/export')
         .set('Authorization', dataset.user.id)
         .send({
-          locationUrl: faker.internet.url(),
+          email: faker.internet.email(),
         })
         .then(({ status, body }) => {
           expect(status).toBe(201);

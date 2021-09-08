@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards } from '@nestjs/common';
+import { Controller, Post, UseGuards, Body } from '@nestjs/common';
 import {
   ApiTags,
   ApiBearerAuth,
@@ -17,6 +17,9 @@ import { getMailTemplateId } from '../../notification/helper/get-template-id';
 import { getNameOrEmail } from '../../common/helper/get-name-or-email';
 import { SuccessRO } from '../../common/response/success.ro';
 import { plainToClass } from 'class-transformer';
+import { ValidationPipe } from '../../common/pipe/validation.pipe';
+import { ExportUserDataDTO } from '../request/dto/export-user-data.dto';
+import { exportUserDataSchema } from '../request/schema/export-user-data.schema';
 
 @ApiBearerAuth()
 @UseGuards(new RolesGuard(new Reflector()))
@@ -33,7 +36,11 @@ export class ExportUserDataController {
   @ApiOperation({ summary: 'Export user data' })
   @Roles([ROLES.USER])
   @Post('/export')
-  async exportUserData(@User() user: UserEntity) {
+  async exportUserData(
+    @User() user: UserEntity,
+    @Body(new ValidationPipe(exportUserDataSchema))
+    data: ExportUserDataDTO
+  ) {
     const profile = await this.profileService.findByUserId(user.id);
     const emailData = this.notificationService.prepareEmailData(
       getMailTemplateId('DATA_EXPORT'),
@@ -43,7 +50,7 @@ export class ExportUserDataController {
       {},
       [
         {
-          Email: user.email,
+          Email: data.email,
         },
       ]
     );
