@@ -79,18 +79,6 @@ describe('/message (integration) ', () => {
           expect(body.error.code).toBe(VALIDATION_FAILED);
         });
 
-      await api
-        .post('/message/send/emergency')
-        .set('Authorization', dataset.user.id)
-        .send({
-          locationUrl: faker.internet.url(),
-          messageType: MESSAGE_TYPE.HEART_RATE_INVALID,
-        })
-        .then(({ status, body }) => {
-          expect(status).toBe(400);
-          expect(body.error.code).toBe(VALIDATION_FAILED);
-        });
-
       for (const urlValue of notValidUrlValue) {
         await api
           .post('/message/send/emergency')
@@ -181,6 +169,7 @@ describe('/message (integration) ', () => {
         .set('Authorization', user.id)
         .send({
           locationUrl: faker.internet.url(),
+          delayed: false,
         })
         .then(({ status, body }) => {
           expect(status).toBe(201);
