@@ -216,6 +216,7 @@ describe('/time-slot (integration) ', () => {
         .set('Authorization', dataset.user.id)
         .send({
           days: [daysOfWeekKeys[1]],
+          from: null,
           to: moment().add(1, 'days').toISOString(),
         })
         .expect(async ({ status }) => {
