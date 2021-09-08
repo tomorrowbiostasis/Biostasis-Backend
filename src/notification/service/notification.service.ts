@@ -161,7 +161,7 @@ export class NotificationService {
     isFromQueue: boolean
   ): Promise<Email.Attachment[]> {
     const files = await this.fileRepository.findByCategoryCodeAndUserId(
-      [CATEGORY.LAST_FILL, CATEGORY.MEDICAL_DIRECTIVE],
+      [CATEGORY.LAST_WILL, CATEGORY.MEDICAL_DIRECTIVE],
       userId
     );
     const attachments: Email.Attachment[] = [];

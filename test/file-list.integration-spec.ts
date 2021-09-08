@@ -63,7 +63,7 @@ describe('/file (integration) ', () => {
           .post('/file')
           .set('Authorization', dataset.users[1].id)
           .attach('file', `${__dirname}/mock/test.png`)
-          .field('category', CATEGORY.LAST_FILL),
+          .field('category', CATEGORY.LAST_WILL),
       ]);
 
       const { body } = await api
@@ -87,7 +87,7 @@ describe('/file (integration) ', () => {
           .length
       ).toBe(1);
       expect(
-        body.find((item) => item.code === CATEGORY.LAST_FILL).files.length
+        body.find((item) => item.code === CATEGORY.LAST_WILL).files.length
       ).toBe(0);
       expect(otherFiles.length).toBe(2);
       expect(Object.keys(otherFiles[0])).toEqual([
