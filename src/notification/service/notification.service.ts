@@ -12,6 +12,7 @@ import {
   SEND_SMS_FAILED,
   EMAIL_AND_SMS_NOT_ALLOWED,
   EXPORT_DATA_FAILED,
+  GET_FILE_CONTENT_FAILED,
 } from '../../common/error/keys';
 import { CustomError } from '../../common/error/custom-error';
 import { DICTIONARY as NOTIFICATION_DI } from '../constant/dictionary.constant';
@@ -26,6 +27,9 @@ import { MessageInstance } from 'twilio/lib/rest/api/v2010/account/message';
 import { MessageService } from '../../queue/service/message.service';
 import { PROCESS } from '../../queue/constant/process.constant';
 import { ExportService } from '../../user/service/export.service';
+import { FileRepository } from '../../file/repository/file.repository';
+import { CATEGORY } from '../../file/enum/category.enum';
+import { FileService } from '../../file/service/file.service';
 
 @Injectable()
 export class NotificationService {
@@ -36,7 +40,10 @@ export class NotificationService {
     @Inject(NOTIFICATION_DI.MAIL_JET) private readonly mailJet: Email.Client,
     @Inject(twilioLibrary.Twilio) private readonly twilio: twilioLibrary.Twilio,
     private readonly messageService: MessageService,
-    private readonly exportService: ExportService
+    private readonly exportService: ExportService,
+    @Inject(FileRepository)
+    private readonly fileRepository: FileRepository,
+    private readonly fileService: FileService
   ) {}
 
   prepareSmsData(
@@ -149,10 +156,39 @@ export class NotificationService {
     };
   }
 
+  async prepareEmergencyMessageAttachments(
+    userId: string,
+    isFromQueue: boolean
+  ): Promise<Email.Attachment[]> {
+    const files = await this.fileRepository.findByCategoryCodeAndUserId(
+      [CATEGORY.LAST_FILL, CATEGORY.MEDICAL_DIRECTIVE],
+      userId
+    );
+    const attachments: Email.Attachment[] = [];
+    let content: string;
+
+    for (const file of files) {
+      content = await this.fileService.getFileAsBase64(file.key);
+
+      if (!content && !isFromQueue) {
+        throw new BadRequestException(GET_FILE_CONTENT_FAILED);
+      }
+
+      attachments.push({
+        ContentType: file.mimeType,
+        Filename: file.name,
+        Base64Content: content,
+      });
+    }
+
+    return attachments;
+  }
+
   async sendEmail(params?: {
     data: Email.SendParams;
     isFromQueue?: boolean;
     exportedData?: boolean;
+    emergencyMessage?: boolean;
     userId?: string;
   }): Promise<Email.Response> {
     let attachments: Email.Attachment[] = [];
@@ -164,6 +200,13 @@ export class NotificationService {
       );
 
       attachments.push(attachment);
+    }
+
+    if (params?.emergencyMessage) {
+      attachments = await this.prepareEmergencyMessageAttachments(
+        params.userId,
+        params.isFromQueue
+      );
     }
 
     params.data.Messages[0].Attachments = attachments;
@@ -257,7 +300,11 @@ export class NotificationService {
     );
 
     if (!data.delayed) {
-      await this.sendEmail({ data: emailData });
+      await this.sendEmail({
+        data: emailData,
+        emergencyMessage: true,
+        userId: user.id,
+      });
     }
 
     if (data.delayed) {

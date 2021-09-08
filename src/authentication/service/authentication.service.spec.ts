@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthenticationService } from './authentication.service';
 import { DICTIONARY } from '../../common/constant/dictionary.constant';
 import { configMock } from '../../../test/mock/config.mock';
-import { cognitoIdentityServiceMock } from '../../../test/mock/cognito-identit-service.mock';
+import { cognitoIdentityServiceMock } from '../../../test/mock/cognito-identity-service.mock';
 import * as AWS from 'aws-sdk';
 
 describe('AuthenticationService', () => {

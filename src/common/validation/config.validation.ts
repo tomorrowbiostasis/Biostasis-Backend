@@ -29,4 +29,8 @@ export const configSchema: Joi.ObjectSchema = Joi.object({
   REDIS_HOST: Joi.string(),
   REDIS_PORT: Joi.number(),
   REDIS_PASSWORD: Joi.string(),
+  S3_ACCESS_KEY_ID: Joi.string(),
+  S3_BUCKET: Joi.string(),
+  S3_URL: Joi.string(),
+  FIREBASE_ACCOUNT_KEY: Joi.string(),
 }).options({ allowUnknown: true, presence: 'required' });

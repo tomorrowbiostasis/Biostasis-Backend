@@ -1,4 +1,4 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, Repository, In } from 'typeorm';
 import { FileCategoryEntity } from '../entity/file-category.entity';
 import { Logger } from '@nestjs/common';
 
