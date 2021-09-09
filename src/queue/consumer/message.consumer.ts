@@ -38,17 +38,11 @@ export class MessageConsumer extends BasicConsumer {
     const [, userId] = job.id.toString().split('_');
     const timeSlots = await this.timeSlotRepository.findActiveTimeSlots(userId);
 
-    if (timeSlots.length > 0) {
-      const time = await this.timeSlotRepository.getCurrentTime();
-
+    if (timeSlots.length > 0 && parseInt(timeSlots[0].seconds) > 0) {
       return this.messageService.addJobToQueue(
         PROCESS.EMERGENCY,
         job.data,
-        Math.ceil(
-          moment
-            .duration(moment(timeSlots[0].to).diff(moment(time[0].now)))
-            .asSeconds()
-        ) * 1000,
+        parseInt(timeSlots[0].seconds) * 1000,
         `${PROCESS.EMERGENCY}_${userId}_${moment().valueOf()}`
       );
     }
