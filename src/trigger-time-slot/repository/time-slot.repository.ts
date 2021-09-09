@@ -23,25 +23,25 @@ export class TimeSlotRepository extends Repository<TimeSlotEntity> {
     });
   }
 
-  getCurrentTime() {
-    return this.createQueryBuilder('ts').select('NOW()', 'now').execute();
-  }
-
-  findActiveTimeSlots(userId: string): Promise<TimeSlotEntity[]> {
+  findActiveTimeSlots(
+    userId: string
+  ): Promise<(TimeSlotEntity & { seconds: string })[]> {
     return this.createQueryBuilder('ts')
-      .addSelect('NOW()', 'now')
+      .addSelect(
+        'timestampdiff(SECOND, IF(ts.from IS NULL, NOW(), current_time()), IF(ts.from IS NULL, ts.to, TIME(ts.to)))',
+        'seconds'
+      )
       .where('ts.user_id = :userId', { userId })
       .andWhere('ts.active = true')
       .andWhere(
         new Brackets((qb) => {
-          qb.where(
-            '(ts.from IS NULL and NOW() BETWEEN ts.created_at AND ts.to)'
-          );
-          qb.orWhere('NOW() BETWEEN ts.from AND ts.to');
+          qb.where('(ts.from IS NULL and NOW() < ts.to)');
+          qb.orWhere('current_time() BETWEEN TIME(ts.from) AND TIME(ts.to)');
         })
       )
       .innerJoin('ts.days', 'd', 'd.day_of_week = DAYOFWEEK(NOW())')
-      .orderBy('ts.to', 'DESC')
-      .getMany();
+      .orderBy('IF(ts.from IS NULL, ts.to, TIME(ts.to))', 'DESC')
+      .limit(1)
+      .execute();
   }
 }
