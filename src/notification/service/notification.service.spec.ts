@@ -125,7 +125,7 @@ describe('NotificationService', () => {
         3057200,
         {
           contactName: contact.name,
-          userName: `${user.profile.name} ${user.profile.surname}`,
+          username: `${user.profile.name} ${user.profile.surname}`,
           message: user.profile.emergencyMessage,
           locationUrl: data.locationUrl,
         },
@@ -173,7 +173,7 @@ describe('NotificationService', () => {
         3057200,
         {
           contactName: contact.name,
-          userName: `${user.profile.name} ${user.profile.surname}`,
+          username: `${user.profile.name} ${user.profile.surname}`,
           message: user.profile.emergencyMessage,
           locationUrl: data.locationUrl,
         },
@@ -206,7 +206,7 @@ describe('NotificationService', () => {
         3057128,
         {
           contactName: contact.name,
-          userName: `${user.profile.name} ${user.profile.surname}`,
+          username: `${user.profile.name} ${user.profile.surname}`,
           message: user.profile.emergencyMessage,
         },
         {},
