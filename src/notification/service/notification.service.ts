@@ -272,7 +272,7 @@ export class NotificationService {
 
     let params: Record<string, unknown> = {
       contactName: contact.name,
-      userName: getNameOrEmail(
+      username: getNameOrEmail(
         user.profile?.name,
         user.profile?.surname,
         user.email
