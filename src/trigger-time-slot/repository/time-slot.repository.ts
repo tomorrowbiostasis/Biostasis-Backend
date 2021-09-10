@@ -28,7 +28,18 @@ export class TimeSlotRepository extends Repository<TimeSlotEntity> {
   ): Promise<(TimeSlotEntity & { seconds: string })[]> {
     return this.createQueryBuilder('ts')
       .addSelect(
-        'timestampdiff(SECOND, IF(ts.from IS NULL, NOW(), current_time()), IF(ts.from IS NULL, ts.to, TIME(ts.to)))',
+        `timestampdiff(SECOND,
+          IF(
+            ts.from IS NULL,
+            NOW(),
+            current_time()
+          ),
+          IF(
+            ts.from IS NULL,
+            ts.to,
+            IF (current_time() < TIME(ts.to), TIME(ts.to), (TIME('23:59:59') + INTERVAL 1 SECOND))
+          )
+        )`,
         'seconds'
       )
       .where('ts.user_id = :userId', { userId })
@@ -36,11 +47,17 @@ export class TimeSlotRepository extends Repository<TimeSlotEntity> {
       .andWhere(
         new Brackets((qb) => {
           qb.where('(ts.from IS NULL and NOW() < ts.to)');
-          qb.orWhere('current_time() BETWEEN TIME(ts.from) AND TIME(ts.to)');
+          qb.orWhere(
+            `IF (
+              TIME(ts.to) > TIME(ts.from),
+              current_time() BETWEEN TIME(ts.from) AND TIME(ts.to),
+              current_time() < TIME(ts.to) OR current_time() > TIME(ts.from)
+            )`
+          );
         })
       )
       .innerJoin('ts.days', 'd', 'd.day_of_week = DAYOFWEEK(NOW())')
-      .orderBy('IF(ts.from IS NULL, ts.to, TIME(ts.to))', 'DESC')
+      .orderBy('`seconds`', 'DESC')
       .limit(1)
       .execute();
   }
