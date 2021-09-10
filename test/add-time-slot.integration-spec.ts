@@ -100,19 +100,6 @@ describe('/time-slot (integration) ', () => {
           expect(status).toBe(400);
           expect(body.error.code).toBe(VALIDATION_FAILED);
         });
-
-      await api
-        .post('/time-slot')
-        .set('Authorization', dataset.user.id)
-        .send({
-          days: [daysOfWeekKeys[1]],
-          from: moment().toISOString(),
-          to: moment().subtract(1, 'days').toISOString(),
-        })
-        .then(({ status, body }) => {
-          expect(status).toBe(400);
-          expect(body.error.code).toBe(VALIDATION_FAILED);
-        });
     });
 
     it('Should update time slot if time slot without start time exists', async () => {
