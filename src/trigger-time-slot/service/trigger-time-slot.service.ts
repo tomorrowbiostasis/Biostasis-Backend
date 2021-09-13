@@ -75,6 +75,16 @@ export class TriggerTimeSlotService {
     });
   }
 
+  async isActiveTimeSlot(userId: string): Promise<boolean> {
+    return this.timeSlotRepository.findActiveTimeSlots(userId).then((data) => {
+      if (data.length > 0) {
+        return true;
+      }
+
+      return false;
+    });
+  }
+
   async saveTimeSlot(
     userId: string,
     data: AddTimeSlotDTO

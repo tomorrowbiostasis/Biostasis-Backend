@@ -11,6 +11,8 @@ import { ContactService } from '../../contact/service/contact.service';
 import { contactServiceMock } from '../../../test/mock/contact.service.mock';
 import { getContactStub } from '../../../test/entity/contact.mock';
 import { MESSAGE_TYPE } from '../../../src/message/enum/message-type.enum';
+import { TriggerTimeSlotService } from '../../trigger-time-slot/service/trigger-time-slot.service';
+import { triggerTimeSlotServiceMock } from '../../../test/mock/trigger-time-slot.service.mock';
 
 describe('Send Emergency Message Controller', () => {
   let controller: SendEmergencyMessageController;
@@ -30,6 +32,10 @@ describe('Send Emergency Message Controller', () => {
         {
           provide: ContactService,
           useValue: contactServiceMock,
+        },
+        {
+          provide: TriggerTimeSlotService,
+          useValue: triggerTimeSlotServiceMock,
         },
       ],
     }).compile();
@@ -71,10 +77,12 @@ describe('Send Emergency Message Controller', () => {
       jest
         .spyOn(userServiceMock, 'findByIdOrFail')
         .mockReturnValue(new Promise((res) => res(user)));
-
       jest
         .spyOn(contactServiceMock, 'findActiveContactsByUserId')
         .mockReturnValue(new Promise((res) => res(contacts)));
+      jest
+        .spyOn(triggerTimeSlotServiceMock, 'isActiveTimeSlot')
+        .mockReturnValue(new Promise((res) => res(false)));
 
       await controller.sendEmergencyMessage(user, data);
 
