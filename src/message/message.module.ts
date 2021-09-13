@@ -9,9 +9,16 @@ import { QueueModule } from '../queue/queue.module';
 import { CancelEmergencyMessageController } from './controller/cancel-emergency-message.controller';
 import { MessageService } from './service/mesage.service';
 import { FirebaseProvider } from './provider/firebase.provider';
+import { TriggerTimeSlotModule } from '../trigger-time-slot/trigger-time-slot.module';
 
 @Module({
-  imports: [NotificationModule, UserModule, ContactModule, QueueModule],
+  imports: [
+    NotificationModule,
+    UserModule,
+    ContactModule,
+    QueueModule,
+    TriggerTimeSlotModule,
+  ],
   controllers: [
     SendSMSController,
     SendEmergencyMessageController,

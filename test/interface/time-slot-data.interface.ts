@@ -6,9 +6,7 @@ export interface ITimeSlotData {
   from?: Date;
   to?: Date;
   userId: string;
-  days: [
-    {
-      day: number;
-    }
-  ];
+  days: {
+    day: number;
+  }[];
 }

@@ -3,15 +3,19 @@ import { clearDatabase } from './helper';
 import { getTestApp } from './mock/app.mock';
 import { initializeDataset } from './helper/message';
 import * as faker from 'faker';
+import * as moment from 'moment';
 import {
   VALIDATION_FAILED,
   LOCATION_DATA_IS_NEEDED,
   EMAIL_AND_SMS_NOT_ALLOWED,
+  TIME_SLOT_IS_UNAVAILABLE,
 } from '../src/common/error/keys';
 import { MESSAGE_TYPE } from '../src/message/enum/message-type.enum';
 import { addUser } from './entity/user.mock';
 import { addProfile } from './entity/profile.mock';
 import { addContact } from './entity/contact.mock';
+import { addTimeSlot } from './entity/trigger-time-slot.mock';
+import { DAYS_OF_WEEKS } from '../src/trigger-time-slot/enum/days-of-week.enum';
 
 describe('/message (integration) ', () => {
   let app;
@@ -104,6 +108,36 @@ describe('/message (integration) ', () => {
         });
     });
 
+    it('Should return status 400 and error TIME_SLOT_IS_UNAVAILABLE for invalid dataset', async () => {
+      await addTimeSlot({
+        userId: dataset.user.id,
+        from: moment().subtract(4, 'hours').toDate(),
+        to: moment().add(4, 'hours').toDate(),
+        days: [
+          { day: DAYS_OF_WEEKS.MONDAY },
+          { day: DAYS_OF_WEEKS.TUESDAY },
+          { day: DAYS_OF_WEEKS.WEDNESDAY },
+          { day: DAYS_OF_WEEKS.THURSDAY },
+          { day: DAYS_OF_WEEKS.FRIDAY },
+          { day: DAYS_OF_WEEKS.SATURDAY },
+          { day: DAYS_OF_WEEKS.SUNDAY },
+        ],
+      });
+
+      await api
+        .post('/message/send/emergency')
+        .set('Authorization', dataset.user.id)
+        .send({
+          locationUrl: faker.internet.url(),
+          delayed: true,
+          messageType: MESSAGE_TYPE.HEART_RATE_INVALID,
+        })
+        .then(({ status, body }) => {
+          expect(status).toBe(400);
+          expect(body.error.code).toBe(TIME_SLOT_IS_UNAVAILABLE);
+        });
+    });
+
     it('Should return status 400 and error EMAIL_AND_SMS_NOT_ALLOWED for invalid dataset', async () => {
       const user = await addUser();
       user.profile = await addProfile({
@@ -121,6 +155,8 @@ describe('/message (integration) ', () => {
         .set('Authorization', user.id)
         .send({
           locationUrl: faker.internet.url(),
+          delayed: true,
+          messageType: MESSAGE_TYPE.HEART_RATE_INVALID,
         })
         .then((result) => {
           expect(result.status).toBe(400);
