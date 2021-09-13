@@ -58,9 +58,9 @@ export class UnconfirmedEmailService {
       this.cognito.adminUpdateUserAttributes(
         {
           UserPoolId: this.config.get('authorization.userPoolId'),
-          Username: email,
+          Username: user.id,
           UserAttributes: [
-            { Name: 'email', Value: user.email },
+            { Name: 'email', Value: email },
             { Name: 'email_verified', Value: 'true' },
           ],
         },
