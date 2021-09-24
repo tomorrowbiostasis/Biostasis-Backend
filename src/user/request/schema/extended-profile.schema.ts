@@ -1,6 +1,7 @@
 import * as JoiLibrary from 'joi';
 import * as JoiDate from '@hapi/joi-date';
 import { profileSchema } from '../../../common/request/schema/profile.schema';
+import * as moment from 'moment';
 
 const Joi = JoiLibrary.extend(JoiDate);
 
@@ -11,12 +12,12 @@ export const extendedProfileSchema = {
   phone: profileSchema.phone,
   email: Joi.string().email(),
   address: Joi.string().max(200),
-  dateOfBirth: Joi.date().format('DD/MM/YYYY'),
+  dateOfBirth: Joi.date().format('DD/MM/YYYY').max('now'),
   primaryPhysician: Joi.string(),
   primaryPhysicianAddress: Joi.string(),
   seriousMedicalIssues: Joi.boolean(),
   mostRecentDiagnosis: Joi.string().allow('', null),
-  lastHospitalVisit: Joi.date().format('DD/MM/YYYY').allow(null),
+  lastHospitalVisit: Joi.date().format('DD/MM/YYYY').allow(null).max('now'),
   allowNotifications: Joi.boolean(),
   tipsAndTricks: Joi.boolean(),
   emergencyEmailAndSms: Joi.boolean(),

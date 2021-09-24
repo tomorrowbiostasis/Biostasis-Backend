@@ -76,6 +76,28 @@ describe('/user (integration) ', () => {
           expect(status).toBe(400);
           expect(body.error.code).toBe(VALIDATION_FAILED);
         });
+
+      await api
+        .patch('/api/v2/user')
+        .set('Authorization', dataset.user.id)
+        .send({
+          dateOfBirth: moment().add(1, 'days').format('DD/MM/YYYY'),
+        })
+        .then(({ status, body }) => {
+          expect(status).toBe(400);
+          expect(body.error.code).toBe(VALIDATION_FAILED);
+        });
+
+      await api
+        .patch('/api/v2/user')
+        .set('Authorization', dataset.user.id)
+        .send({
+          lastHospitalVisit: moment().add(1, 'days').format('DD/MM/YYYY'),
+        })
+        .then(({ status, body }) => {
+          expect(status).toBe(400);
+          expect(body.error.code).toBe(VALIDATION_FAILED);
+        });
     });
 
     it('Should return status 400 and error PHONE_NUMBER_IS_INVALID', async () => {
