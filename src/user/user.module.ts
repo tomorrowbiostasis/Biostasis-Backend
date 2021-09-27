@@ -20,6 +20,7 @@ import { ContactModule } from '../contact/contact.module';
 import { ExportService } from './service/export.service';
 import { TriggerTimeSlotModule } from '../trigger-time-slot/trigger-time-slot.module';
 import { FileModule } from '../file/file.module';
+import { UpdateUserDeviceIdentifierController } from './controller/update-user-device-id.controller';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { FileModule } from '../file/file.module';
     SendTestMessageController,
     ExportUserDataController,
     DeleteUserController,
+    UpdateUserDeviceIdentifierController,
   ],
   providers: [
     UserService,

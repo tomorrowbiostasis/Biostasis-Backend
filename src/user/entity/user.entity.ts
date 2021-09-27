@@ -29,6 +29,9 @@ export class UserEntity {
   @Index({ unique: true })
   email: string;
 
+  @Column({ name: 'device_id', type: 'varchar', length: 200 })
+  deviceId: string;
+
   @CreateDateColumn({ name: 'created_at', type: 'datetime' })
   createdAt: Date;
 

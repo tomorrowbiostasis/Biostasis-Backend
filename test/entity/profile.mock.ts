@@ -5,6 +5,7 @@ import { getConnection, UpdateResult } from 'typeorm';
 import { omit } from '../../src/common/helper/omit';
 import { IProfileData } from '../interface/profile-data.interface';
 import { getRandomPhoneNumber, getRandomPhonePrefix } from './contact.mock';
+import { getUserById } from '../entity/user.mock';
 
 export const getProfileStub = (data: IProfileData): ProfileEntity => {
   const profile = new ProfileEntity();
@@ -85,6 +86,7 @@ export const updateProfile = async (
 export const checkProfile = async (response: any) => {
   const userId = response.userId;
   const profileDB = await getProfileById(userId);
+  const userDB = await getUserById(userId);
 
   expect(
     omit(response, [
@@ -92,6 +94,7 @@ export const checkProfile = async (response: any) => {
       'updatedAt',
       'dateOfBirth',
       'lastHospitalVisit',
+      'deviceId',
     ])
   ).toEqual(
     omit(
@@ -110,6 +113,10 @@ export const checkProfile = async (response: any) => {
       ]
     )
   );
+
+  if (response.deviceId) {
+    expect(response.deviceId).toBe(userDB.deviceId);
+  }
 
   if (response.dateOfBirth) {
     expect(response.dateOfBirth).toBe(

@@ -58,6 +58,11 @@ export class ProfileRO {
   primaryPhysicianAddress: string;
 
   @Expose()
+  @Transform(({ value }: TransformFnParams) => value ?? null)
+  @ApiProperty({ type: String })
+  deviceId: string;
+
+  @Expose()
   @Transform(({ value }: TransformFnParams) =>
     value !== undefined ? value : null
   )
