@@ -13,6 +13,7 @@ import {
   SAVE_USER_FAILED,
   DELETE_USER_FROM_COGNITO_FAILED,
   DELETE_USER_FROM_DB_FAILED,
+  UPDATE_USER_DEVICE_ID_FAILED,
 } from '../../common/error/keys';
 import * as AWS from 'aws-sdk';
 import * as configLib from 'config';
@@ -70,6 +71,23 @@ export class UserService {
       .catch((error) => {
         this.logger.error(error);
         throw new BadRequestException(UPDATE_USER_EMAIL_FAILED);
+      });
+  }
+
+  async updateUserDeviceId(
+    userId: string,
+    deviceId: string
+  ): Promise<UpdateResult> {
+    return this.userRepository
+      .update(
+        {
+          id: userId,
+        },
+        { deviceId }
+      )
+      .catch((error) => {
+        this.logger.error(error);
+        throw new BadRequestException(UPDATE_USER_DEVICE_ID_FAILED);
       });
   }
 
