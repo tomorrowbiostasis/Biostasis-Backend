@@ -16,4 +16,7 @@ export interface IProfileData {
   automatedEmergency?: boolean;
   readManual?: boolean;
   emergencyMessage?: string;
+  regularPushNotification?: boolean;
+  frequencyOfRegularNotification?: number;
+  positiveInfoPeriod?: number;
 }

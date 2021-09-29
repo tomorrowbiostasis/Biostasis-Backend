@@ -11,4 +11,5 @@ export const getProfileDefaultValues = (
   locationAccess: !!profile?.locationAccess,
   readManual: !!profile?.readManual,
   automatedEmergency: !!profile?.automatedEmergency,
+  regularPushNotification: !!profile?.regularPushNotification,
 });

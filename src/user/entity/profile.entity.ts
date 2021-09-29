@@ -77,6 +77,15 @@ export class ProfileEntity {
   @Column({ name: 'automated_emergency', type: 'boolean' })
   automatedEmergency: boolean;
 
+  @Column({ name: 'regular_push_notification', type: 'boolean' })
+  regularPushNotification: boolean;
+
+  @Column({ name: 'frequency_of_regular_notification', type: 'tinyint' })
+  frequencyOfRegularNotification: number;
+
+  @Column({ name: 'positive_info_period', type: 'tinyint' })
+  positiveInfoPeriod: number;
+
   @CreateDateColumn({ name: 'created_at', type: 'datetime' })
   createdAt: Date;
 

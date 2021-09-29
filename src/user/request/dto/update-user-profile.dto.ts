@@ -68,4 +68,13 @@ export class UpdateUserProfileDTO {
 
   @ApiProperty({ type: String, maxLength: 1000, required: false })
   emergencyMessage: string;
+
+  @ApiProperty({ type: Boolean, required: false })
+  regularPushNotification: boolean;
+
+  @ApiProperty({ type: Number, required: false })
+  frequencyOfRegularNotification: number;
+
+  @ApiProperty({ type: Number, required: false })
+  positiveInfoPeriod: number;
 }

@@ -54,6 +54,9 @@ export const getProfileStub = (data: IProfileData): ProfileEntity => {
     data?.automatedEmergency !== undefined
       ? data.automatedEmergency
       : faker.datatype.boolean();
+  profile.positiveInfoPeriod = data?.positiveInfoPeriod;
+  profile.frequencyOfRegularNotification = data?.frequencyOfRegularNotification;
+  profile.regularPushNotification = data?.regularPushNotification;
 
   return profile;
 };

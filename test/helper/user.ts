@@ -15,6 +15,7 @@ export const initializeDataset = async (): Promise<{
     locationAccess: true,
     automatedEmergency: false,
     readManual: false,
+    positiveInfoPeriod: 10,
   });
 
   return {
