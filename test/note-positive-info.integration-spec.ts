@@ -21,7 +21,7 @@ describe('/user (integration) ', () => {
     faker.datatype.string(201),
     undefined,
     89,
-    1001,
+    721,
   ];
 
   beforeAll(async () => {
