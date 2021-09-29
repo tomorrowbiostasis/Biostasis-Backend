@@ -103,7 +103,7 @@ describe('/user (integration) ', () => {
         .patch('/api/v2/user')
         .set('Authorization', dataset.user.id)
         .send({
-          positiveInfoPeriod: 1001,
+          positiveInfoPeriod: 721,
         })
         .then(({ status, body }) => {
           expect(status).toBe(400);
@@ -160,8 +160,8 @@ describe('/user (integration) ', () => {
         automatedEmergency: true,
         emergencyMessage: faker.lorem.sentence(),
         regularPushNotification: true,
-        frequencyOfRegularNotification: 1000,
-        positiveInfoPeriod: 999,
+        frequencyOfRegularNotification: 720,
+        positiveInfoPeriod: 719,
       };
 
       let { body } = await api

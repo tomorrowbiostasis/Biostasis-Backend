@@ -20,12 +20,15 @@ import { configMock } from './config.mock';
 import { DICTIONARY as FILE_DI } from '../../src/file/constant/dictionary.constant';
 import { s3Mock } from './s3.mock';
 import { cloudFrontSignerMock } from './cloud-front-signer.mock';
+import { SchedulerService } from '../../src/scheduler/scheduler.service';
 
 export const getTestApp = async () => {
   let app;
 
   const moduleFixture = await Test.createTestingModule({ imports: [AppModule] })
     .overrideProvider(CognitoStrategy)
+    .useValue({})
+    .overrideProvider(SchedulerService)
     .useValue({})
     .overrideGuard(AuthGuard('cognito'))
     .useValue(authGuardMock)

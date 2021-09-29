@@ -57,6 +57,11 @@ import { PositiveInfoService } from './service/positive-info.service';
     ExportService,
     PositiveInfoService,
   ],
-  exports: [UserService, ProfileService, ExportService],
+  exports: [
+    UserService,
+    ProfileService,
+    ExportService,
+    PositiveInfoRepositoryProvider,
+  ],
 })
 export class UserModule {}
