@@ -12,6 +12,7 @@ import { ContactEntity } from '../../contact/entity/contact.entity';
 import { ProfileEntity } from './profile.entity';
 import { UnconfirmedEmailEntity } from './unconfirmed_email.entity';
 import { FileEntity } from '../../file/entity/file.entity';
+import { PositiveInfoEntity } from './positive-info.entity';
 
 export enum ROLES {
   USER = 0,
@@ -40,6 +41,9 @@ export class UserEntity {
 
   @OneToOne(() => ProfileEntity, (profile) => profile.user)
   profile: ProfileEntity;
+
+  @OneToOne(() => PositiveInfoEntity, (positiveInfo) => positiveInfo.user)
+  positiveInfo: PositiveInfoEntity;
 
   @OneToMany(() => ContactEntity, (contact) => contact.user)
   contacts: ContactEntity[];

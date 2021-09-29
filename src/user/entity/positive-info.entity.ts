@@ -1,0 +1,31 @@
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  JoinColumn,
+  OneToOne,
+} from 'typeorm';
+import { UserEntity } from '../../user/entity/user.entity';
+
+@Entity('positive_info')
+export class PositiveInfoEntity {
+  @PrimaryGeneratedColumn({ type: 'int' })
+  id: number;
+
+  @Column({ name: 'user_id', type: 'varchar', length: 36 })
+  userId: string;
+
+  @Column({ name: 'minutes_to_next', type: 'smallint' })
+  minutesToNext: number;
+
+  @CreateDateColumn({ name: 'created_at', type: 'datetime' })
+  createdAt: Date;
+
+  @Column({ name: 'updated_at', type: 'datetime' })
+  updatedAt: any;
+
+  @JoinColumn({ name: 'user_id' })
+  @OneToOne(() => UserEntity, (user) => user.positiveInfo)
+  user: UserEntity;
+}

@@ -21,6 +21,9 @@ import { ExportService } from './service/export.service';
 import { TriggerTimeSlotModule } from '../trigger-time-slot/trigger-time-slot.module';
 import { FileModule } from '../file/file.module';
 import { UpdateUserDeviceIdentifierController } from './controller/update-user-device-id.controller';
+import { NotePositiveInfoController } from './controller/note-positive-info.controller';
+import { PositiveInfoRepositoryProvider } from './provider/positive-info-repository.provider';
+import { PositiveInfoService } from './service/positive-info.service';
 
 @Module({
   imports: [
@@ -38,6 +41,7 @@ import { UpdateUserDeviceIdentifierController } from './controller/update-user-d
     ExportUserDataController,
     DeleteUserController,
     UpdateUserDeviceIdentifierController,
+    NotePositiveInfoController,
   ],
   providers: [
     UserService,
@@ -46,10 +50,12 @@ import { UpdateUserDeviceIdentifierController } from './controller/update-user-d
     ProfileRepositoryProvider,
     UnconfirmedEmailRepositoryProvider,
     GoogleLibPhoneNumberProvider,
+    PositiveInfoRepositoryProvider,
     ConfigProvider,
     UserRepositoryProvider,
     UnconfirmedEmailService,
     ExportService,
+    PositiveInfoService,
   ],
   exports: [UserService, ProfileService, ExportService],
 })
