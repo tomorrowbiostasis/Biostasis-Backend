@@ -119,6 +119,18 @@ export class ProfileRO {
   automatedEmergency: boolean;
 
   @Expose()
+  @ApiProperty({ type: Boolean })
+  regularPushNotification: boolean;
+
+  @Expose()
+  @ApiProperty({ type: Number })
+  frequencyOfRegularNotification: number;
+
+  @Expose()
+  @ApiProperty({ type: Number })
+  positiveInfoPeriod: number;
+
+  @Expose()
   @ApiProperty({ type: String })
   createdAt: string;
 

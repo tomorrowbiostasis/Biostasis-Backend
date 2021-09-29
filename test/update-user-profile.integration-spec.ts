@@ -98,6 +98,28 @@ describe('/user (integration) ', () => {
           expect(status).toBe(400);
           expect(body.error.code).toBe(VALIDATION_FAILED);
         });
+
+      await api
+        .patch('/api/v2/user')
+        .set('Authorization', dataset.user.id)
+        .send({
+          positiveInfoPeriod: 1001,
+        })
+        .then(({ status, body }) => {
+          expect(status).toBe(400);
+          expect(body.error.code).toBe(VALIDATION_FAILED);
+        });
+
+      await api
+        .patch('/api/v2/user')
+        .set('Authorization', dataset.user.id)
+        .send({
+          positiveInfoPeriod: 89,
+        })
+        .then(({ status, body }) => {
+          expect(status).toBe(400);
+          expect(body.error.code).toBe(VALIDATION_FAILED);
+        });
     });
 
     it('Should return status 400 and error PHONE_NUMBER_IS_INVALID', async () => {
@@ -137,6 +159,9 @@ describe('/user (integration) ', () => {
         readManual: true,
         automatedEmergency: true,
         emergencyMessage: faker.lorem.sentence(),
+        regularPushNotification: true,
+        frequencyOfRegularNotification: 1000,
+        positiveInfoPeriod: 999,
       };
 
       let { body } = await api
@@ -170,6 +195,11 @@ describe('/user (integration) ', () => {
       expect(body.readManual).toBe(data.readManual);
       expect(body.automatedEmergency).toBe(data.automatedEmergency);
       expect(body.emergencyMessage).toBe(data.emergencyMessage);
+      expect(body.regularPushNotification).toBe(data.regularPushNotification);
+      expect(body.frequencyOfRegularNotification).toBe(
+        data.frequencyOfRegularNotification
+      );
+      expect(body.positiveInfoPeriod).toBe(data.positiveInfoPeriod);
 
       await api
         .patch('/user')

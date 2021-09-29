@@ -1,7 +1,6 @@
 import * as JoiLibrary from 'joi';
 import * as JoiDate from '@hapi/joi-date';
 import { profileSchema } from '../../../common/request/schema/profile.schema';
-import * as moment from 'moment';
 
 const Joi = JoiLibrary.extend(JoiDate);
 
@@ -27,4 +26,7 @@ export const extendedProfileSchema = {
   readManual: Joi.boolean(),
   automatedEmergency: Joi.boolean(),
   emergencyMessage: Joi.string().min(10).max(1000),
+  regularPushNotification: Joi.boolean(),
+  frequencyOfRegularNotification: Joi.number().min(90).max(1000),
+  positiveInfoPeriod: Joi.number().min(90).max(1000),
 };

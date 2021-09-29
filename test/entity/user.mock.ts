@@ -53,6 +53,7 @@ export const checkUser = async (response: any) => {
         locationAccess: !!userDB.profile.locationAccess,
         readManual: !!userDB.profile.readManual,
         automatedEmergency: !!userDB.profile.automatedEmergency,
+        regularPushNotification: !!userDB.profile.regularPushNotification,
         ...userDB,
       },
       [

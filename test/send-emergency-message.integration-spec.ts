@@ -16,6 +16,8 @@ import { addProfile } from './entity/profile.mock';
 import { addContact } from './entity/contact.mock';
 import { addTimeSlot } from './entity/trigger-time-slot.mock';
 import { DAYS_OF_WEEKS } from '../src/trigger-time-slot/enum/days-of-week.enum';
+import { TimeSlotRepository } from '../src/trigger-time-slot/repository/time-slot.repository';
+import { TimeSlotEntity } from '../src/trigger-time-slot/entity/time-slot.entity';
 
 describe('/message (integration) ', () => {
   let app;
@@ -109,20 +111,9 @@ describe('/message (integration) ', () => {
     });
 
     it('Should return status 400 and error TIME_SLOT_IS_UNAVAILABLE for invalid dataset', async () => {
-      await addTimeSlot({
-        userId: dataset.user.id,
-        from: moment().subtract(4, 'hours').toDate(),
-        to: moment().add(4, 'hours').toDate(),
-        days: [
-          { day: DAYS_OF_WEEKS.MONDAY },
-          { day: DAYS_OF_WEEKS.TUESDAY },
-          { day: DAYS_OF_WEEKS.WEDNESDAY },
-          { day: DAYS_OF_WEEKS.THURSDAY },
-          { day: DAYS_OF_WEEKS.FRIDAY },
-          { day: DAYS_OF_WEEKS.SATURDAY },
-          { day: DAYS_OF_WEEKS.SUNDAY },
-        ],
-      });
+      jest
+        .spyOn(TimeSlotRepository.prototype, 'findActiveTimeSlots')
+        .mockImplementationOnce(jest.fn(async () => [{} as TimeSlotEntity]));
 
       await api
         .post('/message/send/emergency')

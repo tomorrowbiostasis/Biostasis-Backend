@@ -18,6 +18,8 @@ export enum PROFILE_WEIGHT {
   mostRecentDiagnosis = 1,
   lastHospitalVisit = 1,
   readManual = 1,
+  positiveInfoPeriod = 1,
+  frequencyOfRegularNotification = 1,
 }
 
 const calculatePercentByWeight = (user: UserEntity): number => {
@@ -34,7 +36,9 @@ const calculatePercentByWeight = (user: UserEntity): number => {
       isDefined(user[key]) ||
       (user.profile && isDefined(user.profile[key])) ||
       (user?.profile?.seriousMedicalIssues !== true &&
-        ['mostRecentDiagnosis', 'lastHospitalVisit'].includes(key))
+        ['mostRecentDiagnosis', 'lastHospitalVisit'].includes(key)) ||
+      (user?.profile?.regularPushNotification !== true &&
+        key === 'frequencyOfRegularNotification')
     ) {
       weightOfValues += Number(value);
     }
