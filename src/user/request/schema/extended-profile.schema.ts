@@ -27,6 +27,6 @@ export const extendedProfileSchema = {
   automatedEmergency: Joi.boolean(),
   emergencyMessage: Joi.string().min(10).max(1000),
   regularPushNotification: Joi.boolean(),
-  frequencyOfRegularNotification: Joi.number().min(90).max(1000),
-  positiveInfoPeriod: Joi.number().min(90).max(1000),
+  frequencyOfRegularNotification: Joi.number().min(90).max(720),
+  positiveInfoPeriod: Joi.number().min(90).max(720),
 };

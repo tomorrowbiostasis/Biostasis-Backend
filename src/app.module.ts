@@ -12,6 +12,7 @@ import { QueueModule } from './queue/queue.module';
 import { RedisProvider } from './common/provider/redis.provider';
 import { TriggerTimeSlotModule } from './trigger-time-slot/trigger-time-slot.module';
 import { FileModule } from './file/file.module';
+import { SchedulerModule } from './scheduler/scheduler.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { FileModule } from './file/file.module';
         password: get('redis.password'),
       },
     }),
+    SchedulerModule,
     AuthorizationModule,
     UserModule,
     ContactModule,
