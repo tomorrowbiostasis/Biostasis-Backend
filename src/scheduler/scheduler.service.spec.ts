@@ -6,6 +6,8 @@ import { positiveInfoRepositoryMock } from '../../test/mock/positive-info.reposi
 import { messageServiceMock } from '../../test/mock/message.service.mock';
 import { DICTIONARY } from '../common/constant/dictionary.constant';
 import { configMock } from '../../test/mock/config.mock';
+import { NotificationService } from '../notification/service/notification.service';
+import { notificationServiceMock } from '../../test/mock/notification.service.mock';
 
 describe('SchedulerService', () => {
   let service: SchedulerService;
@@ -25,6 +27,10 @@ describe('SchedulerService', () => {
         {
           provide: MessageService,
           useValue: messageServiceMock,
+        },
+        {
+          provide: NotificationService,
+          useValue: notificationServiceMock,
         },
       ],
     }).compile();

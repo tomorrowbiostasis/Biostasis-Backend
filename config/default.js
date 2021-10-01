@@ -44,12 +44,12 @@ module.exports = {
   },
   queue: {
     numberOfAttempts: 3,
-    repeatTryingToSendMessageAfterTime: 60000, // milliseconds
     sendAfterTime: {
-      repeatTryingToSendMessage: 60000,
+      repeatTryingToSendMessage: 60000, // milliseconds
       noConnectionToWatch: 300000, // milliseconds
       heartRateInvalid: 300000, // milliseconds,
       smsIfNoPositiveInfoAfterPushNotification: 5, // minutes
+      triggerIfNoPositiveInfoAfterSms: 15, // minutes
     },
   },
   database: {

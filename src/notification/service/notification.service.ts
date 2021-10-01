@@ -30,6 +30,7 @@ import { ExportService } from '../../user/service/export.service';
 import { FileRepository } from '../../file/repository/file.repository';
 import { CATEGORY } from '../../file/enum/category.enum';
 import { FileService } from '../../file/service/file.service';
+import { PositiveInfoRepository } from '../../user/repository/positive-info.repository';
 
 @Injectable()
 export class NotificationService {
@@ -43,7 +44,9 @@ export class NotificationService {
     private readonly exportService: ExportService,
     @Inject(FileRepository)
     private readonly fileRepository: FileRepository,
-    private readonly fileService: FileService
+    private readonly fileService: FileService,
+    @Inject(PositiveInfoRepository)
+    private readonly positiveInfoRepository: PositiveInfoRepository
   ) {}
 
   prepareSmsData(
@@ -59,14 +62,19 @@ export class NotificationService {
 
   async handleSmsException(
     error: Record<string, unknown>,
-    params: MessageListInstanceCreateOptions,
+    params: {
+      data: MessageListInstanceCreateOptions;
+      isPositiveInfoQuestion?: boolean;
+    },
     isFromQueue = false
   ) {
-    await this.messageService.addJobToQueue(
-      PROCESS.SMS,
-      params,
-      this.config.get('queue.sendAfterTime.repeatTryingToSendMessage')
-    );
+    if (!params.isPositiveInfoQuestion) {
+      await this.messageService.addJobToQueue(
+        PROCESS.SMS,
+        params,
+        this.config.get('queue.sendAfterTime.repeatTryingToSendMessage')
+      );
+    }
 
     if (isFromQueue) {
       this.logger.error(JSON.stringify(error), JSON.stringify(params));
@@ -76,17 +84,30 @@ export class NotificationService {
   }
 
   async sendSms(
-    params: MessageListInstanceCreateOptions,
-    isFromQueue = false
+    params: {
+      data: MessageListInstanceCreateOptions;
+      isPositiveInfoQuestion?: boolean;
+      userId?: string;
+    },
+    isFromQueue?: boolean
   ): Promise<MessageInstance | void> {
     try {
       return this.twilio.messages
-        .create(params)
-        .then((result) => {
+        .create(params.data)
+        .then(async (result) => {
           if (result.errorMessage) {
             throw result;
           } else {
             this.logger.log(JSON.stringify(result));
+          }
+
+          if (params.isPositiveInfoQuestion && params.userId) {
+            await this.positiveInfoRepository.setSmsTime(
+              params.userId,
+              this.config.get(
+                'queue.sendAfterTime.triggerIfNoPositiveInfoAfterSms'
+              )
+            );
           }
 
           return result;
@@ -266,7 +287,7 @@ export class NotificationService {
       );
 
       if (!data.delayed) {
-        await this.sendSms(smsData);
+        await this.sendSms({ data: smsData });
       }
     }
 

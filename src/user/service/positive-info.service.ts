@@ -34,6 +34,7 @@ export class PositiveInfoService {
         minutesToNext,
         updatedAt: positiveInfo?.now,
         pushNotificationTime: null,
+        smsTime: null,
       })
       .catch((error) => {
         this.logger.error(error);
