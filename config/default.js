@@ -44,11 +44,12 @@ module.exports = {
   },
   queue: {
     numberOfAttempts: 3,
-    repeatTryingToSendMessageAfterTime: 60000,
+    repeatTryingToSendMessageAfterTime: 60000, // milliseconds
     sendAfterTime: {
       repeatTryingToSendMessage: 60000,
-      noConnectionToWatch: 120000, // TODO: is temporary value for test purposes
-      heartRateInvalid: 60000, // TODO: is temporary value for test purposes
+      noConnectionToWatch: 300000, // milliseconds
+      heartRateInvalid: 300000, // milliseconds,
+      smsIfNoPositiveInfoAfterPushNotification: 5, // minutes
     },
   },
   database: {
@@ -69,6 +70,8 @@ module.exports = {
   sms: {
     noConnectionToWatch: 'We have detected no connection with your watch.',
     heartRateInvalid: 'Your hear rate is invalid.',
+    isEverythingOk:
+      'Based on your settings an automated emergency will be triggered soon. Are you ok?',
   },
   firebase: {
     accountKey: firebaseAccountKey,

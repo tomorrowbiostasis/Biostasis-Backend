@@ -1,4 +1,4 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, Repository, UpdateResult } from 'typeorm';
 import { Logger } from '@nestjs/common';
 import { PositiveInfoEntity } from '../entity/positive-info.entity';
 
@@ -13,6 +13,7 @@ export class PositiveInfoRepository extends Repository<PositiveInfoEntity> {
         .where(
           'date_add(positiveInfo.updated_at , interval positiveInfo.minutes_to_next minute) < NOW()'
         )
+        .andWhere('positiveInfo.push_notification_time IS NULL')
         .getMany()
         .then((data) => resolve(data))
         .catch((error) => this.logger.error(error));
@@ -27,5 +28,19 @@ export class PositiveInfoRepository extends Repository<PositiveInfoEntity> {
       .execute()
       .then((data) => data.pop())
       .catch((error) => this.logger.error(error));
+  }
+
+  setPushNotificationTime(
+    userIds: string[],
+    period: number
+  ): Promise<UpdateResult> {
+    return this.createQueryBuilder()
+      .update(PositiveInfoEntity)
+      .set({
+        pushNotificationTime: () => 'NOW() + INTERVAL :period MINUTE',
+      })
+      .where('user_id IN (:userIds)', { userIds })
+      .setParameter('period', period)
+      .execute();
   }
 }

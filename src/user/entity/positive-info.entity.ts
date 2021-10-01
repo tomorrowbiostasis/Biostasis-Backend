@@ -23,7 +23,10 @@ export class PositiveInfoEntity {
   createdAt: Date;
 
   @Column({ name: 'updated_at', type: 'datetime' })
-  updatedAt: any;
+  updatedAt: Date;
+
+  @Column({ name: 'push_notification_time', type: 'datetime' })
+  pushNotificationTime: Date;
 
   @JoinColumn({ name: 'user_id' })
   @OneToOne(() => UserEntity, (user) => user.positiveInfo)

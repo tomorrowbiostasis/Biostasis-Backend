@@ -26,7 +26,6 @@ export class MessageService {
         },
         {
           priority: 'high',
-          contentAvailable: true,
         }
       )
       .then((result) => {
