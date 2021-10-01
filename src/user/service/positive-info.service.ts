@@ -33,6 +33,7 @@ export class PositiveInfoService {
         userId,
         minutesToNext,
         updatedAt: positiveInfo?.now,
+        pushNotificationTime: null,
       })
       .catch((error) => {
         this.logger.error(error);
