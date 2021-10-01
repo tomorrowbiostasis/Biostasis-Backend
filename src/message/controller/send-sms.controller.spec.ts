@@ -93,9 +93,11 @@ describe('Send SMS Controller', () => {
         );
 
         expect(notificationServiceMock.sendSms).toBeCalledWith({
-          from: sender,
-          to: recipient,
-          body: messages.get(messageType),
+          data: {
+            from: sender,
+            to: recipient,
+            body: messages.get(messageType),
+          },
         });
       }
     });

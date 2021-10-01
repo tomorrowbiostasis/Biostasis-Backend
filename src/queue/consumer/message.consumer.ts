@@ -5,8 +5,6 @@ import { QUEUE } from '../constant/queue.constant';
 import { NotificationService } from '../../notification/service/notification.service';
 import { BasicConsumer } from './basic.consumer';
 import { PROCESS } from '../constant/process.constant';
-import { TimeSlotRepository } from '../../trigger-time-slot/repository/time-slot.repository';
-import { MessageService } from '../service/message.service';
 
 @Processor(QUEUE.MESSAGE)
 export class MessageConsumer extends BasicConsumer {

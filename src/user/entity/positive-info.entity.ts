@@ -28,6 +28,9 @@ export class PositiveInfoEntity {
   @Column({ name: 'push_notification_time', type: 'datetime' })
   pushNotificationTime: Date;
 
+  @Column({ name: 'sms_time', type: 'datetime' })
+  smsTime: Date;
+
   @JoinColumn({ name: 'user_id' })
   @OneToOne(() => UserEntity, (user) => user.positiveInfo)
   user: UserEntity;

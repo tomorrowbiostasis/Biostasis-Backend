@@ -62,7 +62,7 @@ export class SendSMSController {
       `${profile.prefix}${profile.phone}`,
       this.config.get(`sms.${data.messageType}`)
     );
-    const result = await this.notificationService.sendSms(smsData);
+    const result = await this.notificationService.sendSms({ data: smsData });
 
     return plainToClass(SuccessRO, {
       success: result ? !!!result.errorCode : false,

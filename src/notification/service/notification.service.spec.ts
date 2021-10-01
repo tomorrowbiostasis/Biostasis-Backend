@@ -25,6 +25,8 @@ import { FileService } from '../../file/service/file.service';
 import { FileRepository } from '../../file/repository/file.repository';
 import { fileRepositoryMock } from '../../../test/mock/file.repository.mock';
 import { fileServiceMock } from '../../../test/mock/file.service.mock';
+import { PositiveInfoRepository } from '../../user/repository/positive-info.repository';
+import { positiveInfoRepositoryMock } from '../../../test/mock/positive-info.repository.mock';
 
 describe('NotificationService', () => {
   let service: NotificationService;
@@ -65,6 +67,10 @@ describe('NotificationService', () => {
         {
           provide: FileRepository,
           useValue: fileRepositoryMock,
+        },
+        {
+          provide: PositiveInfoRepository,
+          useValue: positiveInfoRepositoryMock,
         },
       ],
     }).compile();
