@@ -31,6 +31,17 @@ export class PositiveInfoRepository extends Repository<PositiveInfoEntity> {
       .getMany();
   }
 
+  findSmsWithoutReaction(): Promise<PositiveInfoEntity[]> {
+    return this.createQueryBuilder('positiveInfo')
+      .leftJoinAndSelect('positiveInfo.user', 'user')
+      .leftJoinAndSelect('user.profile', 'profile')
+      .leftJoinAndSelect('user.contacts', 'contacts')
+      .where('sms_time IS NOT NULL')
+      .andWhere('NOW() > sms_time')
+      .andWhere('trigger_time IS NULL')
+      .getMany();
+  }
+
   findByUserId(userId: string): Promise<{ id: number; now: string }> {
     return this.createQueryBuilder()
       .select('id')
@@ -63,6 +74,17 @@ export class PositiveInfoRepository extends Repository<PositiveInfoEntity> {
       })
       .where('user_id = :userId', { userId })
       .setParameter('period', period)
+      .execute();
+  }
+
+  setTriggerTime(userId: string): Promise<UpdateResult> {
+    return this.createQueryBuilder()
+      .update(PositiveInfoEntity)
+      .set({
+        triggerTime: () => 'NOW()',
+      })
+      .where('user_id = :userId', { userId })
+
       .execute();
   }
 }
