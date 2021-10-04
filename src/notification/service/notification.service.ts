@@ -65,8 +65,8 @@ export class NotificationService {
     params: {
       data: MessageListInstanceCreateOptions;
       isPositiveInfoQuestion?: boolean;
-    },
-    isFromQueue = false
+      isFromQueue?: boolean;
+    }
   ) {
     if (!params.isPositiveInfoQuestion) {
       await this.messageService.addJobToQueue(
@@ -76,21 +76,19 @@ export class NotificationService {
       );
     }
 
-    if (isFromQueue) {
+    if (params.isFromQueue) {
       this.logger.error(JSON.stringify(error), JSON.stringify(params));
     } else {
       throw new CustomError(SEND_SMS_FAILED, error);
     }
   }
 
-  async sendSms(
-    params: {
-      data: MessageListInstanceCreateOptions;
-      isPositiveInfoQuestion?: boolean;
-      userId?: string;
-    },
-    isFromQueue?: boolean
-  ): Promise<MessageInstance | void> {
+  async sendSms(params: {
+    data: MessageListInstanceCreateOptions;
+    isPositiveInfoQuestion?: boolean;
+    userId?: string;
+    isFromQueue?: boolean;
+  }): Promise<MessageInstance | void> {
     try {
       return this.twilio.messages
         .create(params.data)
@@ -113,10 +111,10 @@ export class NotificationService {
           return result;
         })
         .catch(async (error) => {
-          await this.handleSmsException(error, params, isFromQueue);
+          await this.handleSmsException(error, params);
         });
     } catch (error) {
-      await this.handleSmsException(error, params, isFromQueue);
+      await this.handleSmsException(error, params);
     }
   }
 
@@ -266,7 +264,7 @@ export class NotificationService {
       phone: string;
     },
     user: UserEntity,
-    data: SendEmergencyMessageDTO
+    data: SendEmergencyMessageDTO & { isFromQueue?: boolean }
   ): Promise<void> {
     if (user.profile?.emergencyEmailAndSms === false) {
       throw new BadRequestException(EMAIL_AND_SMS_NOT_ALLOWED);
@@ -282,12 +280,14 @@ export class NotificationService {
       smsData = this.prepareSmsData(
         contact.phone,
         `${message} ${
-          user.profile?.locationAccess === true ? data.locationUrl : ''
+          user.profile?.locationAccess === true && data.locationUrl
+            ? data.locationUrl
+            : ''
         }`.trim()
       );
 
       if (!data.delayed) {
-        await this.sendSms({ data: smsData });
+        await this.sendSms({ data: smsData, isFromQueue: data.isFromQueue });
       }
     }
 
@@ -302,7 +302,7 @@ export class NotificationService {
     };
 
     if (user.profile?.locationAccess === true) {
-      params.locationUrl = data.locationUrl;
+      params.locationUrl = data.locationUrl ?? '';
     }
 
     const emailData = this.prepareEmailData(
@@ -325,6 +325,7 @@ export class NotificationService {
         data: emailData,
         emergencyMessage: true,
         userId: user.id,
+        isFromQueue: data.isFromQueue,
       });
     }
 

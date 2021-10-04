@@ -22,7 +22,7 @@ export class MessageConsumer extends BasicConsumer {
 
   @Process(PROCESS.SMS)
   async handleSmsProcess(job: Job) {
-    this.notificationService.sendSms(job.data, true);
+    this.notificationService.sendSms({ ...job.data, isFromQueue: true });
   }
 
   @Process(PROCESS.EMERGENCY)
@@ -30,7 +30,7 @@ export class MessageConsumer extends BasicConsumer {
     const [, userId] = job.id.toString().split('_');
 
     if (job.data.sms) {
-      this.notificationService.sendSms(job.data.sms, true);
+      this.notificationService.sendSms({ ...job.data.sms, isFromQueue: true });
     }
 
     if (job.data.email) {
