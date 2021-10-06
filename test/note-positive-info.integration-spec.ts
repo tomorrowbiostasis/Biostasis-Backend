@@ -23,6 +23,11 @@ describe('/user (integration) ', () => {
     89,
     721,
   ];
+  const notValidLocation = [
+    faker.datatype.boolean(),
+    faker.datatype.number(),
+    faker.datatype.string(201),
+  ];
 
   beforeAll(async () => {
     app = await getTestApp();
@@ -47,12 +52,27 @@ describe('/user (integration) ', () => {
     });
 
     for (const minutesToNext of notValidPeriod) {
-      it(`Should return status 400 and error VALIDATION_FAILED if device ID is ${minutesToNext}`, async () =>
+      it(`Should return status 400 and error VALIDATION_FAILED if minutesToNext is ${minutesToNext}`, async () =>
         api
           .post('/user/positive-info')
           .set('Authorization', dataset.user.id)
           .send({
             minutesToNext,
+          })
+          .then((result) => {
+            expect(result.status).toBe(400);
+            expect(result.body.error.code).toBe(VALIDATION_FAILED);
+          }));
+    }
+
+    for (const locationUrl of notValidLocation) {
+      it(`Should return status 400 and error VALIDATION_FAILED if locationUrl is ${locationUrl}`, async () =>
+        api
+          .post('/user/positive-info')
+          .set('Authorization', dataset.user.id)
+          .send({
+            minutesToNext: 90,
+            locationUrl,
           })
           .then((result) => {
             expect(result.status).toBe(400);
@@ -83,11 +103,12 @@ describe('/user (integration) ', () => {
 
     it('Should note positive info, return status 200 and valid body', async () => {
       let minutesToNext = 90;
+      let locationUrl = faker.datatype.string(200);
 
       await api
         .post('/user/positive-info')
         .set('Authorization', dataset.user.id)
-        .send({ minutesToNext })
+        .send({ minutesToNext, locationUrl })
         .expect(({ status, body }) => {
           expect(status).toBe(201);
           expect(body.success).toBeTruthy();
@@ -96,6 +117,7 @@ describe('/user (integration) ', () => {
       const item = await getPositiveInfoByUserId(dataset.user.id);
 
       expect(item.minutesToNext).toBe(minutesToNext);
+      expect(item.location).toBe(locationUrl);
 
       await api
         .post('/user/positive-info')
@@ -113,11 +135,12 @@ describe('/user (integration) ', () => {
       expect(item.updatedAt !== newItem.updatedAt).toBeTruthy();
 
       minutesToNext = 91;
+      locationUrl = faker.datatype.string(200);
 
       await api
         .post('/user/positive-info')
         .set('Authorization', dataset.user.id)
-        .send({ minutesToNext })
+        .send({ minutesToNext, locationUrl })
         .expect(({ status, body }) => {
           expect(status).toBe(201);
           expect(body.success).toBeTruthy();
@@ -126,6 +149,7 @@ describe('/user (integration) ', () => {
       newItem = await getPositiveInfoByUserId(dataset.user.id);
 
       expect(item.id).toBe(newItem.id);
+      expect(newItem.minutesToNext).toBe(minutesToNext);
       expect(newItem.minutesToNext).toBe(minutesToNext);
     });
   });

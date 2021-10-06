@@ -7,6 +7,7 @@ import {
 import { PositiveInfoRepository } from '../repository/positive-info.repository';
 import { PositiveInfoEntity } from '../entity/positive-info.entity';
 import { SAVE_POSITIVE_INFO_FAILED } from '../../common/error/keys';
+import { NotePositiveInfoDTO } from '../request/dto/note-positive-info.dto';
 
 @Injectable()
 export class PositiveInfoService {
@@ -23,7 +24,7 @@ export class PositiveInfoService {
 
   async savePositiveInfo(
     userId: string,
-    minutesToNext: number
+    data: NotePositiveInfoDTO
   ): Promise<PositiveInfoEntity> {
     const positiveInfo = await this.positiveInfoRepository.findByUserId(userId);
 
@@ -31,7 +32,8 @@ export class PositiveInfoService {
       .save({
         ...positiveInfo,
         userId,
-        minutesToNext,
+        minutesToNext: data.minutesToNext,
+        location: data.locationUrl,
         updatedAt: positiveInfo?.now,
         pushNotificationTime: null,
         smsTime: null,

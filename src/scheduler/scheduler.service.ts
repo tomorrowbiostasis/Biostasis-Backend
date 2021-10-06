@@ -96,7 +96,7 @@ export class SchedulerService extends NestSchedule {
                 : null,
             },
             item.user,
-            { delayed: false, isFromQueue: true }
+            { delayed: false, isFromQueue: true, locationUrl: item.location }
           )
         );
       }

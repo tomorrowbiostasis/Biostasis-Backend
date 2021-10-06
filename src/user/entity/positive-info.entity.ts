@@ -34,6 +34,9 @@ export class PositiveInfoEntity {
   @Column({ name: 'trigger_time', type: 'datetime' })
   triggerTime: Date;
 
+  @Column({ type: 'varchar', length: 200 })
+  location: string;
+
   @JoinColumn({ name: 'user_id' })
   @OneToOne(() => UserEntity, (user) => user.positiveInfo)
   user: UserEntity;
