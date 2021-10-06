@@ -52,6 +52,10 @@ module.exports = {
       triggerIfNoPositiveInfoAfterSms: 15, // minutes
     },
   },
+  night: {
+    start: 20,
+    end: 6,
+  },
   database: {
     enable_ssl: false,
     charset: 'utf8mb4_unicode_ci',

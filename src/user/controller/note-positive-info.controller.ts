@@ -1,4 +1,10 @@
-import { Controller, Post, UseGuards, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  UseGuards,
+  Body,
+  BadRequestException,
+} from '@nestjs/common';
 import {
   ApiTags,
   ApiBearerAuth,
@@ -17,6 +23,8 @@ import { ValidationPipe } from '../../common/pipe/validation.pipe';
 import { NotePositiveInfoDTO } from '../request/dto/note-positive-info.dto';
 import { notePositiveInfoSchema } from '../request/schema/note-positive-info.schema';
 import { PositiveInfoService } from '../service/positive-info.service';
+import { ProfileService } from '../service/profile.service';
+import { MINUTES_TO_NEXT_MESSAGE_ARE_REQUIRED } from '../../common/error/keys';
 
 @ApiBearerAuth()
 @UseGuards(new RolesGuard(new Reflector()))
@@ -24,7 +32,10 @@ import { PositiveInfoService } from '../service/positive-info.service';
 @ApiTags('user')
 @Controller('user')
 export class NotePositiveInfoController {
-  constructor(private readonly positiveInfoService: PositiveInfoService) {}
+  constructor(
+    private readonly positiveInfoService: PositiveInfoService,
+    private readonly profileService: ProfileService
+  ) {}
 
   @ApiResponse({ status: 200, type: SuccessRO })
   @ApiOperation({ summary: 'Take note of positive information' })
@@ -35,6 +46,12 @@ export class NotePositiveInfoController {
     @Body(new ValidationPipe(notePositiveInfoSchema))
     data: NotePositiveInfoDTO
   ) {
+    const profile = await this.profileService.findByUserId(user.id);
+
+    if (!profile.regularPushNotification && !data.minutesToNext) {
+      throw new BadRequestException(MINUTES_TO_NEXT_MESSAGE_ARE_REQUIRED);
+    }
+
     const positiveInfo = await this.positiveInfoService.savePositiveInfo(
       user.id,
       data

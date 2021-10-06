@@ -24,23 +24,29 @@ export class PositiveInfoService {
 
   async savePositiveInfo(
     userId: string,
-    data: NotePositiveInfoDTO
+    params: NotePositiveInfoDTO
   ): Promise<PositiveInfoEntity> {
     const positiveInfo = await this.positiveInfoRepository.findByUserId(userId);
+    let data: Partial<PositiveInfoEntity> = {
+      ...positiveInfo,
+      userId,
+      updatedAt: positiveInfo?.now,
+      smsTime: null,
+      pushNotificationTime: null,
+      triggerTime: null,
+    };
 
-    return this.positiveInfoRepository
-      .save({
-        ...positiveInfo,
-        userId,
-        minutesToNext: data.minutesToNext,
-        location: data.locationUrl,
-        updatedAt: positiveInfo?.now,
-        pushNotificationTime: null,
-        smsTime: null,
-      })
-      .catch((error) => {
-        this.logger.error(error);
-        throw new BadRequestException(SAVE_POSITIVE_INFO_FAILED);
-      });
+    if (params.locationUrl) {
+      data.location = params.locationUrl;
+    }
+
+    if (params.minutesToNext) {
+      data.minutesToNext = params.minutesToNext;
+    }
+
+    return this.positiveInfoRepository.save(data).catch((error) => {
+      this.logger.error(error);
+      throw new BadRequestException(SAVE_POSITIVE_INFO_FAILED);
+    });
   }
 }

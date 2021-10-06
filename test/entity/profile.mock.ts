@@ -111,6 +111,7 @@ export const checkProfile = async (response: any) => {
         'contacts',
         'dateOfBirth',
         'lastHospitalVisit',
+        'regularNotificationTime',
         'user',
         'id',
       ]

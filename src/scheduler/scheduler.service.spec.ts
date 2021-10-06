@@ -8,6 +8,8 @@ import { DICTIONARY } from '../common/constant/dictionary.constant';
 import { configMock } from '../../test/mock/config.mock';
 import { NotificationService } from '../notification/service/notification.service';
 import { notificationServiceMock } from '../../test/mock/notification.service.mock';
+import { ProfileRepository } from '../user/repository/profile.repository';
+import { profileRepositoryMock } from '../../test/mock/profile.repository.mock';
 
 describe('SchedulerService', () => {
   let service: SchedulerService;
@@ -31,6 +33,10 @@ describe('SchedulerService', () => {
         {
           provide: NotificationService,
           useValue: notificationServiceMock,
+        },
+        {
+          provide: ProfileRepository,
+          useValue: profileRepositoryMock,
         },
       ],
     }).compile();

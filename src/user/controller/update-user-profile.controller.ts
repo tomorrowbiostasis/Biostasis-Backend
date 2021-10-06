@@ -38,6 +38,8 @@ import { updateUserProfileAndCheckPhoneSchema } from '../request/schema/update-u
 import * as LibPhoneNumber from 'google-libphonenumber';
 import { PHONE_NUMBER_IS_INVALID } from '../../common/error/keys';
 import { checkPhoneNumber } from '../../common/helper/check-phone-number';
+import { isDefined } from '../../common/helper/is-defined';
+import { PositiveInfoService } from '../service/positive-info.service';
 
 @ApiBearerAuth()
 @UseGuards(new RolesGuard(new Reflector()))
@@ -47,6 +49,7 @@ import { checkPhoneNumber } from '../../common/helper/check-phone-number';
 export class UpdateUserProfileController {
   constructor(
     private readonly profileService: ProfileService,
+    private readonly positiveInfoService: PositiveInfoService,
     private readonly unconfirmedEmailService: UnconfirmedEmailService,
     private readonly notificationService: NotificationService,
     @Inject(DICTIONARY.CONFIG) private readonly config: configLib.IConfig,
@@ -92,6 +95,26 @@ export class UpdateUserProfileController {
     return this.updateUserProfile(logged, data);
   }
 
+  positiveInfoFlowHasChanged(
+    profile: ProfileEntity,
+    data: UpdateUserProfileDTO
+  ) {
+    if (
+      (isDefined(data.regularPushNotification) &&
+        profile?.regularPushNotification !== data.regularPushNotification) ||
+      (!profile?.regularPushNotification &&
+        !profile?.positiveInfoPeriod &&
+        data.positiveInfoPeriod) ||
+      (profile?.regularPushNotification &&
+        !profile?.frequencyOfRegularNotification &&
+        data.frequencyOfRegularNotification)
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
   async updateUserProfile(logged: UserEntity, data: UpdateUserProfileDTO) {
     let profile = await this.profileService.findByUserId(logged.id);
 
@@ -103,10 +126,23 @@ export class UpdateUserProfileController {
       );
     }
 
+    const positiveInfoFlowHasChanged = this.positiveInfoFlowHasChanged(
+      profile,
+      data
+    );
+
     profile = await this.profileService.saveProfile(
       { ...profile, userId: logged.id },
       omit(data, ['email'])
     );
+
+    if (positiveInfoFlowHasChanged) {
+      await this.positiveInfoService.savePositiveInfo(logged.id, {
+        minutesToNext: profile.regularPushNotification
+          ? null
+          : profile.positiveInfoPeriod,
+      });
+    }
 
     return profileMapper(profile);
   }
