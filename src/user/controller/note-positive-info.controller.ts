@@ -37,7 +37,7 @@ export class NotePositiveInfoController {
   ) {
     const positiveInfo = await this.positiveInfoService.savePositiveInfo(
       user.id,
-      data.minutesToNext
+      data
     );
 
     return plainToClass(SuccessRO, { success: !!positiveInfo.id });
