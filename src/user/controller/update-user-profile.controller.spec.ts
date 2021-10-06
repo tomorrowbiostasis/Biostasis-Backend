@@ -13,8 +13,9 @@ import { getUserStub } from '../../../test/entity/user.mock';
 import { getProfileStub } from '../../../test/entity/profile.mock';
 import { UpdateUserProfileDTO } from '../request/dto/update-user-profile.dto';
 import { ProfileEntity } from '../entity/profile.entity';
-import * as LibPhoneNumber from 'google-libphonenumber';
 import { googlePhoneNumberMock } from '../../../test/mock/google-phone-number.mock';
+import { PositiveInfoService } from '../service/positive-info.service';
+import { positiveInfoServiceMock } from '../../../test/mock/positive-info.service.mock';
 
 describe('Update User Profile Controller', () => {
   let controller: UpdateUserProfileController;
@@ -42,6 +43,10 @@ describe('Update User Profile Controller', () => {
         {
           provide: DICTIONARY.GOOGLE_PHONE_NUMBER,
           useValue: googlePhoneNumberMock,
+        },
+        {
+          provide: PositiveInfoService,
+          useValue: positiveInfoServiceMock,
         },
       ],
     }).compile();

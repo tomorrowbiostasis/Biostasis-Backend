@@ -64,6 +64,7 @@ export const checkUser = async (response: any) => {
         'dateOfBirth',
         'lastHospitalVisit',
         'userId',
+        'regularNotificationTime',
       ]
     )
   );

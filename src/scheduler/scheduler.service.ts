@@ -6,6 +6,8 @@ import * as configLib from 'config';
 import { DICTIONARY } from '../common/constant/dictionary.constant';
 import { NotificationService } from '../notification/service/notification.service';
 import { getNameOrEmail } from '../common/helper/get-name-or-email';
+import { ProfileRepository } from '../user/repository/profile.repository';
+import * as moment from 'moment';
 
 @Injectable()
 export class SchedulerService extends NestSchedule {
@@ -15,34 +17,76 @@ export class SchedulerService extends NestSchedule {
     @Inject(PositiveInfoRepository)
     private readonly positiveInfoRepository: PositiveInfoRepository,
     private readonly messageService: MessageService,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
+    private readonly profileRepository: ProfileRepository
   ) {
     super();
   }
 
   @Cron('0 */5 * * * *')
-  async checkPositiveInfo() {
-    await this.sendPushNotification();
-    await this.sendSms();
+  async checkRegularPositiveInfo() {
+    await this.sendRegularPushNotification();
+    await this.sendSmsDueToLackOfPositiveInfo();
     await this.triggerEmergencyMessage();
   }
 
-  async sendPushNotification() {
+  async sendRegularPushNotification() {
+    const profiles =
+      await this.profileRepository.findWhereRegularNotificationIsNeeded();
+    const operations = [];
+    const userIds = [];
+    let hour: number;
+
+    for (const profile of profiles) {
+      hour = parseInt(moment(profile.now).utc().format('H'));
+
+      if (
+        hour > parseInt(this.config.get('night.end')) &&
+        hour < parseInt(this.config.get('night.start'))
+      ) {
+        operations.push(
+          this.messageService.sendMessageToDevice(profile.deviceId, {
+            message: this.config.get('sms.isEverythingOk'),
+          })
+        );
+        userIds.push(profile.userId);
+      }
+    }
+
+    if (operations.length > 0) {
+      Promise.all(operations);
+      await Promise.all([
+        await this.positiveInfoRepository.setPushNotificationTime(
+          userIds,
+          this.config.get(
+            'queue.sendAfterTime.smsIfNoPositiveInfoAfterPushNotification'
+          )
+        ),
+        await this.profileRepository.setRegularNotificationTime(userIds),
+      ]);
+    }
+  }
+
+  @Cron('0 */5 * * * *')
+  async checkNotRegularPositiveInfo() {
+    await this.sendPushNotificationDueToLackOfPositiveInfo();
+    await this.sendSmsDueToLackOfPositiveInfo();
+    await this.triggerEmergencyMessage();
+  }
+
+  async sendPushNotificationDueToLackOfPositiveInfo() {
     const expiredInformation =
       await this.positiveInfoRepository.findExpiredInformation();
-    let operations = [];
+    const operations = [];
     const userIds = [];
 
     for (const information of expiredInformation) {
-      if (information.user.deviceId) {
-        operations.push(
-          this.messageService.sendSilentMessageToDevice(
-            information.user.deviceId,
-            { message: this.config.get('sms.isEverythingOk') }
-          )
-        );
-        userIds.push(information.user.id);
-      }
+      operations.push(
+        this.messageService.sendMessageToDevice(information.user.deviceId, {
+          message: this.config.get('sms.isEverythingOk'),
+        })
+      );
+      userIds.push(information.user.id);
     }
 
     if (operations.length > 0) {
@@ -56,22 +100,20 @@ export class SchedulerService extends NestSchedule {
     }
   }
 
-  async sendSms() {
+  async sendSmsDueToLackOfPositiveInfo() {
     const pushNotificationWithoutReaction =
       await this.positiveInfoRepository.findPushNotificationWithoutReaction();
 
     for (const item of pushNotificationWithoutReaction) {
-      if (item.user?.profile?.prefix) {
-        this.notificationService.sendSms({
-          data: this.notificationService.prepareSmsData(
-            `${item.user.profile.prefix}${item.user.profile.phone}`,
-            this.config.get('sms.isEverythingOk')
-          ),
-          isPositiveInfoQuestion: true,
-          userId: item.user.id,
-          isFromQueue: true,
-        });
-      }
+      this.notificationService.sendSms({
+        data: this.notificationService.prepareSmsData(
+          `${item.user.profile.prefix}${item.user.profile.phone}`,
+          this.config.get('sms.isEverythingOk')
+        ),
+        isPositiveInfoQuestion: true,
+        userId: item.user.id,
+        isFromQueue: true,
+      });
     }
   }
 

@@ -10,7 +10,7 @@ export class MessageService {
     private readonly firebase
   ) {}
 
-  async sendSilentMessageToDevice(
+  async sendMessageToDevice(
     deviceId: string,
     data: Record<string, unknown>
   ): Promise<Record<string, unknown>> {

@@ -23,7 +23,7 @@ export class PositiveInfoEntity {
   createdAt: Date;
 
   @Column({ name: 'updated_at', type: 'datetime' })
-  updatedAt: Date;
+  updatedAt: string;
 
   @Column({ name: 'push_notification_time', type: 'datetime' })
   pushNotificationTime: Date;

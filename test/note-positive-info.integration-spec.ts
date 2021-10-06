@@ -6,9 +6,12 @@ import * as faker from 'faker';
 import {
   VALIDATION_FAILED,
   SAVE_POSITIVE_INFO_FAILED,
+  MINUTES_TO_NEXT_MESSAGE_ARE_REQUIRED,
 } from '../src/common/error/keys';
 import { getPositiveInfoByUserId } from './entity/positive-info.mock';
 import { PositiveInfoRepository } from '../src/user/repository/positive-info.repository';
+import { addUser } from './entity/user.mock';
+import { addProfile } from './entity/profile.mock';
 
 describe('/user (integration) ', () => {
   let app;
@@ -19,8 +22,7 @@ describe('/user (integration) ', () => {
     null,
     faker.datatype.boolean(),
     faker.datatype.string(201),
-    undefined,
-    89,
+    9,
     721,
   ];
   const notValidLocation = [
@@ -101,6 +103,17 @@ describe('/user (integration) ', () => {
         });
     });
 
+    it('Should return status 400 and error MINUTES_TO_NEXT_MESSAGE_ARE_REQUIRED', async () => {
+      await api
+        .post('/user/positive-info')
+        .set('Authorization', dataset.user.id)
+        .send({})
+        .then(({ status, body }) => {
+          expect(status).toBe(400);
+          expect(body.error.code).toBe(MINUTES_TO_NEXT_MESSAGE_ARE_REQUIRED);
+        });
+    });
+
     it('Should note positive info, return status 200 and valid body', async () => {
       let minutesToNext = 90;
       let locationUrl = faker.datatype.string(200);
@@ -150,7 +163,21 @@ describe('/user (integration) ', () => {
 
       expect(item.id).toBe(newItem.id);
       expect(newItem.minutesToNext).toBe(minutesToNext);
-      expect(newItem.minutesToNext).toBe(minutesToNext);
+
+      const user = await addUser();
+      user.profile = await addProfile({
+        userId: user.id,
+        regularPushNotification: true,
+      });
+
+      await api
+        .post('/user/positive-info')
+        .set('Authorization', user.id)
+        .send({})
+        .expect(({ status, body }) => {
+          expect(status).toBe(201);
+          expect(body.success).toBeTruthy();
+        });
     });
   });
 });

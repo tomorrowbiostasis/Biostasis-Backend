@@ -10,10 +10,14 @@ export class PositiveInfoRepository extends Repository<PositiveInfoEntity> {
     return new Promise((resolve) => {
       this.createQueryBuilder('positiveInfo')
         .leftJoinAndSelect('positiveInfo.user', 'user')
+        .leftJoinAndSelect('user.profile', 'profile')
         .where(
           'date_add(positiveInfo.updated_at , interval minutes_to_next minute) < NOW()'
         )
+        .andWhere('user.device_id IS NOT NULL')
         .andWhere('push_notification_time IS NULL')
+        .andWhere('regular_push_notification != 1')
+        .andWhere('positive_info_period IS NOT NULL')
         .andWhere('sms_time IS NULL')
         .getMany()
         .then((data) => resolve(data))
@@ -28,6 +32,7 @@ export class PositiveInfoRepository extends Repository<PositiveInfoEntity> {
       .where('push_notification_time IS NOT NULL')
       .andWhere('NOW() > push_notification_time')
       .andWhere('sms_time IS NULL')
+      .andWhere('prefix IS NOT NULL')
       .getMany();
   }
 

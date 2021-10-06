@@ -92,6 +92,9 @@ export class ProfileEntity {
   @UpdateDateColumn({ name: 'updated_at', type: 'datetime' })
   updatedAt: Date;
 
+  @UpdateDateColumn({ name: 'regular_notification_time', type: 'datetime' })
+  regularNotificationTime: Date;
+
   @JoinColumn({ name: 'user_id' })
   @OneToOne(() => UserEntity, (user) => user.profile)
   user: UserEntity;

@@ -62,6 +62,7 @@ import { PositiveInfoService } from './service/positive-info.service';
     ProfileService,
     ExportService,
     PositiveInfoRepositoryProvider,
+    ProfileRepositoryProvider,
   ],
 })
 export class UserModule {}
