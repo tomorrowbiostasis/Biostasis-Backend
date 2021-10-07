@@ -8,6 +8,7 @@ import { NotificationService } from '../notification/service/notification.servic
 import { getNameOrEmail } from '../common/helper/get-name-or-email';
 import { ProfileRepository } from '../user/repository/profile.repository';
 import * as moment from 'moment';
+import { MESSAGE_TYPE } from '../message/constant/message-type.constant';
 
 @Injectable()
 export class SchedulerService extends NestSchedule {
@@ -47,6 +48,7 @@ export class SchedulerService extends NestSchedule {
         operations.push(
           this.messageService.sendMessageToDevice(profile.deviceId, {
             message: this.config.get('sms.isEverythingOk'),
+            type: MESSAGE_TYPE.EMERGENCY_ARE_YOU_OK,
           })
         );
         userIds.push(profile.userId);
@@ -84,6 +86,7 @@ export class SchedulerService extends NestSchedule {
       operations.push(
         this.messageService.sendMessageToDevice(information.user.deviceId, {
           message: this.config.get('sms.isEverythingOk'),
+          type: MESSAGE_TYPE.EMERGENCY_ARE_YOU_OK,
         })
       );
       userIds.push(information.user.id);

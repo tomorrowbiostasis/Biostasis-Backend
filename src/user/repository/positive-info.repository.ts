@@ -1,4 +1,4 @@
-import { EntityRepository, Repository, UpdateResult } from 'typeorm';
+import { EntityRepository, Repository, UpdateResult, Brackets } from 'typeorm';
 import { Logger } from '@nestjs/common';
 import { PositiveInfoEntity } from '../entity/positive-info.entity';
 
@@ -16,7 +16,12 @@ export class PositiveInfoRepository extends Repository<PositiveInfoEntity> {
         )
         .andWhere('user.device_id IS NOT NULL')
         .andWhere('push_notification_time IS NULL')
-        .andWhere('regular_push_notification != 1')
+        .andWhere(
+          new Brackets((qb) => {
+            qb.where('regular_push_notification IS NULL');
+            qb.orWhere(`regular_push_notification = 0`);
+          })
+        )
         .andWhere('positive_info_period IS NOT NULL')
         .andWhere('sms_time IS NULL')
         .getMany()
