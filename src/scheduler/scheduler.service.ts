@@ -47,8 +47,9 @@ export class SchedulerService extends NestSchedule {
       ) {
         operations.push(
           this.messageService.sendMessageToDevice(profile.deviceId, {
-            message: this.config.get('sms.isEverythingOk'),
-            type: MESSAGE_TYPE.EMERGENCY_ARE_YOU_OK,
+            title: this.config.get('firebase.regularNotification.title'),
+            message: this.config.get('firebase.regularNotification.message'),
+            type: MESSAGE_TYPE.EMERGENCY_REGULAR_CHECK,
           })
         );
         userIds.push(profile.userId);
@@ -85,7 +86,10 @@ export class SchedulerService extends NestSchedule {
     for (const information of expiredInformation) {
       operations.push(
         this.messageService.sendMessageToDevice(information.user.deviceId, {
-          message: this.config.get('sms.isEverythingOk'),
+          title: this.config.get('firebase.pulseBasedNotification.title'),
+          message: this.config
+            .get('firebase.pulseBasedNotification.message')
+            .replace('{minutes}', information.minutesToNext),
           type: MESSAGE_TYPE.EMERGENCY_ARE_YOU_OK,
         })
       );
@@ -106,12 +110,21 @@ export class SchedulerService extends NestSchedule {
   async sendSmsDueToLackOfPositiveInfo() {
     const pushNotificationWithoutReaction =
       await this.positiveInfoRepository.findPushNotificationWithoutReaction();
+    let notificationType: string;
 
     for (const item of pushNotificationWithoutReaction) {
+      notificationType = item.user.profile.regularPushNotification
+        ? 'regularNotification'
+        : 'pulseBasedNotification';
+
       this.notificationService.sendSms({
         data: this.notificationService.prepareSmsData(
           `${item.user.profile.prefix}${item.user.profile.phone}`,
-          this.config.get('sms.isEverythingOk')
+          `${this.config
+            .get(`firebase.${notificationType}.message`)
+            .replace('{minutes}', item.minutesToNext)} ${this.config.get(
+            `firebase.${notificationType}.title`
+          )}`
         ),
         isPositiveInfoQuestion: true,
         userId: item.user.id,

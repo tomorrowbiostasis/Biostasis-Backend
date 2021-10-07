@@ -74,11 +74,17 @@ module.exports = {
   sms: {
     noConnectionToWatch: 'We have detected no connection with your watch.',
     heartRateInvalid: 'Your hear rate is invalid.',
-    isEverythingOk:
-      'Based on your settings an automated emergency will be triggered soon. Are you ok?',
   },
   firebase: {
     accountKey: firebaseAccountKey,
+    regularNotification: {
+      title: 'Are you ok?',
+      message: 'Biostasis is regularly checking you health.',
+    },
+    pulseBasedNotification: {
+      title: 'Are you ok?',
+      message: 'No pulse data for {minutes}+ minutes.',
+    },
   },
   emergencyTrigger: {
     defaultMessage:

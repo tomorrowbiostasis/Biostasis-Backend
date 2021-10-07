@@ -1,4 +1,5 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
+import { deepStrictEqual } from 'assert';
 import { DICTIONARY } from '../constant/dictionary.constant';
 
 @Injectable()
@@ -14,15 +15,23 @@ export class MessageService {
     deviceId: string,
     data: Record<string, unknown>
   ): Promise<Record<string, unknown>> {
+    const payload = {
+      notification: {
+        title: data.title,
+        body: data.message,
+      },
+      data: {
+        source: 'backend',
+        type: data.type,
+      },
+    };
+
     return this.firebase
       .messaging()
       .sendToDevice(
         deviceId,
         {
-          notification: {
-            empty: 'body',
-          },
-          data,
+          ...payload,
         },
         {
           priority: 'high',
@@ -30,7 +39,7 @@ export class MessageService {
       )
       .then((result) => {
         if (result.successCount === 1) {
-          this.logger.log(result);
+          this.logger.log(result, JSON.stringify(payload));
 
           return result;
         }
@@ -38,7 +47,7 @@ export class MessageService {
         throw result;
       })
       .catch((error) => {
-        this.logger.error(error, JSON.stringify(data), deviceId);
+        this.logger.error(error, JSON.stringify(payload), deviceId);
       });
   }
 }
