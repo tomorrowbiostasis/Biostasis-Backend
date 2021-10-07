@@ -161,7 +161,7 @@ describe('/user (integration) ', () => {
         emergencyMessage: faker.lorem.sentence(),
         regularPushNotification: true,
         frequencyOfRegularNotification: 720,
-        positiveInfoPeriod: 719,
+        positiveInfoPeriod: 10,
       };
 
       let { body } = await api
