@@ -49,7 +49,7 @@ export class SchedulerService extends NestSchedule {
           this.messageService.sendMessageToDevice(profile.deviceId, {
             title: this.config.get('firebase.regularNotification.title'),
             message: this.config.get('firebase.regularNotification.message'),
-            type: MESSAGE_TYPE.EMERGENCY_REGULAR_CHECK,
+            type: MESSAGE_TYPE.EMERGENCY_PULSE_BASED_CHECK,
           })
         );
         userIds.push(profile.userId);
@@ -90,7 +90,7 @@ export class SchedulerService extends NestSchedule {
           message: this.config
             .get('firebase.pulseBasedNotification.message')
             .replace('{minutes}', information.minutesToNext),
-          type: MESSAGE_TYPE.EMERGENCY_ARE_YOU_OK,
+          type: MESSAGE_TYPE.EMERGENCY_PULSE_BASED_CHECK,
         })
       );
       userIds.push(information.user.id);

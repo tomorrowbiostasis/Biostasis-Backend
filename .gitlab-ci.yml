@@ -29,14 +29,14 @@ check:
   dependencies:
     - install
 
-# audit:
-#   only:
-#     - merge_requests
-#   stage: dependencies
-#   script:
-#     - yarn audit
-#   dependencies:
-#     - install
+audit:
+  only:
+    - merge_requests
+  stage: dependencies
+  script:
+    - yarn audit
+  dependencies:
+    - install
 
 build:
   stage: build

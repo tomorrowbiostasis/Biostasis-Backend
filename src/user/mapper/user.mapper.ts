@@ -38,7 +38,9 @@ const calculatePercentByWeight = (user: UserEntity): number => {
       (user?.profile?.seriousMedicalIssues !== true &&
         ['mostRecentDiagnosis', 'lastHospitalVisit'].includes(key)) ||
       (user?.profile?.regularPushNotification !== true &&
-        key === 'frequencyOfRegularNotification')
+        key === 'frequencyOfRegularNotification') ||
+      (user?.profile?.regularPushNotification === true &&
+        key === 'positiveInfoPeriod')
     ) {
       weightOfValues += Number(value);
     }
