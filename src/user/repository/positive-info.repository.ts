@@ -30,26 +30,54 @@ export class PositiveInfoRepository extends Repository<PositiveInfoEntity> {
     });
   }
 
-  findPushNotificationWithoutReaction(): Promise<PositiveInfoEntity[]> {
-    return this.createQueryBuilder('positiveInfo')
+  findPushNotificationWithoutReaction(
+    regularPushNotification: boolean
+  ): Promise<PositiveInfoEntity[]> {
+    let query = this.createQueryBuilder('positiveInfo')
       .leftJoinAndSelect('positiveInfo.user', 'user')
       .leftJoinAndSelect('user.profile', 'profile')
       .where('push_notification_time IS NOT NULL')
       .andWhere('NOW() > push_notification_time')
       .andWhere('sms_time IS NULL')
-      .andWhere('prefix IS NOT NULL')
-      .getMany();
+      .andWhere('prefix IS NOT NULL');
+
+    if (regularPushNotification) {
+      query.andWhere('regular_push_notification = 1');
+    } else {
+      query.andWhere(
+        new Brackets((qb) => {
+          qb.where('regular_push_notification IS NULL');
+          qb.orWhere(`regular_push_notification = 0`);
+        })
+      );
+    }
+
+    return query.getMany();
   }
 
-  findSmsWithoutReaction(): Promise<PositiveInfoEntity[]> {
-    return this.createQueryBuilder('positiveInfo')
+  findSmsWithoutReaction(
+    regularPushNotification: boolean
+  ): Promise<PositiveInfoEntity[]> {
+    let query = this.createQueryBuilder('positiveInfo')
       .leftJoinAndSelect('positiveInfo.user', 'user')
       .leftJoinAndSelect('user.profile', 'profile')
       .leftJoinAndSelect('user.contacts', 'contacts')
       .where('sms_time IS NOT NULL')
       .andWhere('NOW() > sms_time')
-      .andWhere('trigger_time IS NULL')
-      .getMany();
+      .andWhere('trigger_time IS NULL');
+
+    if (regularPushNotification) {
+      query.andWhere('regular_push_notification = 1');
+    } else {
+      query.andWhere(
+        new Brackets((qb) => {
+          qb.where('regular_push_notification IS NULL');
+          qb.orWhere(`regular_push_notification = 0`);
+        })
+      );
+    }
+
+    return query.getMany();
   }
 
   findByUserId(userId: string): Promise<{ id: number; now: string }> {

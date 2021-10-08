@@ -27,8 +27,8 @@ export class SchedulerService extends NestSchedule {
   @Cron('0 */5 * * * *')
   async checkRegularPositiveInfo() {
     await this.sendRegularPushNotification();
-    await this.sendSmsDueToLackOfPositiveInfo();
-    await this.triggerEmergencyMessage();
+    await this.sendSmsDueToLackOfPositiveInfo(true);
+    await this.triggerEmergencyMessage(true);
   }
 
   async sendRegularPushNotification() {
@@ -49,7 +49,7 @@ export class SchedulerService extends NestSchedule {
           this.messageService.sendMessageToDevice(profile.deviceId, {
             title: this.config.get('firebase.regularNotification.title'),
             message: this.config.get('firebase.regularNotification.message'),
-            type: MESSAGE_TYPE.EMERGENCY_PULSE_BASED_CHECK,
+            type: MESSAGE_TYPE.EMERGENCY_TIME_BASED_CHECK,
           })
         );
         userIds.push(profile.userId);
@@ -73,8 +73,8 @@ export class SchedulerService extends NestSchedule {
   @Cron('0 */5 * * * *')
   async checkNotRegularPositiveInfo() {
     await this.sendPushNotificationDueToLackOfPositiveInfo();
-    await this.sendSmsDueToLackOfPositiveInfo();
-    await this.triggerEmergencyMessage();
+    await this.sendSmsDueToLackOfPositiveInfo(false);
+    await this.triggerEmergencyMessage(false);
   }
 
   async sendPushNotificationDueToLackOfPositiveInfo() {
@@ -107,9 +107,11 @@ export class SchedulerService extends NestSchedule {
     }
   }
 
-  async sendSmsDueToLackOfPositiveInfo() {
+  async sendSmsDueToLackOfPositiveInfo(regularPushNotification: boolean) {
     const pushNotificationWithoutReaction =
-      await this.positiveInfoRepository.findPushNotificationWithoutReaction();
+      await this.positiveInfoRepository.findPushNotificationWithoutReaction(
+        regularPushNotification
+      );
     let notificationType: string;
 
     for (const item of pushNotificationWithoutReaction) {
@@ -133,9 +135,11 @@ export class SchedulerService extends NestSchedule {
     }
   }
 
-  async triggerEmergencyMessage() {
+  async triggerEmergencyMessage(regularPushNotification: boolean) {
     const smsWithoutReaction =
-      await this.positiveInfoRepository.findSmsWithoutReaction();
+      await this.positiveInfoRepository.findSmsWithoutReaction(
+        regularPushNotification
+      );
     const operations = [];
 
     for (const item of smsWithoutReaction) {

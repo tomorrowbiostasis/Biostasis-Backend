@@ -1,1 +1,3 @@
-export const fileRepositoryMock = {};
+export const fileRepositoryMock = {
+  findByCategoryCodeAndUserId: jest.fn(async () => []),
+};
