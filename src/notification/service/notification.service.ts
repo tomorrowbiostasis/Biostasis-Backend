@@ -270,7 +270,7 @@ export class NotificationService {
       throw new BadRequestException(EMAIL_AND_SMS_NOT_ALLOWED);
     }
 
-    const message =
+    let message =
       user.profile?.emergencyMessage ??
       this.config.get('emergencyTrigger.defaultMessage');
 
@@ -291,6 +291,11 @@ export class NotificationService {
       }
     }
 
+    const files = await this.fileRepository.findByCategoryCodeAndUserId(
+      [CATEGORY.LAST_WILL, CATEGORY.MEDICAL_DIRECTIVE],
+      user.id
+    );
+
     let params: Record<string, unknown> = {
       contactName: contact.name,
       username: getNameOrEmail(
@@ -298,7 +303,12 @@ export class NotificationService {
         user.profile?.surname,
         user.email
       ),
-      message,
+      message:
+        files.length > 0
+          ? `${message} ${this.config.get(
+              'emergencyTrigger.ifThereAreAttachments'
+            )}`
+          : message,
     };
 
     if (user.profile?.locationAccess === true) {

@@ -88,7 +88,8 @@ module.exports = {
   },
   emergencyTrigger: {
     defaultMessage:
-      'Hey, I’m having a medical emergency. Please hide the key and burn that letter. My medical directives are attached.',
+      'Hey, I’m having a medical emergency. Please hide the key and burn that letter.',
+    ifThereAreAttachments: 'My medical directives are attached.',
   },
   s3: {
     bucket: process.env.S3_BUCKET,
