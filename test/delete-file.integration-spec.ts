@@ -115,7 +115,7 @@ describe('/file (integration) ', () => {
         .post('/file')
         .set('Authorization', dataset.users[0].id)
         .attach('file', `${__dirname}/mock/test.png`)
-        .field('category', CATEGORY.MEDICAL_DIRECTIVE)
+        .field('category', CATEGORY.OTHER)
         .expect(async ({ status, body }) => {
           expect(status).toBe(201);
         });
@@ -134,7 +134,7 @@ describe('/file (integration) ', () => {
         .post('/file')
         .set('Authorization', dataset.users[0].id)
         .attach('file', `${__dirname}/mock/test.png`)
-        .field('category', CATEGORY.MEDICAL_DIRECTIVE)
+        .field('category', CATEGORY.OTHER)
         .expect(async ({ status, body }) => {
           expect(status).toBe(201);
         });

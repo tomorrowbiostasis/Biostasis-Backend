@@ -10,6 +10,7 @@ import {
   FILE_IS_TOO_BIG,
   FILE_UPLOAD_FAILED,
   SAVE_FILE_FAILED,
+  LIMIT_OF_NUMBER_OF_FILES_REACHED,
 } from '../src/common/error/keys';
 import { getFileById } from './entity/file.mock';
 import { CATEGORY } from '../src/file/enum/category.enum';
@@ -175,6 +176,16 @@ describe('/file (integration) ', () => {
           const file = await getFileById(body.id);
 
           expect(file.name).toBe('test.png');
+        });
+
+      await api
+        .post('/file')
+        .set('Authorization', dataset.user.id)
+        .attach('file', `${__dirname}/mock/test.png`)
+        .field('category', CATEGORY.MEDICAL_DIRECTIVE)
+        .expect(async ({ status, body }) => {
+          expect(status).toBe(400);
+          expect(body.error.code).toBe(LIMIT_OF_NUMBER_OF_FILES_REACHED);
         });
     });
   });

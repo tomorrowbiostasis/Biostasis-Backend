@@ -3,9 +3,9 @@ import {
   Post,
   Body,
   UseGuards,
-  Inject,
   UploadedFile,
   UseInterceptors,
+  BadRequestException,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -31,6 +31,7 @@ import { CATEGORY } from '../enum/category.enum';
 import { FileCategoryService } from '../service/file-category.service';
 import { plainToClass } from 'class-transformer';
 import { FileIdRO } from '../response/file-id.ro';
+import { LIMIT_OF_NUMBER_OF_FILES_REACHED } from '../../common/error/keys';
 
 @ApiBearerAuth()
 @UseGuards(new RolesGuard(new Reflector()))
@@ -73,6 +74,15 @@ export class UploadFileController {
     const category = await this.fileCategoryService.findByCodeOrFail(
       data.category
     );
+    const files = await this.fileService.findByCategoryCodeAndUserId(
+      [category.code],
+      user.id
+    );
+
+    if (files.length >= category.limit) {
+      throw new BadRequestException(LIMIT_OF_NUMBER_OF_FILES_REACHED);
+    }
+
     const s3File = await this.fileService.uploadFileOrFail(fileDetails);
     const fileEntity = await this.fileService.saveFile(
       user.id,

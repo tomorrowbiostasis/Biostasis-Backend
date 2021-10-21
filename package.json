@@ -32,7 +32,8 @@
     "twilio/**/axios": "0.21.2",
     "@types/twilio/**/axios": "0.21.2",
     "@nestjs/common/**/axios": "0.21.2",
-    "@nestjs/cli/**/ansi-regex": "5.0.1"
+    "@nestjs/cli/**/ansi-regex": "5.0.1",
+    "node-mailjet/**/vm2": "3.9.4"
   },
   "dependencies": {
     "@hapi/joi-date": "^2.0.1",
