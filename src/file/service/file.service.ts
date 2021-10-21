@@ -44,6 +44,13 @@ export class FileService {
     return this.fileRepository.findManyByParams({ userId });
   }
 
+  findByCategoryCodeAndUserId(
+    codes: string[],
+    userId: string
+  ): Promise<FileEntity[]> {
+    return this.fileRepository.findByCategoryCodeAndUserId(codes, userId);
+  }
+
   getFileURL(key: string): string {
     try {
       return this.cloudFrontSigner.getSignedUrl({

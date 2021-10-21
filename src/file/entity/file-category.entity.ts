@@ -17,6 +17,9 @@ export class FileCategoryEntity {
   @Column({ type: 'varchar' })
   code: string;
 
+  @Column({ type: 'tinyint' })
+  limit: number;
+
   @OneToMany(() => FileEntity, (file) => file.category)
   files: FileEntity[];
 

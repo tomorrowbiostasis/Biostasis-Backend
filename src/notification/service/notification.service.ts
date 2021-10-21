@@ -179,10 +179,7 @@ export class NotificationService {
     userId: string,
     isFromQueue: boolean
   ): Promise<Email.Attachment[]> {
-    const files = await this.fileRepository.findByCategoryCodeAndUserId(
-      [CATEGORY.LAST_WILL, CATEGORY.MEDICAL_DIRECTIVE],
-      userId
-    );
+    const files = await this.fileRepository.findManyByParams({ userId });
     const attachments: Email.Attachment[] = [];
     let content: string;
 
@@ -291,10 +288,9 @@ export class NotificationService {
       }
     }
 
-    const files = await this.fileRepository.findByCategoryCodeAndUserId(
-      [CATEGORY.LAST_WILL, CATEGORY.MEDICAL_DIRECTIVE],
-      user.id
-    );
+    const files = await this.fileRepository.findManyByParams({
+      userId: user.id,
+    });
 
     let params: Record<string, unknown> = {
       contactName: contact.name,
