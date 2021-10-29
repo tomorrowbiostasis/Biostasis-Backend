@@ -131,6 +131,26 @@ export class ProfileRO {
   positiveInfoPeriod: number;
 
   @Expose()
+  @ApiProperty({ type: Boolean })
+  pulseBasedTriggerIOSHealthPermissions: boolean;
+
+  @Expose()
+  @ApiProperty({ type: Boolean })
+  pulseBasedTriggerIOSAppleWatchPaired: boolean;
+
+  @Expose()
+  @ApiProperty({ type: Boolean })
+  pulseBasedTriggerGoogleFitAuthenticated: boolean;
+
+  @Expose()
+  @ApiProperty({ type: Boolean })
+  pulseBasedTriggerConnectedToGoogleFit: boolean;
+
+  @Expose()
+  @ApiProperty({ type: Boolean })
+  pulseBasedTriggerBackgroundModesEnabled: boolean;
+
+  @Expose()
   @ApiProperty({ type: String })
   createdAt: string;
 

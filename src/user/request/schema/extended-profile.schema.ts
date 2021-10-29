@@ -29,4 +29,9 @@ export const extendedProfileSchema = {
   regularPushNotification: Joi.boolean(),
   frequencyOfRegularNotification: Joi.number().min(10).max(1440),
   positiveInfoPeriod: Joi.number().min(10).max(720),
+  pulseBasedTriggerIOSHealthPermissions: Joi.boolean(),
+  pulseBasedTriggerIOSAppleWatchPaired: Joi.boolean(),
+  pulseBasedTriggerGoogleFitAuthenticated: Joi.boolean(),
+  pulseBasedTriggerConnectedToGoogleFit: Joi.boolean(),
+  pulseBasedTriggerBackgroundModesEnabled: Joi.boolean(),
 };

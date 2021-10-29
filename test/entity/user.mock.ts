@@ -54,6 +54,16 @@ export const checkUser = async (response: any) => {
         readManual: !!userDB.profile.readManual,
         automatedEmergency: !!userDB.profile.automatedEmergency,
         regularPushNotification: !!userDB.profile.regularPushNotification,
+        pulseBasedTriggerIOSHealthPermissions:
+          !!userDB.profile.pulseBasedTriggerIOSHealthPermissions,
+        pulseBasedTriggerIOSAppleWatchPaired:
+          !!userDB.profile.pulseBasedTriggerIOSAppleWatchPaired,
+        pulseBasedTriggerGoogleFitAuthenticated:
+          !!userDB.profile.pulseBasedTriggerGoogleFitAuthenticated,
+        pulseBasedTriggerConnectedToGoogleFit:
+          !!userDB.profile.pulseBasedTriggerConnectedToGoogleFit,
+        pulseBasedTriggerBackgroundModesEnabled:
+          !!userDB.profile.pulseBasedTriggerBackgroundModesEnabled,
         ...userDB,
       },
       [
