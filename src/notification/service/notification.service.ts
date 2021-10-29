@@ -269,14 +269,26 @@ export class NotificationService {
 
     let message =
       user.profile?.emergencyMessage ??
-      this.config.get('emergencyTrigger.defaultMessage');
+      this.config
+        .get('emergencyTrigger.defaultMessage')
+        .toString()
+        .replace(
+          '{name}',
+          getNameOrEmail(user.profile?.name, user.profile?.surname, user.email)
+        );
 
     let smsData: MessageListInstanceCreateOptions;
 
     if (contact.phone && user.email !== contact.email) {
       smsData = this.prepareSmsData(
         contact.phone,
-        `${message} ${
+        `${
+          message === user.profile?.emergencyMessage
+            ? `${this.config.get(
+                'emergencyTrigger.customMessagePrefix'
+              )} ${message}`
+            : message
+        } ${
           user.profile?.locationAccess === true && data.locationUrl
             ? data.locationUrl
             : ''

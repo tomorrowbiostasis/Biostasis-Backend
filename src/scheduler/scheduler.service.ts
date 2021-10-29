@@ -47,8 +47,8 @@ export class SchedulerService extends NestSchedule {
       ) {
         operations.push(
           this.messageService.sendMessageToDevice(profile.deviceId, {
-            title: this.config.get('firebase.regularNotification.title'),
-            message: this.config.get('firebase.regularNotification.message'),
+            title: this.config.get('firebase.notification.title'),
+            message: this.config.get('firebase.notification.message.regular'),
             type: MESSAGE_TYPE.EMERGENCY_TIME_BASED_CHECK,
           })
         );
@@ -86,9 +86,9 @@ export class SchedulerService extends NestSchedule {
     for (const information of expiredInformation) {
       operations.push(
         this.messageService.sendMessageToDevice(information.user.deviceId, {
-          title: this.config.get('firebase.pulseBasedNotification.title'),
+          title: this.config.get('firebase.notification.title'),
           message: this.config
-            .get('firebase.pulseBasedNotification.message')
+            .get('firebase.notification.message.pulseBased')
             .replace('{minutes}', information.minutesToNext),
           type: MESSAGE_TYPE.EMERGENCY_PULSE_BASED_CHECK,
         })
@@ -112,21 +112,14 @@ export class SchedulerService extends NestSchedule {
       await this.positiveInfoRepository.findPushNotificationWithoutReaction(
         regularPushNotification
       );
-    let notificationType: string;
 
     for (const item of pushNotificationWithoutReaction) {
-      notificationType = item.user.profile.regularPushNotification
-        ? 'regularNotification'
-        : 'pulseBasedNotification';
-
       this.notificationService.sendSms({
         data: this.notificationService.prepareSmsData(
           `${item.user.profile.prefix}${item.user.profile.phone}`,
-          `${this.config
-            .get(`firebase.${notificationType}.message`)
-            .replace('{minutes}', item.minutesToNext)} ${this.config.get(
-            `firebase.${notificationType}.title`
-          )}`
+          this.config
+            .get('firebase.sms')
+            .replace('{domain}', this.config.get('backend.url'))
         ),
         isPositiveInfoQuestion: true,
         userId: item.user.id,

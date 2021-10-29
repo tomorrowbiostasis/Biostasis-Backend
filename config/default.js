@@ -77,19 +77,21 @@ module.exports = {
   },
   firebase: {
     accountKey: firebaseAccountKey,
-    regularNotification: {
-      title: 'Are you ok?',
-      message: 'Biostasis is regularly checking you health.',
+    notification: {
+      title: 'Click to verify your health status now',
+      message: {
+        regular: 'Automated check from the Biostasis Emergency App',
+        pulseBased: 'No pulse data for {minutes}+ minutes.',
+      },
     },
-    pulseBasedNotification: {
-      title: 'Are you ok?',
-      message: 'No pulse data for {minutes}+ minutes.',
-    },
+    sms: 'Verify your health status now, click here {domain}/deeplink/are-you-ok to app page where health status can be verified. If you ignore this message, your emergency contacts will be notified in a few minutes.',
   },
   emergencyTrigger: {
+    customMessagePrefix:
+      'An emergency signal has been triggered with the following message:',
     defaultMessage:
-      'Hey, I’m having a medical emergency. Please hide the key and burn that letter.',
-    ifThereAreAttachments: 'My medical directives are attached.',
+      'This is an emergency signal from {name}. You are receiving this message because I may be in need of a cryopreservation.',
+    ifThereAreAttachments: 'Additional information here and attached.',
   },
   s3: {
     bucket: process.env.S3_BUCKET,
