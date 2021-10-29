@@ -162,6 +162,11 @@ describe('/user (integration) ', () => {
         regularPushNotification: true,
         frequencyOfRegularNotification: 720,
         positiveInfoPeriod: 10,
+        pulseBasedTriggerIOSHealthPermissions: true,
+        pulseBasedTriggerIOSAppleWatchPaired: true,
+        pulseBasedTriggerGoogleFitAuthenticated: true,
+        pulseBasedTriggerConnectedToGoogleFit: true,
+        pulseBasedTriggerBackgroundModesEnabled: true,
       };
 
       let { body } = await api
@@ -199,7 +204,21 @@ describe('/user (integration) ', () => {
       expect(body.frequencyOfRegularNotification).toBe(
         data.frequencyOfRegularNotification
       );
-      expect(body.positiveInfoPeriod).toBe(data.positiveInfoPeriod);
+      expect(body.pulseBasedTriggerIOSHealthPermissions).toBe(
+        data.pulseBasedTriggerIOSHealthPermissions
+      );
+      expect(body.pulseBasedTriggerIOSAppleWatchPaired).toBe(
+        data.pulseBasedTriggerIOSAppleWatchPaired
+      );
+      expect(body.pulseBasedTriggerGoogleFitAuthenticated).toBe(
+        data.pulseBasedTriggerGoogleFitAuthenticated
+      );
+      expect(body.pulseBasedTriggerConnectedToGoogleFit).toBe(
+        data.pulseBasedTriggerConnectedToGoogleFit
+      );
+      expect(body.pulseBasedTriggerBackgroundModesEnabled).toBe(
+        data.pulseBasedTriggerBackgroundModesEnabled
+      );
 
       await api
         .patch('/user')

@@ -12,4 +12,14 @@ export const getProfileDefaultValues = (
   readManual: !!profile?.readManual,
   automatedEmergency: !!profile?.automatedEmergency,
   regularPushNotification: !!profile?.regularPushNotification,
+  pulseBasedTriggerIOSHealthPermissions:
+    !!profile?.pulseBasedTriggerIOSHealthPermissions,
+  pulseBasedTriggerIOSAppleWatchPaired:
+    !!profile?.pulseBasedTriggerIOSAppleWatchPaired,
+  pulseBasedTriggerGoogleFitAuthenticated:
+    !!profile?.pulseBasedTriggerGoogleFitAuthenticated,
+  pulseBasedTriggerConnectedToGoogleFit:
+    !!profile?.pulseBasedTriggerConnectedToGoogleFit,
+  pulseBasedTriggerBackgroundModesEnabled:
+    !!profile?.pulseBasedTriggerBackgroundModesEnabled,
 });

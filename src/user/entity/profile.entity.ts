@@ -80,6 +80,36 @@ export class ProfileEntity {
   @Column({ name: 'regular_push_notification', type: 'boolean' })
   regularPushNotification: boolean;
 
+  @Column({
+    name: 'pulse_based_trigger_ios_health_permissions',
+    type: 'boolean',
+  })
+  pulseBasedTriggerIOSHealthPermissions: boolean;
+
+  @Column({
+    name: 'pulse_based_trigger_ios_apple_watch_paired',
+    type: 'boolean',
+  })
+  pulseBasedTriggerIOSAppleWatchPaired: boolean;
+
+  @Column({
+    name: 'pulse_based_trigger_google_fit_authenticated',
+    type: 'boolean',
+  })
+  pulseBasedTriggerGoogleFitAuthenticated: boolean;
+
+  @Column({
+    name: 'pulse_based_trigger_connected_to_google_fit',
+    type: 'boolean',
+  })
+  pulseBasedTriggerConnectedToGoogleFit: boolean;
+
+  @Column({
+    name: 'pulse_based_trigger_background_modes_enabled',
+    type: 'boolean',
+  })
+  pulseBasedTriggerBackgroundModesEnabled: boolean;
+
   @Column({ name: 'frequency_of_regular_notification', type: 'tinyint' })
   frequencyOfRegularNotification: number;
 

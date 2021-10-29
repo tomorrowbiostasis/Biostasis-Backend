@@ -77,4 +77,19 @@ export class UpdateUserProfileDTO {
 
   @ApiProperty({ type: Number, required: false })
   positiveInfoPeriod: number;
+
+  @ApiProperty({ type: Boolean, required: false })
+  pulseBasedTriggerIOSHealthPermissions: boolean;
+
+  @ApiProperty({ type: Boolean, required: false })
+  pulseBasedTriggerIOSAppleWatchPaired: boolean;
+
+  @ApiProperty({ type: Boolean, required: false })
+  pulseBasedTriggerGoogleFitAuthenticated: boolean;
+
+  @ApiProperty({ type: Boolean, required: false })
+  pulseBasedTriggerConnectedToGoogleFit: boolean;
+
+  @ApiProperty({ type: Boolean, required: false })
+  pulseBasedTriggerBackgroundModesEnabled: boolean;
 }
