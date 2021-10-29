@@ -89,6 +89,7 @@ describe('NotificationService', () => {
 
   describe('Check if methods work properly', () => {
     const user = getUserStub();
+    const smsPrefix = faker.lorem.sentence();
 
     user.profile = getProfileStub({
       userId: user.id,
@@ -119,12 +120,13 @@ describe('NotificationService', () => {
       jest
         .spyOn(messageServiceMock, 'addJobToQueue')
         .mockReturnValue(new Promise((res) => res({} as Bull.Job)));
+      jest.spyOn(configMock, 'get').mockReturnValueOnce(smsPrefix);
 
       await service.sendEmergencyMessage(contact, user, data);
 
       expect(spyOnPrepareSmsData).toBeCalledWith(
         contact.phone,
-        `${user.profile.emergencyMessage} ${data.locationUrl}`
+        `${smsPrefix} ${user.profile.emergencyMessage} ${data.locationUrl}`
       );
 
       expect(spyOnPrepareEmailData).toBeCalledWith(
@@ -164,6 +166,7 @@ describe('NotificationService', () => {
       jest
         .spyOn(service, 'sendSms')
         .mockReturnValue(new Promise((res) => res({} as MessageInstance)));
+      jest.spyOn(configMock, 'get').mockReturnValueOnce(smsPrefix);
 
       const spyOnPrepareSmsData = jest.spyOn(service, 'prepareSmsData');
       const spyOnPrepareEmailData = jest.spyOn(service, 'prepareEmailData');
@@ -172,7 +175,7 @@ describe('NotificationService', () => {
 
       expect(spyOnPrepareSmsData).toBeCalledWith(
         contact.phone,
-        `${user.profile.emergencyMessage} ${data.locationUrl}`
+        `${smsPrefix} ${user.profile.emergencyMessage} ${data.locationUrl}`
       );
 
       expect(spyOnPrepareEmailData).toBeCalledWith(

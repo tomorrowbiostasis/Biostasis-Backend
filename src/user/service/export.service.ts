@@ -86,6 +86,9 @@ export class ExportService {
           ...profile,
           updatedAt: moment(profile.updatedAt).toISOString(),
           createdAt: moment(profile.createdAt).toISOString(),
+          regularNotificationTime: moment(
+            profile.regularNotificationTime
+          ).toISOString(),
         },
         ['id', 'userId']
       )
