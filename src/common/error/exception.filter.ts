@@ -5,7 +5,7 @@ import {
   HttpStatus,
   Logger,
 } from '@nestjs/common';
-import { UNKNOWN_ERROR } from './keys';
+import { UNKNOWN_ERROR, VALIDATION_FAILED } from './keys';
 import { CustomError } from './custom-error';
 
 @Catch()
@@ -26,6 +26,10 @@ export class ExceptionsFilter implements ExceptionFilter {
         ? exception.message.message || exception.message || null
         : UNKNOWN_ERROR;
 
+    const message =
+      status !== HttpStatus.INTERNAL_SERVER_ERROR
+        ? exception.error
+        : exception.message;
     const errorResponse = {
       error: {
         status,
@@ -33,10 +37,6 @@ export class ExceptionsFilter implements ExceptionFilter {
         path: request.url,
         method: request.method,
         code,
-        message:
-          status !== HttpStatus.INTERNAL_SERVER_ERROR
-            ? exception.error
-            : exception.message,
       },
     };
     if (process.env.NODE_ENV !== 'test' && status !== 404) {
@@ -44,9 +44,15 @@ export class ExceptionsFilter implements ExceptionFilter {
         exception instanceof CustomError
           ? JSON.stringify(exception.error) || exception
           : exception.stack;
-      this.logger.error(errorResponse, stack);
+      this.logger.error({ ...errorResponse, message }, stack);
     }
 
-    response.status(status).json(errorResponse);
+    response
+      .status(status)
+      .json(
+        code === VALIDATION_FAILED
+          ? { ...errorResponse, message }
+          : errorResponse
+      );
   }
 }
