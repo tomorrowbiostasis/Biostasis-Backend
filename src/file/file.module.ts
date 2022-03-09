@@ -9,8 +9,15 @@ import { FileCategoryRepositoryProvider } from './provider/file-category-reposit
 import { FileCategoryService } from './service/file-category.service';
 import { DeleteContactController } from './controller/delete-file.controller';
 import { FileListController } from './controller/file-list.controller';
+import { ConfigModule } from '@nestjs/config';
+import configuration from '../config/default';
 
 @Module({
+  imports: [
+    ConfigModule.forRoot({
+      load: [configuration],
+    }),
+  ],
   controllers: [
     UploadFileController,
     DeleteContactController,

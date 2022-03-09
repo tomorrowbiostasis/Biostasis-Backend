@@ -35,7 +35,7 @@ describe('/user (integration) ', () => {
           expect(status).toBe(403);
         });
 
-      return api
+      await api
         .delete('/user')
         .set('Authorization', faker.datatype.uuid())
         .send()

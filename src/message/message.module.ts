@@ -10,6 +10,8 @@ import { CancelEmergencyMessageController } from './controller/cancel-emergency-
 import { MessageService } from './service/mesage.service';
 import { FirebaseProvider } from './provider/firebase.provider';
 import { TriggerTimeSlotModule } from '../trigger-time-slot/trigger-time-slot.module';
+import { ConfigModule } from '@nestjs/config';
+import configuration from '../config/default';
 
 @Module({
   imports: [
@@ -18,6 +20,9 @@ import { TriggerTimeSlotModule } from '../trigger-time-slot/trigger-time-slot.mo
     ContactModule,
     QueueModule,
     TriggerTimeSlotModule,
+    ConfigModule.forRoot({
+      load: [configuration],
+    }),
   ],
   controllers: [
     SendSMSController,

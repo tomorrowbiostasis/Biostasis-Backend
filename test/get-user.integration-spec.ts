@@ -24,7 +24,7 @@ describe('/user (integration) ', () => {
 
   describe('/user (GET)', () => {
     it('Should return status 403', async () => {
-      return api
+      await api
         .get('/user')
         .send()
         .expect(({ status }) => {

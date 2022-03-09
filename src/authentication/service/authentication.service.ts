@@ -1,5 +1,5 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import * as configLib from 'config';
+import { ConfigService } from '@nestjs/config';
 import * as AWS from 'aws-sdk';
 import axios from 'axios';
 import * as jwkToPem from 'jwk-to-pem';
@@ -15,7 +15,7 @@ export class AuthenticationService {
   constructor(
     @Inject(AWS.CognitoIdentityServiceProvider)
     private readonly cognito: AWS.CognitoIdentityServiceProvider,
-    @Inject(DICTIONARY.CONFIG) private readonly config: configLib.IConfig
+    @Inject(DICTIONARY.CONFIG) private readonly config: ConfigService
   ) {}
 
   public async getPem() {

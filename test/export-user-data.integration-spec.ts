@@ -35,7 +35,7 @@ describe('/user/export (integration) ', () => {
           expect(status).toBe(403);
         });
 
-      return api
+      await api
         .post('/user/export')
         .set('Authorization', faker.datatype.uuid())
         .send()
@@ -45,7 +45,7 @@ describe('/user/export (integration) ', () => {
     });
 
     it('Should return status 400 and error VALIDATION_FAILED', async () => {
-      return api
+      await api
         .post('/user/export')
         .set('Authorization', dataset.user.id)
         .send()

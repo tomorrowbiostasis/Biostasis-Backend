@@ -1,13 +1,14 @@
 import { DICTIONARY } from '../constant/dictionary.constant';
-import { get } from 'config';
+import { ConfigService } from '@nestjs/config';
 import * as AWS from 'aws-sdk';
 
 export const AWSCloudFrontSignerProvider = {
   provide: DICTIONARY.CLOUD_FRONT_SIGNER,
-  useFactory: () => {
+  inject: [ConfigService],
+  useFactory: (config: ConfigService) => {
     return new AWS.CloudFront.Signer(
-      get('cloudFrontSigner.accessKeyId'),
-      get('cloudFrontSigner.privateKey')
+      config.get('cloudFrontSigner.accessKeyId'),
+      config.get('cloudFrontSigner.privateKey')
     );
   },
 };

@@ -45,7 +45,7 @@ describe('/user (integration) ', () => {
 
   describe('/user/positive-info (PATCH)', () => {
     it('Should return status 403', async () => {
-      return api
+      await api
         .post('/user/positive-info')
         .send()
         .expect(({ status }) => {

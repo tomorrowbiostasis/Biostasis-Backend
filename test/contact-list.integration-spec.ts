@@ -31,7 +31,7 @@ describe('/contact (integration) ', () => {
           expect(status).toBe(403);
         });
 
-      return api
+      await api
         .get('/contact')
         .set('Authorization', faker.datatype.uuid())
         .send()

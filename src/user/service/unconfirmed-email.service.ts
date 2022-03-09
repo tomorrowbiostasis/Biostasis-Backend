@@ -17,7 +17,7 @@ import {
 } from '../../common/error/keys';
 import { UserEntity } from '../../user/entity/user.entity';
 import { DICTIONARY } from '../../common/constant/dictionary.constant';
-import * as configLib from 'config';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UnconfirmedEmailService {
@@ -28,7 +28,7 @@ export class UnconfirmedEmailService {
     private readonly unconfirmedEmailRepository: UnconfirmedEmailRepository,
     @Inject(AWS.CognitoIdentityServiceProvider)
     private readonly cognito: AWS.CognitoIdentityServiceProvider,
-    @Inject(DICTIONARY.CONFIG) private readonly config: configLib.IConfig
+    @Inject(DICTIONARY.CONFIG) private readonly config: ConfigService
   ) {}
 
   async saveUnconfirmedEmail(

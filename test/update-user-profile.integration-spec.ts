@@ -34,7 +34,7 @@ describe('/user (integration) ', () => {
 
   describe('/user (PATCH)', () => {
     it('Should return status 403', async () => {
-      return api
+      await api
         .patch('/user')
         .send()
         .expect(({ status }) => {

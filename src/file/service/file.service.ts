@@ -8,7 +8,7 @@ import UploadResult from '../type/upload-result';
 import { DICTIONARY } from '../constant/dictionary.constant';
 import { DICTIONARY as COMMON_DI } from '../../common/constant/dictionary.constant';
 import * as AWS from 'aws-sdk';
-import * as configLib from 'config';
+import { ConfigService } from '@nestjs/config';
 import * as uuid from 'uuid';
 import * as moment from 'moment';
 import File from '../type/file';
@@ -35,7 +35,7 @@ export class FileService {
     @Inject(DICTIONARY.S3) private readonly s3: AWS.S3,
     @Inject(DICTIONARY.CLOUD_FRONT_SIGNER)
     private readonly cloudFrontSigner: AWS.CloudFront.Signer,
-    @Inject(COMMON_DI.CONFIG) private readonly config: configLib.IConfig,
+    @Inject(COMMON_DI.CONFIG) private readonly config: ConfigService,
     @Inject(FileRepository)
     private readonly fileRepository: FileRepository
   ) {}

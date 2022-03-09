@@ -1,9 +1,10 @@
 import { DICTIONARY } from '../constant/dictionary.constant';
 import { connect } from 'node-mailjet';
-import * as config from 'config';
+import { ConfigService } from '@nestjs/config';
 
 export const MailJetProvider = {
   provide: DICTIONARY.MAIL_JET,
-  useFactory: () =>
+  inject: [ConfigService],
+  useFactory: (config: ConfigService) =>
     connect(config.get('mailJet.apiKey'), config.get('mailJet.apiSecret')),
 };

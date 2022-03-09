@@ -7,8 +7,15 @@ import { ContactListController } from './controller/contact-list.controller';
 import { UpdateContactController } from './controller/update-contact.controller';
 import { DeleteContactController } from './controller/delete-contact.controller';
 import { GoogleLibPhoneNumberProvider } from '../common/provider/google-phone-number.provider';
+import { ConfigModule } from '@nestjs/config';
+import configuration from '../config/default';
 
 @Module({
+  imports: [
+    ConfigModule.forRoot({
+      load: [configuration],
+    }),
+  ],
   controllers: [
     AddContactController,
     ContactListController,

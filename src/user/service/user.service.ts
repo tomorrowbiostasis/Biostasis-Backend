@@ -16,7 +16,7 @@ import {
   UPDATE_USER_DEVICE_ID_FAILED,
 } from '../../common/error/keys';
 import * as AWS from 'aws-sdk';
-import * as configLib from 'config';
+import { ConfigService } from '@nestjs/config';
 import { DICTIONARY } from '../../common/constant/dictionary.constant';
 
 @Injectable()
@@ -26,7 +26,7 @@ export class UserService {
   constructor(
     @Inject(AWS.CognitoIdentityServiceProvider)
     private readonly cognito: AWS.CognitoIdentityServiceProvider,
-    @Inject(DICTIONARY.CONFIG) private readonly config: configLib.IConfig,
+    @Inject(DICTIONARY.CONFIG) private readonly config: ConfigService,
     @Inject(UserRepository) private readonly userRepository: UserRepository
   ) {}
 

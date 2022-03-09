@@ -49,7 +49,7 @@ describe('/time-slot (integration) ', () => {
           expect(status).toBe(403);
         });
 
-      return api
+      await api
         .post('/time-slot')
         .set('Authorization', faker.datatype.uuid())
         .send()

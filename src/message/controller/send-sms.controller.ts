@@ -28,7 +28,7 @@ import { ErrorMessageRO } from '../../common/response/error.ro';
 import { ProfileService } from '../../user/service/profile.service';
 import { PHONE_NUMBER_IS_NEEDED } from '../../common/error/keys';
 import { DICTIONARY } from '../../common/constant/dictionary.constant';
-import * as configLib from 'config';
+import { ConfigService } from '@nestjs/config';
 
 @ApiBearerAuth()
 @UseGuards(new RolesGuard(new Reflector()))
@@ -37,7 +37,7 @@ import * as configLib from 'config';
 @Controller('message')
 export class SendSMSController {
   constructor(
-    @Inject(DICTIONARY.CONFIG) private readonly config: configLib.IConfig,
+    @Inject(DICTIONARY.CONFIG) private readonly config: ConfigService,
     private readonly notificationService: NotificationService,
     private readonly profileService: ProfileService
   ) {}
