@@ -25,6 +25,7 @@ import { DICTIONARY as FILE_DI } from '../../src/file/constant/dictionary.consta
 import { s3Mock } from './s3.mock';
 import { cloudFrontSignerMock } from './cloud-front-signer.mock';
 import { SchedulerService } from '../../src/scheduler/scheduler.service';
+import { googlePhoneNumberMock } from './google-phone-number.mock';
 
 jest.mock('../../src/config/default', () => ({
   default: () => ({
@@ -160,6 +161,10 @@ export const getTestApp = async () => {
     .useValue(s3Mock)
     .overrideProvider(FILE_DI.CLOUD_FRONT_SIGNER)
     .useValue(cloudFrontSignerMock)
+    .overrideProvider(FILE_DI.CLOUD_FRONT_SIGNER)
+    .useValue(cloudFrontSignerMock)
+    .overrideProvider(COMMON_DI.GOOGLE_PHONE_NUMBER)
+    .useValue(googlePhoneNumberMock)
     .compile();
 
   app = moduleFixture.createNestApplication();
