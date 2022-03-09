@@ -42,7 +42,7 @@ describe('/user (integration) ', () => {
       const email = faker.internet.email();
 
       await api
-        .patch('/user')
+        .patch('/api/v2/user')
         .set('Authorization', dataset.user.id)
         .send({ email })
         .expect(async ({ status }) => {

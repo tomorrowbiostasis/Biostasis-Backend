@@ -82,19 +82,6 @@ export class UpdateUserProfileController {
     return this.updateUserProfile(logged, omit(data, ['countryCode']));
   }
 
-  @ApiResponse({ status: 200, type: ProfileRO })
-  @ApiResponse({ status: 400, type: ErrorMessageRO })
-  @ApiOperation({ summary: 'Edit profile by user' })
-  @Roles([ROLES.USER])
-  @Patch('user')
-  async updateUserWithoutPhoneNumberVerification(
-    @User() logged: UserEntity,
-    @Body(new ValidationPipe(updateUserProfileSchema))
-    data: UpdateUserProfileDTO
-  ) {
-    return this.updateUserProfile(logged, data);
-  }
-
   positiveInfoFlowHasChanged(
     profile: ProfileEntity,
     data: UpdateUserProfileDTO

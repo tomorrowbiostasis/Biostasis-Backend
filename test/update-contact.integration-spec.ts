@@ -13,6 +13,7 @@ import {
   VALIDATION_FAILED,
   PHONE_NUMBER_IS_INVALID,
 } from '../src/common/error/keys';
+import { googlePhoneNumberMock } from './mock/google-phone-number.mock';
 
 describe('/contact (integration) ', () => {
   let app;
@@ -120,6 +121,10 @@ describe('/contact (integration) ', () => {
     });
 
     it('Should return status 400 and error PHONE_NUMBER_IS_INVALID', async () => {
+      jest
+        .spyOn(googlePhoneNumberMock, 'isValidNumber')
+        .mockImplementationOnce(jest.fn(() => false));
+
       await api
         .patch(`/api/v2/contact/${dataset.contacts[0].id}`)
         .set('Authorization', dataset.users[0].id)

@@ -79,7 +79,7 @@ describe('/user (integration) ', () => {
         .expect(201);
 
       await api
-        .patch('/user')
+        .patch('/api/v2/user')
         .set('Authorization', dataset.user.id)
         .send({ email: faker.internet.email() })
         .expect(async ({ status }) => {

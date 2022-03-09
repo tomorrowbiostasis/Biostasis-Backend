@@ -14,6 +14,7 @@ import {
 } from './entity/contact.mock';
 import { checkProfile } from './entity/profile.mock';
 import { addUser } from './entity/user.mock';
+import { googlePhoneNumberMock } from './mock/google-phone-number.mock';
 
 describe('/user (integration) ', () => {
   let app;
@@ -32,10 +33,10 @@ describe('/user (integration) ', () => {
     await app.close();
   });
 
-  describe('/user (PATCH)', () => {
+  describe('/api/v2/user (PATCH)', () => {
     it('Should return status 403', async () => {
       await api
-        .patch('/user')
+        .patch('/api/v2/user')
         .send()
         .expect(({ status }) => {
           expect(status).toBe(403);
@@ -43,28 +44,6 @@ describe('/user (integration) ', () => {
     });
 
     it('Should return status 400 and error VALIDATION_FAILED for invalid dataset', async () => {
-      await api
-        .patch('/user')
-        .set('Authorization', dataset.user.id)
-        .send({
-          phone: null,
-        })
-        .then((result) => {
-          expect(result.status).toBe(400);
-          expect(result.body.error.code).toBe(VALIDATION_FAILED);
-        });
-
-      await api
-        .patch('/user')
-        .set('Authorization', dataset.user.id)
-        .send({
-          prefix: null,
-        })
-        .then((result) => {
-          expect(result.status).toBe(400);
-          expect(result.body.error.code).toBe(VALIDATION_FAILED);
-        });
-
       await api
         .patch('/api/v2/user')
         .set('Authorization', dataset.user.id)
@@ -123,6 +102,10 @@ describe('/user (integration) ', () => {
     });
 
     it('Should return status 400 and error PHONE_NUMBER_IS_INVALID', async () => {
+      jest
+        .spyOn(googlePhoneNumberMock, 'isValidNumber')
+        .mockImplementationOnce(jest.fn(() => false));
+
       await api
         .patch('/api/v2/user')
         .set('Authorization', dataset.user.id)
@@ -141,6 +124,7 @@ describe('/user (integration) ', () => {
       const data = {
         prefix: getRandomPhonePrefix(),
         phone: getRandomPhoneNumber(),
+        countryCode: faker.datatype.string(2),
         name: faker.name.findName(),
         surname: faker.name.lastName(),
         address: `${faker.address.streetName()}, ${faker.address.city()}, ${faker.address.country()}`,
@@ -169,8 +153,12 @@ describe('/user (integration) ', () => {
         pulseBasedTriggerBackgroundModesEnabled: true,
       };
 
+      jest
+        .spyOn(googlePhoneNumberMock, 'isValidNumber')
+        .mockImplementationOnce(jest.fn(() => true));
+
       let { body } = await api
-        .patch('/user')
+        .patch('/api/v2/user')
         .set('Authorization', dataset.user.id)
         .send(data)
         .expect(async ({ status }) => {
@@ -221,7 +209,7 @@ describe('/user (integration) ', () => {
       );
 
       await api
-        .patch('/user')
+        .patch('/api/v2/user')
         .set('Authorization', dataset.user.id)
         .send()
         .expect(async ({ status }) => {
@@ -232,9 +220,9 @@ describe('/user (integration) ', () => {
       const phone = getRandomPhoneNumber();
 
       ({ body } = await api
-        .patch('/user')
+        .patch('/api/v2/user')
         .set('Authorization', dataset.user.id)
-        .send({ prefix, phone })
+        .send({ prefix, phone, countryCode: faker.datatype.string(2) })
         .expect(async ({ status }) => {
           expect(status).toBe(200);
         }));
@@ -246,9 +234,15 @@ describe('/user (integration) ', () => {
       const randomName = faker.name.firstName();
 
       ({ body } = await api
-        .patch('/user')
+        .patch('/api/v2/user')
         .set('Authorization', user.id)
-        .send({ name: randomName, seriousMedicalIssues: false, prefix, phone })
+        .send({
+          name: randomName,
+          seriousMedicalIssues: false,
+          prefix,
+          phone,
+          countryCode: faker.datatype.string(2),
+        })
         .expect(async ({ status }) => {
           expect(status).toBe(200);
         }));

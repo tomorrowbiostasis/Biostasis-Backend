@@ -1,1 +1,4 @@
-export const googlePhoneNumberMock = {};
+export const googlePhoneNumberMock = {
+  isValidNumber: jest.fn(() => true),
+  parseAndKeepRawInput: jest.fn(() => ''),
+};
