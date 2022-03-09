@@ -51,7 +51,7 @@ describe('/message (integration) ', () => {
           expect(status).toBe(403);
         });
 
-      return api
+      await api
         .post('/message/send/emergency')
         .set('Authorization', faker.datatype.uuid())
         .send()

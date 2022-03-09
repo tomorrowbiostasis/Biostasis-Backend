@@ -70,7 +70,7 @@ describe('/file (integration) ', () => {
           expect(result.body.error.code).toBe(FILE_NOT_FOUND);
         });
 
-      return api
+      await api
         .delete(`/file/${faker.datatype.number()}`)
         .set('Authorization', dataset.users[0].id)
         .then((result) => {

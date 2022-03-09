@@ -1,11 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { Logger, RequestMethod } from '@nestjs/common';
-import { get } from 'config';
-import * as helmet from 'helmet';
+import configuration from './config/default';
+import helmet from 'helmet';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { configSchema } from './common/validation/config.validation';
 import { ExceptionsFilter } from './common/error/exception.filter';
+
+const config = configuration();
 
 async function bootstrap() {
   await configSchema.validateAsync(process.env).catch((error) => {
@@ -13,11 +15,11 @@ async function bootstrap() {
   });
 
   const app = await NestFactory.create(AppModule);
-  const port = +get('application.port');
+  const port = +config.application.port;
 
   app.useGlobalFilters(new ExceptionsFilter());
 
-  app.setGlobalPrefix(get('application.global_prefix'), {
+  app.setGlobalPrefix(config.application.global_prefix, {
     exclude: [
       { path: '/api/v2/user', method: RequestMethod.PATCH },
       { path: '/api/v2/contact', method: RequestMethod.POST },

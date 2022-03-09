@@ -39,7 +39,7 @@ describe('/user/message/test (integration) ', () => {
 
   describe('/user/message/test (PATCH)', () => {
     it('Should return status 403', async () => {
-      return api
+      await api
         .post('/user/message/test')
         .send()
         .expect(({ status }) => {

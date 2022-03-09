@@ -5,7 +5,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Email } from 'node-mailjet';
-import * as configLib from 'config';
+import { ConfigService } from '@nestjs/config';
 import { DICTIONARY } from '../../common/constant/dictionary.constant';
 import {
   SEND_MAIL_FAILED,
@@ -28,7 +28,6 @@ import { MessageService } from '../../queue/service/message.service';
 import { PROCESS } from '../../queue/constant/process.constant';
 import { ExportService } from '../../user/service/export.service';
 import { FileRepository } from '../../file/repository/file.repository';
-import { CATEGORY } from '../../file/enum/category.enum';
 import { FileService } from '../../file/service/file.service';
 import { PositiveInfoRepository } from '../../user/repository/positive-info.repository';
 
@@ -37,7 +36,7 @@ export class NotificationService {
   private readonly logger = new Logger(NotificationService.name);
 
   constructor(
-    @Inject(DICTIONARY.CONFIG) private readonly config: configLib.IConfig,
+    @Inject(DICTIONARY.CONFIG) private readonly config: ConfigService,
     @Inject(NOTIFICATION_DI.MAIL_JET) private readonly mailJet: Email.Client,
     @Inject(twilioLibrary.Twilio) private readonly twilio: twilioLibrary.Twilio,
     private readonly messageService: MessageService,

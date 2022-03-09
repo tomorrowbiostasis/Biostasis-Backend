@@ -1,20 +1,21 @@
 import { FactoryProvider } from '@nestjs/common';
 import { QUEUE } from '../constant/queue.constant';
 import * as Queue from 'bull';
-import { get } from 'config';
+import { ConfigService } from '@nestjs/config';
 
 export const QueueMessageProvider: FactoryProvider<any> = {
   provide: QUEUE.MESSAGE,
-  useFactory: () =>
+  inject: [ConfigService],
+  useFactory: (config: ConfigService) =>
     Queue(QUEUE.MESSAGE, {
       redis: {
-        password: get('redis.password'),
-        port: get('redis.port'),
-        host: get('redis.host'),
+        password: config.get('redis.password'),
+        port: config.get('redis.port'),
+        host: config.get('redis.host'),
       },
       defaultJobOptions: {
         removeOnComplete: true,
-        attempts: get('queue.numberOfAttempts'),
+        attempts: config.get('queue.numberOfAttempts'),
       },
     }),
 };

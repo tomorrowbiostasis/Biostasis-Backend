@@ -33,7 +33,7 @@ describe('/contact (integration) ', () => {
 
   describe('/contact/:id (PATCH)', () => {
     it('Should return status 403', async () => {
-      return api
+      await api
         .patch(`/contact/${faker.datatype.number()}`)
         .send()
         .expect(({ status }) => {
@@ -42,7 +42,7 @@ describe('/contact (integration) ', () => {
     });
 
     it('Should return status 400 and error CONTACT_NOT_FOUND for invalid dataset', async () => {
-      return api
+      await api
         .patch(`/contact/${faker.datatype.number()}`)
         .set('Authorization', dataset.users[0].id)
         .send({

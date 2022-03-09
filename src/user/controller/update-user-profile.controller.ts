@@ -12,7 +12,7 @@ import {
   ApiResponse,
   ApiOperation,
 } from '@nestjs/swagger';
-import * as configLib from 'config';
+import { ConfigService } from '@nestjs/config';
 import { RolesGuard } from '../../authentication/roles.guard';
 import { Roles } from '../../authentication/decorator/roles.decorator';
 import { Reflector } from '@nestjs/core';
@@ -52,7 +52,7 @@ export class UpdateUserProfileController {
     private readonly positiveInfoService: PositiveInfoService,
     private readonly unconfirmedEmailService: UnconfirmedEmailService,
     private readonly notificationService: NotificationService,
-    @Inject(DICTIONARY.CONFIG) private readonly config: configLib.IConfig,
+    @Inject(DICTIONARY.CONFIG) private readonly config: ConfigService,
     @Inject(DICTIONARY.GOOGLE_PHONE_NUMBER)
     private readonly phoneUtil: LibPhoneNumber.PhoneNumberUtil
   ) {}

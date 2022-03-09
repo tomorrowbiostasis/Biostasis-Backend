@@ -1,13 +1,14 @@
 import * as AWS from 'aws-sdk';
-import { get } from 'config';
+import { ConfigService } from '@nestjs/config';
 
 export const CognitoIdentityServiceProvider = {
   provide: AWS.CognitoIdentityServiceProvider,
-  useFactory: () => {
+  inject: [ConfigService],
+  useFactory: (config: ConfigService) => {
     AWS.config.update({
-      accessKeyId: get('authorization.accessKeyId'),
-      secretAccessKey: get('authorization.secretAccessKey'),
-      region: get('authorization.region'),
+      accessKeyId: config.get('authorization.accessKeyId'),
+      secretAccessKey: config.get('authorization.secretAccessKey'),
+      region: config.get('authorization.region'),
     });
 
     return new AWS.CognitoIdentityServiceProvider();

@@ -6,6 +6,8 @@ import { UserModule } from '../user/user.module';
 import { AppModule } from '../app.module';
 import { ConfigProvider } from '../common/provider/config.provider';
 import { MessageModule } from '../message/message.module';
+import { ConfigModule } from '@nestjs/config';
+import configuration from '../config/default';
 
 @Module({
   imports: [
@@ -14,6 +16,9 @@ import { MessageModule } from '../message/message.module';
     UserModule,
     MessageModule,
     forwardRef(() => AppModule),
+    ConfigModule.forRoot({
+      load: [configuration],
+    }),
   ],
   providers: [SchedulerService, ConfigProvider],
   exports: [SchedulerService],

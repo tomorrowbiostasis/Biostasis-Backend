@@ -59,7 +59,7 @@ describe('/time-slot (integration) ', () => {
           expect(result.body.error.code).toBe(TIME_SLOT_NOT_FOUND);
         });
 
-      return api
+      await api
         .delete(`/time-slot/${faker.datatype.number()}`)
         .set('Authorization', dataset.users[0].id)
         .send({

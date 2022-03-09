@@ -2,7 +2,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Cron, NestSchedule } from 'nest-schedule';
 import { PositiveInfoRepository } from '../user/repository/positive-info.repository';
 import { MessageService } from '../message/service/mesage.service';
-import * as configLib from 'config';
+import { ConfigService } from '@nestjs/config';
 import { DICTIONARY } from '../common/constant/dictionary.constant';
 import { NotificationService } from '../notification/service/notification.service';
 import { getNameOrEmail } from '../common/helper/get-name-or-email';
@@ -14,7 +14,7 @@ import { MESSAGE_TYPE } from '../message/constant/message-type.constant';
 export class SchedulerService extends NestSchedule {
   private readonly logger = new Logger(SchedulerService.name);
   constructor(
-    @Inject(DICTIONARY.CONFIG) private readonly config: configLib.IConfig,
+    @Inject(DICTIONARY.CONFIG) private readonly config: ConfigService,
     @Inject(PositiveInfoRepository)
     private readonly positiveInfoRepository: PositiveInfoRepository,
     private readonly messageService: MessageService,

@@ -1,5 +1,7 @@
 require('dotenv').config();
 
+import database from './typeorm';
+
 const env = process.env;
 
 let firebaseAccountKey = {};
@@ -8,7 +10,7 @@ try {
   firebaseAccountKey = JSON.parse(env.FIREBASE_ACCOUNT_KEY);
 } catch {}
 
-module.exports = {
+export default () => ({
   application: {
     call_timeout: 30,
     port: env.APP_PORT || 5000,
@@ -107,4 +109,4 @@ module.exports = {
     url: env.CDN_PRIV_DNS,
     validityTime: 200000,
   },
-};
+});

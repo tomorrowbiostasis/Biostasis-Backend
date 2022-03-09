@@ -5,9 +5,10 @@ import { BullModule } from '@nestjs/bull';
 import { QUEUE } from './constant/queue.constant';
 import { QueueMessageProvider } from './provider/message-queue.provider';
 import { NotificationModule } from '../notification/notification.module';
-import { get } from 'config';
+import configuration from '../config/default';
 import { MessageService } from './service/message.service';
 import { TriggerTimeSlotModule } from '../trigger-time-slot/trigger-time-slot.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   providers: [
@@ -23,8 +24,11 @@ import { TriggerTimeSlotModule } from '../trigger-time-slot/trigger-time-slot.mo
       name: QUEUE.MESSAGE,
       defaultJobOptions: {
         removeOnComplete: true,
-        attempts: get('queue.numberOfAttempts'),
+        attempts: configuration().queue.numberOfAttempts,
       },
+    }),
+    ConfigModule.forRoot({
+      load: [configuration],
     }),
   ],
   exports: [QueueMessageProvider, MessageService],

@@ -36,7 +36,7 @@ describe('/user (integration) ', () => {
 
   describe('/user/device (PATCH)', () => {
     it('Should return status 403', async () => {
-      return api
+      await api
         .patch('/user/device')
         .send()
         .expect(({ status }) => {

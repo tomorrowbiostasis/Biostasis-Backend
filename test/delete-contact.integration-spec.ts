@@ -25,7 +25,7 @@ describe('/contact (integration) ', () => {
 
   describe('/contact/:id (DELETE)', () => {
     it('Should return status 403', async () => {
-      return api
+      await api
         .delete(`/contact/${faker.datatype.number()}`)
         .send()
         .expect(({ status }) => {
@@ -42,7 +42,7 @@ describe('/contact (integration) ', () => {
           expect(result.body.error.code).toBe(CONTACT_NOT_FOUND);
         });
 
-      return api
+      await api
         .delete(`/contact/${faker.datatype.number()}`)
         .set('Authorization', dataset.users[0].id)
         .then((result) => {

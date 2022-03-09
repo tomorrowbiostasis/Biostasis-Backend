@@ -47,7 +47,7 @@ describe('/message (integration) ', () => {
           expect(status).toBe(403);
         });
 
-      return api
+      await api
         .post('/message/send/sms')
         .set('Authorization', faker.datatype.uuid())
         .send()
@@ -58,7 +58,7 @@ describe('/message (integration) ', () => {
 
     for (const messageType of notValidMessageType) {
       it(`Should return status 400 and error VALIDATION_FAILED if messageType is ${messageType}`, async () => {
-        return api
+        await api
           .post('/message/send/sms')
           .set('Authorization', dataset.user.id)
           .send({

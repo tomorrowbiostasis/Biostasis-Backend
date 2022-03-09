@@ -1,7 +1,7 @@
-import * as config from 'config';
+import { ConfigService } from '@nestjs/config';
 import { DICTIONARY } from '../constant/dictionary.constant';
 
 export const ConfigProvider = {
   provide: DICTIONARY.CONFIG,
-  useFactory: () => config,
+  useExisting: ConfigService,
 };

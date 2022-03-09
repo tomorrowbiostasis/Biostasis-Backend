@@ -53,7 +53,7 @@ describe('/contact (integration) ', () => {
           expect(status).toBe(403);
         });
 
-      return api
+      await api
         .post('/contact')
         .set('Authorization', faker.datatype.uuid())
         .send()
@@ -64,7 +64,7 @@ describe('/contact (integration) ', () => {
 
     for (const prefix of notValidPrefix) {
       it(`Should return status 400 and error VALIDATION_FAILED if prefix is ${prefix}`, async () => {
-        return api
+        await api
           .post('/contact')
           .set('Authorization', dataset.users[0].id)
           .send({
@@ -84,7 +84,7 @@ describe('/contact (integration) ', () => {
 
     for (const phone of notValidPhone) {
       it(`Should return status 400 and error VALIDATION_FAILED if phone is ${phone}`, async () => {
-        return api
+        await api
           .post('/contact')
           .set('Authorization', dataset.users[0].id)
           .send({
@@ -177,7 +177,7 @@ describe('/contact (integration) ', () => {
           expect(result.status).toBe(201);
         });
 
-      return api
+      await api
         .post('/contact')
         .set('Authorization', userId)
         .send({

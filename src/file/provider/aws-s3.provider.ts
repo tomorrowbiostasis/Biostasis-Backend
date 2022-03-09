@@ -1,14 +1,15 @@
 import { DICTIONARY } from '../constant/dictionary.constant';
-import { get } from 'config';
+import { ConfigService } from '@nestjs/config';
 import * as AWS from 'aws-sdk';
 
 export const AWSS3Provider = {
   provide: DICTIONARY.S3,
-  useFactory: () => {
+  inject: [ConfigService],
+  useFactory: (config: ConfigService) => {
     return new AWS.S3({
-      accessKeyId: get('s3.accessKeyId'),
+      accessKeyId: config.get('s3.accessKeyId'),
       signatureVersion: 'v4',
-      secretAccessKey: get('s3.secretAccessKey'),
+      secretAccessKey: config.get('s3.secretAccessKey'),
     });
   },
 };

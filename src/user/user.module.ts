@@ -24,6 +24,8 @@ import { UpdateUserDeviceIdentifierController } from './controller/update-user-d
 import { NotePositiveInfoController } from './controller/note-positive-info.controller';
 import { PositiveInfoRepositoryProvider } from './provider/positive-info-repository.provider';
 import { PositiveInfoService } from './service/positive-info.service';
+import { ConfigModule } from '@nestjs/config';
+import configuration from '../config/default';
 
 @Module({
   imports: [
@@ -32,6 +34,9 @@ import { PositiveInfoService } from './service/positive-info.service';
     ContactModule,
     TriggerTimeSlotModule,
     FileModule,
+    ConfigModule.forRoot({
+      load: [configuration],
+    }),
   ],
   controllers: [
     UpdateUserProfileController,
