@@ -92,6 +92,11 @@
     "tsconfig-paths": "~3.13.0",
     "typescript": "~4.6.2"
   },
+  "resolutions": {
+    "@nestjs/cli/**/minimist": "1.2.6",
+    "depcheck/**/minimist": "1.2.6",
+    "firebase-admin/**/node-forge": "1.3.0"
+  },
   "jest": {
     "moduleFileExtensions": [
       "js",

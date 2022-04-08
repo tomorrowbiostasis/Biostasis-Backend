@@ -23,7 +23,7 @@ describe('/user (integration) ', () => {
     faker.datatype.boolean(),
     faker.datatype.string(201),
     9,
-    721,
+    2881,
   ];
   const notValidLocation = [
     faker.datatype.boolean(),

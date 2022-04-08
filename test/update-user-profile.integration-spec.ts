@@ -82,7 +82,7 @@ describe('/user (integration) ', () => {
         .patch('/api/v2/user')
         .set('Authorization', dataset.user.id)
         .send({
-          positiveInfoPeriod: 721,
+          positiveInfoPeriod: 2881,
         })
         .then(({ status, body }) => {
           expect(status).toBe(400);

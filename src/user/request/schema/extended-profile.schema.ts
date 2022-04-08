@@ -28,7 +28,7 @@ export const extendedProfileSchema = {
   emergencyMessage: Joi.string().min(10).max(1000),
   regularPushNotification: Joi.boolean(),
   frequencyOfRegularNotification: Joi.number().min(10).max(1440),
-  positiveInfoPeriod: Joi.number().min(10).max(720),
+  positiveInfoPeriod: Joi.number().min(10).max(2880),
   pulseBasedTriggerIOSHealthPermissions: Joi.boolean(),
   pulseBasedTriggerIOSAppleWatchPaired: Joi.boolean(),
   pulseBasedTriggerGoogleFitAuthenticated: Joi.boolean(),
