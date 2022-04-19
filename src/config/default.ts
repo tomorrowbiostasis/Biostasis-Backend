@@ -82,8 +82,8 @@ export default () => ({
     notification: {
       title: 'Click to verify your health status now',
       message: {
-        regular: 'Automated check from the Biostasis Emergency App',
-        pulseBased: 'No pulse data for {minutes}+ minutes.',
+        regular: '[BE] Automated check from the Biostasis Emergency App',
+        pulseBased: '[BE] No pulse data for {minutes}+ minutes.',
       },
     },
     sms: 'Verify your health status now, click here {domain}/deeplink/are-you-ok to app page where health status can be verified. If you ignore this message, your emergency contacts will be notified in a few minutes.',
