@@ -92,3 +92,13 @@ services:
       interval: 1s
       timeout: 3s
       retries: 30
+
+  biostasis_phpmyadmin:
+    depends_on:
+      - biostasis_database
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - '17009:80'
+    environment:
+      PMA_HOST: biostasis_database
