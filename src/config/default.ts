@@ -51,6 +51,7 @@ export default () => ({
       noConnectionToWatch: 300000, // milliseconds
       heartRateInvalid: 300000, // milliseconds,
       smsIfNoPositiveInfoAfterPushNotification: 5, // minutes
+      alertIfNoPositiveInfoAfterSms: 5, // minutes
       triggerIfNoPositiveInfoAfterSms: 15, // minutes
     },
   },
@@ -80,10 +81,12 @@ export default () => ({
   firebase: {
     accountKey: firebaseAccountKey,
     notification: {
+      sound: 'alarm30.wav',
       title: 'Click to verify your health status now',
       message: {
         regular: '[BE] Automated check from the Biostasis Emergency App',
         pulseBased: '[BE] No pulse data for {minutes}+ minutes.',
+        alert: '[BE] Are you ok? Open to cancel emergency trigger!',
       },
     },
     sms: 'Verify your health status now, click here {domain}/deeplink/are-you-ok to app page where health status can be verified. If you ignore this message, your emergency contacts will be notified in a few minutes.',

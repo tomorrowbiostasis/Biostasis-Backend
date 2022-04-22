@@ -33,6 +33,7 @@ export class PositiveInfoService {
       updatedAt: positiveInfo?.now,
       smsTime: null,
       pushNotificationTime: null,
+      alertTime: null,
       triggerTime: null,
     };
 
