@@ -37,7 +37,7 @@ export class PositiveInfoRepository extends Repository<PositiveInfoEntity> {
       .leftJoinAndSelect('positiveInfo.user', 'user')
       .leftJoinAndSelect('user.profile', 'profile')
       .where('push_notification_time IS NOT NULL')
-      .andWhere('NOW() > push_notification_time')
+      .andWhere('NOW() >= push_notification_time')
       .andWhere('sms_time IS NULL')
       .andWhere('prefix IS NOT NULL');
 
@@ -56,14 +56,15 @@ export class PositiveInfoRepository extends Repository<PositiveInfoEntity> {
   }
 
   findSmsWithoutReaction(
-    regularPushNotification: boolean
+    regularPushNotification: boolean,
+    column: string
   ): Promise<PositiveInfoEntity[]> {
     let query = this.createQueryBuilder('positiveInfo')
       .leftJoinAndSelect('positiveInfo.user', 'user')
       .leftJoinAndSelect('user.profile', 'profile')
       .leftJoinAndSelect('user.contacts', 'contacts')
-      .where('sms_time IS NOT NULL')
-      .andWhere('NOW() > sms_time')
+      .where(`${column} IS NOT NULL`)
+      .andWhere(`NOW() >= ${column}`)
       .andWhere('trigger_time IS NULL');
 
     if (regularPushNotification) {
@@ -104,14 +105,31 @@ export class PositiveInfoRepository extends Repository<PositiveInfoEntity> {
       .execute();
   }
 
-  setSmsTime(userId: string, period: number): Promise<UpdateResult> {
+  setSmsTime(
+    userId: string,
+    smsTime: number,
+    alertTime: number
+  ): Promise<UpdateResult> {
     return this.createQueryBuilder()
       .update(PositiveInfoEntity)
       .set({
-        smsTime: () => 'NOW() + INTERVAL :period MINUTE',
+        smsTime: () => 'NOW() + INTERVAL :smsTime MINUTE',
+        alertTime: () => 'NOW() + INTERVAL :alertTime MINUTE',
       })
       .where('user_id = :userId', { userId })
-      .setParameter('period', period)
+      .setParameter('smsTime', smsTime)
+      .setParameter('alertTime', alertTime)
+      .execute();
+  }
+
+  clearAlertTime(userIds: string[]): Promise<UpdateResult> {
+    return this.createQueryBuilder()
+      .update(PositiveInfoEntity)
+      .set({
+        alertTime: null,
+      })
+      .where('user_id IN (:userIds)', { userIds })
+
       .execute();
   }
 

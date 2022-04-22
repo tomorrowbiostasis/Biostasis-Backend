@@ -28,6 +28,7 @@ export class SchedulerService extends NestSchedule {
   async checkRegularPositiveInfo() {
     await this.sendRegularPushNotification();
     await this.sendSmsDueToLackOfPositiveInfo(true);
+    await this.sendAlertDueToLackOfPositiveInfo(true);
     await this.triggerEmergencyMessage(true);
   }
 
@@ -74,6 +75,7 @@ export class SchedulerService extends NestSchedule {
   async checkNotRegularPositiveInfo() {
     await this.sendPushNotificationDueToLackOfPositiveInfo();
     await this.sendSmsDueToLackOfPositiveInfo(false);
+    await this.sendAlertDueToLackOfPositiveInfo(false);
     await this.triggerEmergencyMessage(false);
   }
 
@@ -128,10 +130,40 @@ export class SchedulerService extends NestSchedule {
     }
   }
 
+  async sendAlertDueToLackOfPositiveInfo(regularPushNotification: boolean) {
+    const smsWithoutReaction =
+      await this.positiveInfoRepository.findSmsWithoutReaction(
+        regularPushNotification,
+        'alert_time'
+      );
+    const operations = [];
+    const userIds = [];
+
+    for (const item of smsWithoutReaction) {
+      operations.push(
+        this.messageService.sendMessageToDevice(item.user.deviceId, {
+          title: this.config.get('firebase.notification.title'),
+          message: this.config.get('firebase.notification.message.alert'),
+          type: MESSAGE_TYPE.EMERGENCY_ALERT,
+          sound: this.config.get('firebase.notification.sound'),
+        })
+      );
+
+      userIds.push(item.userId);
+    }
+
+    if (operations.length > 0) {
+      Promise.all(operations);
+
+      await this.positiveInfoRepository.clearAlertTime(userIds);
+    }
+  }
+
   async triggerEmergencyMessage(regularPushNotification: boolean) {
     const smsWithoutReaction =
       await this.positiveInfoRepository.findSmsWithoutReaction(
-        regularPushNotification
+        regularPushNotification,
+        'sms_time'
       );
     const operations = [];
 

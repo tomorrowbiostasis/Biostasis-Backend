@@ -31,6 +31,9 @@ export class PositiveInfoEntity {
   @Column({ name: 'sms_time', type: 'datetime' })
   smsTime: Date;
 
+  @Column({ name: 'alert_time', type: 'datetime' })
+  alertTime: Date;
+
   @Column({ name: 'trigger_time', type: 'datetime' })
   triggerTime: Date;
 

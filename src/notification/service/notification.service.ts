@@ -103,6 +103,9 @@ export class NotificationService {
               params.userId,
               this.config.get(
                 'queue.sendAfterTime.triggerIfNoPositiveInfoAfterSms'
+              ),
+              this.config.get(
+                'queue.sendAfterTime.alertIfNoPositiveInfoAfterSms'
               )
             );
           }

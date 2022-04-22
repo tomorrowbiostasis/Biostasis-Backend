@@ -13,9 +13,9 @@ export class MessageService {
 
   async sendMessageToDevice(
     deviceId: string,
-    data: Record<string, unknown>
+    data: Record<string, string>
   ): Promise<Record<string, unknown>> {
-    const payload = {
+    const payload: Record<string, Record<string, string>> = {
       notification: {
         title: data.title,
         body: data.message,
@@ -25,6 +25,10 @@ export class MessageService {
         type: data.type,
       },
     };
+
+    if (data.sound) {
+      payload.notification.sound = data.sound;
+    }
 
     return this.firebase
       .messaging()
