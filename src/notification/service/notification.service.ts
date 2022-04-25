@@ -78,6 +78,7 @@ export class NotificationService {
     if (params.isFromQueue) {
       this.logger.error(JSON.stringify(error), JSON.stringify(params));
     } else {
+      this.logger.error(JSON.stringify(error), JSON.stringify(params));
       throw new CustomError(SEND_SMS_FAILED, error);
     }
   }
@@ -93,6 +94,8 @@ export class NotificationService {
         .create(params.data)
         .then(async (result) => {
           if (result.errorMessage) {
+            this.logger.error(JSON.stringify(result));
+
             throw result;
           } else {
             this.logger.log(JSON.stringify(result));
