@@ -22,24 +22,50 @@ export class MessageConsumer extends BasicConsumer {
 
   @Process(PROCESS.SMS)
   async handleSmsProcess(job: Job) {
-    this.notificationService.sendSms({ ...job.data, isFromQueue: true });
+    try {
+      await this.notificationService.sendSms({ ...job.data, isFromQueue: true });
+
+      this.logger.log(
+        `[handleSmsProcess 1] sms process handled`,
+        JSON.stringify(job.data),
+      );
+    } catch(error) {
+      this.logger.error(
+        `[handleSmsProcess 2] Exception during handling sms process:`,
+        JSON.stringify(job.data),
+        JSON.stringify(error),
+      );
+    }
   }
 
   @Process(PROCESS.EMERGENCY)
   async handleEmergencyProcess(job: Job) {
-    const [, userId] = job.id.toString().split('_');
+    try {
+      const [, userId] = job.id.toString().split('_');
 
-    if (job.data.sms) {
-      this.notificationService.sendSms({ ...job.data.sms, isFromQueue: true });
-    }
+      if (job.data.sms) {
+        await this.notificationService.sendSms({ ...job.data.sms, isFromQueue: true });
+      }
 
-    if (job.data.email) {
-      this.notificationService.sendEmail({
-        data: job.data.email,
-        isFromQueue: true,
-        emergencyMessage: true,
-        userId: userId,
-      });
+      if (job.data.email) {
+        await this.notificationService.sendEmail({
+          data: job.data.email,
+          isFromQueue: true,
+          emergencyMessage: true,
+          userId: userId,
+        });
+      }
+
+      this.logger.log(
+        `[handleSmsProcess 3] emergency process handled`,
+        JSON.stringify(job.data),
+      );
+    } catch(error) {
+      this.logger.error(
+        `[handleSmsProcess 4] Exception during handling emergency process:`,
+        JSON.stringify(job.data),
+        JSON.stringify(error),
+      );
     }
   }
 }

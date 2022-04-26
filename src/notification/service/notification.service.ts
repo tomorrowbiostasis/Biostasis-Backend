@@ -68,6 +68,14 @@ export class NotificationService {
     }
   ) {
     if (!params.isPositiveInfoQuestion) {
+      this.logger.error(
+        `[handleSmsException 1] SMS exception occurred, re-adding to queue:`,
+        JSON.stringify(params),
+        `Will be triggered after: ${this.config.get('queue.sendAfterTime.repeatTryingToSendMessage')}`,
+        `Error:`,
+        JSON.stringify(error)
+      );
+
       await this.messageService.addJobToQueue(
         PROCESS.SMS,
         params,
@@ -76,9 +84,9 @@ export class NotificationService {
     }
 
     if (params.isFromQueue) {
-      this.logger.error(JSON.stringify(error), JSON.stringify(params));
+      this.logger.error(`[handleSmsException 2] SMS exception occurred from queued task`, JSON.stringify(error), JSON.stringify(params));
     } else {
-      this.logger.error(JSON.stringify(error), JSON.stringify(params));
+      this.logger.error(`[handleSmsException 3] SMS exception occurred from NOT queued task`, JSON.stringify(error), JSON.stringify(params));
       throw new CustomError(SEND_SMS_FAILED, error);
     }
   }
@@ -94,11 +102,10 @@ export class NotificationService {
         .create(params.data)
         .then(async (result) => {
           if (result.errorMessage) {
-            this.logger.error(JSON.stringify(result));
-
+            this.logger.error(`[sendSms 1] Twilio result contains error message`, JSON.stringify(result));
             throw result;
           } else {
-            this.logger.log(JSON.stringify(result));
+            this.logger.log(`[sendSms 2] Twilio result received`, JSON.stringify(result));
           }
 
           if (params.isPositiveInfoQuestion && params.userId) {
@@ -111,6 +118,8 @@ export class NotificationService {
                 'queue.sendAfterTime.alertIfNoPositiveInfoAfterSms'
               )
             );
+
+            this.logger.log(`[sendSms 3] SMS time set due to isPositiveInfoQuestion`);
           }
 
           return result;
