@@ -109,6 +109,8 @@ export class NotificationService {
           }
 
           if (params.isPositiveInfoQuestion && params.userId) {
+            this.logger.log(`[sendSms 3] Setting SMS time due to isPositiveInfoQuestion`);
+
             await this.positiveInfoRepository.setSmsTime(
               params.userId,
               this.config.get(
@@ -261,8 +263,9 @@ export class NotificationService {
         );
 
         if (params?.isFromQueue) {
-          this.logger.error(JSON.stringify(error), JSON.stringify(params));
+          this.logger.error(`[sendEmail 1]`, JSON.stringify(error), JSON.stringify(params));
         } else {
+          this.logger.error(`[sendEmail 2]`, JSON.stringify(error), JSON.stringify(params));
           throw new CustomError(SEND_MAIL_FAILED, error);
         }
       });
