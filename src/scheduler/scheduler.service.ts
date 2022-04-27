@@ -32,6 +32,7 @@ export class SchedulerService extends NestSchedule {
     await this.triggerEmergencyMessage(true);
   }
 
+  // regular = time
   async sendRegularPushNotification() {
     const profiles =
       await this.profileRepository.findWhereRegularNotificationIsNeeded();
@@ -79,6 +80,7 @@ export class SchedulerService extends NestSchedule {
     await this.triggerEmergencyMessage(false);
   }
 
+  // pulse base
   async sendPushNotificationDueToLackOfPositiveInfo() {
     const expiredInformation =
       await this.positiveInfoRepository.findExpiredInformation();
