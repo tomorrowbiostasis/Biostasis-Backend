@@ -64,31 +64,43 @@ export class NotificationService {
     params: {
       data: MessageListInstanceCreateOptions;
       isPositiveInfoQuestion?: boolean;
+      userId?: string;
       isFromQueue?: boolean;
+      stopPropagation?: boolean;
     }
   ) {
-    if (!params.isPositiveInfoQuestion) {
-      this.logger.error(
-        `[handleSmsException 1] SMS exception occurred, re-adding to queue:`,
-        JSON.stringify(params),
-        `Will be triggered after: ${this.config.get('queue.sendAfterTime.repeatTryingToSendMessage')}`,
-        `Error:`,
-        JSON.stringify(error)
-      );
+    this.logger.error(
+      `[handleSmsException 1] SMS exception occurred:`,
+      JSON.stringify(params),
+      JSON.stringify(error)
+    );
+
+    if (params?.stopPropagation) {
+      this.logger.log('[handleSmsException 2] Next send try will not be attempted.');
+      return;
+    }
+
+    const date = new Date().toISOString();
+
+    if (!params?.isFromQueue) {
+      this.logger.log('[handleSmsException 3] Adding process to queue.', date);
 
       await this.messageService.addJobToQueue(
         PROCESS.SMS,
         params,
         this.config.get('queue.sendAfterTime.repeatTryingToSendMessage')
       );
-    }
 
-    if (params.isFromQueue) {
-      this.logger.error(`[handleSmsException 2] SMS exception occurred from queued task`, JSON.stringify(error), JSON.stringify(params));
-    } else {
-      this.logger.error(`[handleSmsException 3] SMS exception occurred from NOT queued task`, JSON.stringify(error), JSON.stringify(params));
+      this.logger.log('[handleSmsException 3] Process added to queue.', date);
+
       throw new CustomError(SEND_SMS_FAILED, error);
     }
+
+    this.logger.log('[handleSmsException 4] Re sending same sms for the last time.', date);
+
+    await this.sendSms({ ...params, stopPropagation: true });
+
+    this.logger.log('[handleSmsException 4] Re sending process finished.', date);
   }
 
   async sendSms(params: {
@@ -96,6 +108,7 @@ export class NotificationService {
     isPositiveInfoQuestion?: boolean;
     userId?: string;
     isFromQueue?: boolean;
+    stopPropagation?: boolean;
   }): Promise<MessageInstance | void> {
     try {
       return this.twilio.messages
