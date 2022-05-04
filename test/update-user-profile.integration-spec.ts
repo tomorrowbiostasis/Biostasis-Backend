@@ -121,6 +121,8 @@ describe('/user (integration) ', () => {
     });
 
     it('Should update user profile, return status 200 and valid body', async () => {
+      const location = faker.internet.url();
+
       const data = {
         prefix: getRandomPhonePrefix(),
         phone: getRandomPhoneNumber(),
@@ -139,6 +141,7 @@ describe('/user (integration) ', () => {
         emergencyEmailAndSms: true,
         automatedVoiceCall: true,
         locationAccess: true,
+        location,
         uploadedDocumentsAccess: true,
         readManual: true,
         automatedEmergency: true,
@@ -184,6 +187,7 @@ describe('/user (integration) ', () => {
       expect(body.emergencyEmailAndSms).toBe(data.emergencyEmailAndSms);
       expect(body.automatedVoiceCall).toBe(data.automatedVoiceCall);
       expect(body.locationAccess).toBe(data.locationAccess);
+      expect(body.location).toBe(location);
       expect(body.uploadedDocumentsAccess).toBe(data.uploadedDocumentsAccess);
       expect(body.readManual).toBe(data.readManual);
       expect(body.automatedEmergency).toBe(data.automatedEmergency);

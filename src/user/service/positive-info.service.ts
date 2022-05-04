@@ -3,11 +3,11 @@ import {
   Injectable,
   Logger,
   BadRequestException,
-} from '@nestjs/common';
-import { PositiveInfoRepository } from '../repository/positive-info.repository';
-import { PositiveInfoEntity } from '../entity/positive-info.entity';
-import { SAVE_POSITIVE_INFO_FAILED } from '../../common/error/keys';
-import { NotePositiveInfoDTO } from '../request/dto/note-positive-info.dto';
+} from "@nestjs/common";
+import { PositiveInfoRepository } from "../repository/positive-info.repository";
+import { PositiveInfoEntity } from "../entity/positive-info.entity";
+import { SAVE_POSITIVE_INFO_FAILED } from "../../common/error/keys";
+import { NotePositiveInfoDTO } from "../request/dto/note-positive-info.dto";
 
 @Injectable()
 export class PositiveInfoService {
@@ -27,6 +27,7 @@ export class PositiveInfoService {
     params: NotePositiveInfoDTO
   ): Promise<PositiveInfoEntity> {
     const positiveInfo = await this.positiveInfoRepository.findByUserId(userId);
+
     let data: Partial<PositiveInfoEntity> = {
       ...positiveInfo,
       userId,
@@ -36,10 +37,6 @@ export class PositiveInfoService {
       alertTime: null,
       triggerTime: null,
     };
-
-    if (params.locationUrl) {
-      data.location = params.locationUrl;
-    }
 
     if (params.minutesToNext) {
       data.minutesToNext = params.minutesToNext;

@@ -4,35 +4,32 @@ import {
   Post,
   Body,
   UseGuards,
-} from '@nestjs/common';
+} from "@nestjs/common";
 import {
   ApiTags,
   ApiResponse,
   ApiOperation,
   ApiBearerAuth,
-} from '@nestjs/swagger';
-import { Reflector } from '@nestjs/core';
-import { AuthGuard } from '@nestjs/passport';
-import { plainToClass } from 'class-transformer';
-import { RolesGuard } from '../../authentication/roles.guard';
-import { Roles } from '../../authentication/decorator/roles.decorator';
-import { UserService } from '../service/user.service';
-import { User } from '../../authentication/decorator/user.decorator';
-import { UserEntity, ROLES } from '../../user/entity/user.entity';
-import { ErrorMessageRO } from '../../common/response/error.ro';
-import { NotificationService } from '../../notification/service/notification.service';
-import { SuccessRO } from '../../common/response/success.ro';
-import { SendTestEmergencyMessageDTO } from '../request/dto/send-test-emergency-message.dto';
-import { sendTestEmergencyMessageSchema } from '../request/schema/send-test-emergency-message.schema';
-import { ValidationPipe } from '../../common/pipe/validation.pipe';
-import { getNameOrEmail } from '../../common/helper/get-name-or-email';
-import { LOCATION_DATA_IS_NEEDED } from '../../common/error/keys';
+} from "@nestjs/swagger";
+import { Reflector } from "@nestjs/core";
+import { AuthGuard } from "@nestjs/passport";
+import { plainToClass } from "class-transformer";
+import { RolesGuard } from "../../authentication/roles.guard";
+import { Roles } from "../../authentication/decorator/roles.decorator";
+import { UserService } from "../service/user.service";
+import { User } from "../../authentication/decorator/user.decorator";
+import { UserEntity, ROLES } from "../../user/entity/user.entity";
+import { ErrorMessageRO } from "../../common/response/error.ro";
+import { NotificationService } from "../../notification/service/notification.service";
+import { SuccessRO } from "../../common/response/success.ro";
+import { getNameOrEmail } from "../../common/helper/get-name-or-email";
+import { LOCATION_DATA_IS_NEEDED } from "../../common/error/keys";
 
 @ApiBearerAuth()
 @UseGuards(new RolesGuard(new Reflector()))
-@UseGuards(AuthGuard('cognito'))
-@ApiTags('user')
-@Controller('user')
+@UseGuards(AuthGuard("cognito"))
+@ApiTags("user")
+@Controller("user")
 export class SendTestMessageController {
   constructor(
     private readonly userService: UserService,
@@ -41,19 +38,11 @@ export class SendTestMessageController {
 
   @ApiResponse({ status: 201, type: SuccessRO })
   @ApiResponse({ status: 400, type: ErrorMessageRO })
-  @ApiOperation({ summary: 'Send test emergency message' })
+  @ApiOperation({ summary: "Send test emergency message" })
   @Roles([ROLES.USER])
-  @Post('message/test')
-  async sendTestEmergencyMessage(
-    @User() user: UserEntity,
-    @Body(new ValidationPipe(sendTestEmergencyMessageSchema))
-    data: SendTestEmergencyMessageDTO
-  ) {
+  @Post("message/test")
+  async sendTestEmergencyMessage(@User() user: UserEntity) {
     user = await this.userService.findByIdOrFail(user.id);
-
-    if (!data.locationUrl && user.profile?.locationAccess === true) {
-      throw new BadRequestException(LOCATION_DATA_IS_NEEDED);
-    }
 
     await this.notificationService.sendEmergencyMessage(
       {
@@ -68,7 +57,7 @@ export class SendTestMessageController {
           : null,
       },
       user,
-      data
+      { locationUrl: user?.profile?.location }
     );
 
     return plainToClass(SuccessRO, { success: true });

@@ -1,20 +1,20 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import * as faker from 'faker';
-import { SendEmergencyMessageController } from './send-emergency-message.controller';
-import { UserService } from '../../user/service/user.service';
-import { NotificationService } from '../../notification/service/notification.service';
-import { userServiceMock } from '../../../test/mock/user.service.mock';
-import { notificationServiceMock } from '../../../test/mock/notification.service.mock';
-import { getUserStub } from '../../../test/entity/user.mock';
-import { getProfileStub } from '../../../test/entity/profile.mock';
-import { ContactService } from '../../contact/service/contact.service';
-import { contactServiceMock } from '../../../test/mock/contact.service.mock';
-import { getContactStub } from '../../../test/entity/contact.mock';
-import { MESSAGE_TYPE } from '../../../src/message/enum/message-type.enum';
-import { TriggerTimeSlotService } from '../../trigger-time-slot/service/trigger-time-slot.service';
-import { triggerTimeSlotServiceMock } from '../../../test/mock/trigger-time-slot.service.mock';
+import { Test, TestingModule } from "@nestjs/testing";
+import * as faker from "faker";
+import { SendEmergencyMessageController } from "./send-emergency-message.controller";
+import { UserService } from "../../user/service/user.service";
+import { NotificationService } from "../../notification/service/notification.service";
+import { userServiceMock } from "../../../test/mock/user.service.mock";
+import { notificationServiceMock } from "../../../test/mock/notification.service.mock";
+import { getUserStub } from "../../../test/entity/user.mock";
+import { getProfileStub } from "../../../test/entity/profile.mock";
+import { ContactService } from "../../contact/service/contact.service";
+import { contactServiceMock } from "../../../test/mock/contact.service.mock";
+import { getContactStub } from "../../../test/entity/contact.mock";
+import { MESSAGE_TYPE } from "../../../src/message/enum/message-type.enum";
+import { TriggerTimeSlotService } from "../../trigger-time-slot/service/trigger-time-slot.service";
+import { triggerTimeSlotServiceMock } from "../../../test/mock/trigger-time-slot.service.mock";
 
-describe('Send Emergency Message Controller', () => {
+describe("Send Emergency Message Controller", () => {
   let controller: SendEmergencyMessageController;
 
   beforeEach(async () => {
@@ -45,16 +45,16 @@ describe('Send Emergency Message Controller', () => {
     );
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(controller).toBeDefined();
   });
 
-  describe('Is method defined', () => {
-    it('sendSms is defined', () =>
+  describe("Is method defined", () => {
+    it("sendSms is defined", () =>
       expect(controller.sendEmergencyMessage).toBeDefined());
   });
 
-  describe('Check if methods work properly', () => {
+  describe("Check if methods work properly", () => {
     const user = getUserStub();
     const contacts = [
       getContactStub({ userId: user.id, active: true }),
@@ -65,23 +65,23 @@ describe('Send Emergency Message Controller', () => {
       userId: user.id,
       emergencyEmailAndSms: true,
       locationAccess: true,
+      location: faker.internet.url(),
     });
 
-    it('sendEmergencyMessage() does call sendEmergencyMessage() with the expected parameters', async () => {
+    it("sendEmergencyMessage() does call sendEmergencyMessage() with the expected parameters", async () => {
       const data = {
-        locationUrl: faker.internet.url(),
         delayed: true,
         messageType: MESSAGE_TYPE.HEART_RATE_INVALID,
       };
 
       jest
-        .spyOn(userServiceMock, 'findByIdOrFail')
+        .spyOn(userServiceMock, "findByIdOrFail")
         .mockReturnValue(new Promise((res) => res(user)));
       jest
-        .spyOn(contactServiceMock, 'findActiveContactsByUserId')
+        .spyOn(contactServiceMock, "findActiveContactsByUserId")
         .mockReturnValue(new Promise((res) => res(contacts)));
       jest
-        .spyOn(triggerTimeSlotServiceMock, 'isActiveTimeSlot')
+        .spyOn(triggerTimeSlotServiceMock, "isActiveTimeSlot")
         .mockReturnValue(new Promise((res) => res(false)));
 
       await controller.sendEmergencyMessage(user, data);
@@ -96,7 +96,10 @@ describe('Send Emergency Message Controller', () => {
             phone: contact.prefix ? `${contact.prefix}${contact.phone}` : null,
           },
           user,
-          data
+          {
+            ...data,
+            locationUrl: user.profile.location,
+          }
         );
       }
     });

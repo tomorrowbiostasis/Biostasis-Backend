@@ -1,14 +1,14 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
-import { Cron, NestSchedule } from 'nest-schedule';
-import { PositiveInfoRepository } from '../user/repository/positive-info.repository';
-import { MessageService } from '../message/service/mesage.service';
-import { ConfigService } from '@nestjs/config';
-import { DICTIONARY } from '../common/constant/dictionary.constant';
-import { NotificationService } from '../notification/service/notification.service';
-import { getNameOrEmail } from '../common/helper/get-name-or-email';
-import { ProfileRepository } from '../user/repository/profile.repository';
-import * as moment from 'moment';
-import { MESSAGE_TYPE } from '../message/constant/message-type.constant';
+import { Inject, Injectable, Logger } from "@nestjs/common";
+import { Cron, NestSchedule } from "nest-schedule";
+import { PositiveInfoRepository } from "../user/repository/positive-info.repository";
+import { MessageService } from "../message/service/mesage.service";
+import { ConfigService } from "@nestjs/config";
+import { DICTIONARY } from "../common/constant/dictionary.constant";
+import { NotificationService } from "../notification/service/notification.service";
+import { getNameOrEmail } from "../common/helper/get-name-or-email";
+import { ProfileRepository } from "../user/repository/profile.repository";
+import * as moment from "moment";
+import { MESSAGE_TYPE } from "../message/constant/message-type.constant";
 
 @Injectable()
 export class SchedulerService extends NestSchedule {
@@ -24,7 +24,7 @@ export class SchedulerService extends NestSchedule {
     super();
   }
 
-  @Cron('0 */5 * * * *')
+  @Cron("0 */5 * * * *")
   async checkRegularPositiveInfo() {
     await this.sendRegularPushNotification();
     await this.sendSmsDueToLackOfPositiveInfo(true);
@@ -41,16 +41,16 @@ export class SchedulerService extends NestSchedule {
     let hour: number;
 
     for (const profile of profiles) {
-      hour = parseInt(moment(profile.now).utc().format('H'));
+      hour = parseInt(moment(profile.now).utc().format("H"));
 
       if (
-        hour > parseInt(this.config.get('night.end')) &&
-        hour < parseInt(this.config.get('night.start'))
+        hour > parseInt(this.config.get("night.end")) &&
+        hour < parseInt(this.config.get("night.start"))
       ) {
         operations.push(
           this.messageService.sendMessageToDevice(profile.deviceId, {
-            title: this.config.get('firebase.notification.title'),
-            message: this.config.get('firebase.notification.message.regular'),
+            title: this.config.get("firebase.notification.title"),
+            message: this.config.get("firebase.notification.message.regular"),
             type: MESSAGE_TYPE.EMERGENCY_TIME_BASED_CHECK,
           })
         );
@@ -64,7 +64,7 @@ export class SchedulerService extends NestSchedule {
         await this.positiveInfoRepository.setPushNotificationTime(
           userIds,
           this.config.get(
-            'queue.sendAfterTime.smsIfNoPositiveInfoAfterPushNotification'
+            "queue.sendAfterTime.smsIfNoPositiveInfoAfterPushNotification"
           )
         ),
         await this.profileRepository.setRegularNotificationTime(userIds),
@@ -72,7 +72,7 @@ export class SchedulerService extends NestSchedule {
     }
   }
 
-  @Cron('0 */5 * * * *')
+  @Cron("0 */5 * * * *")
   async checkNotRegularPositiveInfo() {
     await this.sendPushNotificationDueToLackOfPositiveInfo();
     await this.sendSmsDueToLackOfPositiveInfo(false);
@@ -90,10 +90,10 @@ export class SchedulerService extends NestSchedule {
     for (const information of expiredInformation) {
       operations.push(
         this.messageService.sendMessageToDevice(information.user.deviceId, {
-          title: this.config.get('firebase.notification.title'),
+          title: this.config.get("firebase.notification.title"),
           message: this.config
-            .get('firebase.notification.message.pulseBased')
-            .replace('{minutes}', information.minutesToNext),
+            .get("firebase.notification.message.pulseBased")
+            .replace("{minutes}", information.minutesToNext),
           type: MESSAGE_TYPE.EMERGENCY_PULSE_BASED_CHECK,
         })
       );
@@ -105,7 +105,7 @@ export class SchedulerService extends NestSchedule {
       await this.positiveInfoRepository.setPushNotificationTime(
         userIds,
         this.config.get(
-          'queue.sendAfterTime.smsIfNoPositiveInfoAfterPushNotification'
+          "queue.sendAfterTime.smsIfNoPositiveInfoAfterPushNotification"
         )
       );
     }
@@ -122,8 +122,8 @@ export class SchedulerService extends NestSchedule {
         data: this.notificationService.prepareSmsData(
           `${item.user.profile.prefix}${item.user.profile.phone}`,
           this.config
-            .get('firebase.sms')
-            .replace('{domain}', this.config.get('backend.url'))
+            .get("firebase.sms")
+            .replace("{domain}", this.config.get("backend.url"))
         ),
         isPositiveInfoQuestion: true,
         userId: item.user.id,
@@ -136,7 +136,7 @@ export class SchedulerService extends NestSchedule {
     const smsWithoutReaction =
       await this.positiveInfoRepository.findSmsWithoutReaction(
         regularPushNotification,
-        'alert_time'
+        "alert_time"
       );
     const operations = [];
     const userIds = [];
@@ -144,10 +144,10 @@ export class SchedulerService extends NestSchedule {
     for (const item of smsWithoutReaction) {
       operations.push(
         this.messageService.sendMessageToDevice(item.user.deviceId, {
-          title: this.config.get('firebase.notification.title'),
-          message: this.config.get('firebase.notification.message.alert'),
+          title: this.config.get("firebase.notification.title"),
+          message: this.config.get("firebase.notification.message.alert"),
           type: MESSAGE_TYPE.EMERGENCY_ALERT,
-          sound: this.config.get('firebase.notification.sound'),
+          sound: this.config.get("firebase.notification.sound"),
         })
       );
 
@@ -165,7 +165,7 @@ export class SchedulerService extends NestSchedule {
     const smsWithoutReaction =
       await this.positiveInfoRepository.findSmsWithoutReaction(
         regularPushNotification,
-        'sms_time'
+        "sms_time"
       );
     const operations = [];
 
@@ -185,7 +185,11 @@ export class SchedulerService extends NestSchedule {
                 : null,
             },
             item.user,
-            { delayed: false, isFromQueue: true, locationUrl: item.location }
+            {
+              delayed: false,
+              isFromQueue: true,
+              locationUrl: item?.user?.profile?.location,
+            }
           )
         );
       }

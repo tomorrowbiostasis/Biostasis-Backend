@@ -1,8 +1,9 @@
-import { addUser } from '../entity/user.mock';
-import { addContact } from '../entity/contact.mock';
-import { addProfile } from '../entity/profile.mock';
-import { UserEntity } from '../../src/user/entity/user.entity';
-import { ContactEntity } from '../../src/contact/entity/contact.entity';
+import { addUser } from "../entity/user.mock";
+import { addContact } from "../entity/contact.mock";
+import { addProfile } from "../entity/profile.mock";
+import { UserEntity } from "../../src/user/entity/user.entity";
+import { ContactEntity } from "../../src/contact/entity/contact.entity";
+import * as faker from "faker";
 
 export const initializeDataset = async (): Promise<{
   user: UserEntity;
@@ -18,6 +19,7 @@ export const initializeDataset = async (): Promise<{
     locationAccess: true,
     automatedEmergency: false,
     readManual: false,
+    location: faker.internet.url(),
   });
   const contacts = await Promise.all([
     addContact({
