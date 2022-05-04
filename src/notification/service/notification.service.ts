@@ -3,33 +3,33 @@ import {
   Injectable,
   BadRequestException,
   Logger,
-} from '@nestjs/common';
-import { Email } from 'node-mailjet';
-import { ConfigService } from '@nestjs/config';
-import { DICTIONARY } from '../../common/constant/dictionary.constant';
+} from "@nestjs/common";
+import { Email } from "node-mailjet";
+import { ConfigService } from "@nestjs/config";
+import { DICTIONARY } from "../../common/constant/dictionary.constant";
 import {
   SEND_MAIL_FAILED,
   SEND_SMS_FAILED,
   EMAIL_AND_SMS_NOT_ALLOWED,
   EXPORT_DATA_FAILED,
   GET_FILE_CONTENT_FAILED,
-} from '../../common/error/keys';
-import { CustomError } from '../../common/error/custom-error';
-import { DICTIONARY as NOTIFICATION_DI } from '../constant/dictionary.constant';
-import * as twilioLibrary from 'twilio';
-import { UserEntity } from '../../user/entity/user.entity';
-import { escapeHTML } from '../helper/escape-html';
-import { getMailTemplateId } from '../helper/get-template-id';
-import { getNameOrEmail } from '../../common/helper/get-name-or-email';
-import { SendEmergencyMessageDTO } from '../../message/request/dto/send-emergency-message.dto';
-import { MessageListInstanceCreateOptions } from 'twilio/lib/rest/api/v2010/account/message';
-import { MessageInstance } from 'twilio/lib/rest/api/v2010/account/message';
-import { MessageService } from '../../queue/service/message.service';
-import { PROCESS } from '../../queue/constant/process.constant';
-import { ExportService } from '../../user/service/export.service';
-import { FileRepository } from '../../file/repository/file.repository';
-import { FileService } from '../../file/service/file.service';
-import { PositiveInfoRepository } from '../../user/repository/positive-info.repository';
+} from "../../common/error/keys";
+import { CustomError } from "../../common/error/custom-error";
+import { DICTIONARY as NOTIFICATION_DI } from "../constant/dictionary.constant";
+import * as twilioLibrary from "twilio";
+import { UserEntity } from "../../user/entity/user.entity";
+import { escapeHTML } from "../helper/escape-html";
+import { getMailTemplateId } from "../helper/get-template-id";
+import { getNameOrEmail } from "../../common/helper/get-name-or-email";
+import { SendEmergencyMessageDTO } from "../../message/request/dto/send-emergency-message.dto";
+import { MessageListInstanceCreateOptions } from "twilio/lib/rest/api/v2010/account/message";
+import { MessageInstance } from "twilio/lib/rest/api/v2010/account/message";
+import { MessageService } from "../../queue/service/message.service";
+import { PROCESS } from "../../queue/constant/process.constant";
+import { ExportService } from "../../user/service/export.service";
+import { FileRepository } from "../../file/repository/file.repository";
+import { FileService } from "../../file/service/file.service";
+import { PositiveInfoRepository } from "../../user/repository/positive-info.repository";
 
 @Injectable()
 export class NotificationService {
@@ -53,7 +53,7 @@ export class NotificationService {
     message: string
   ): MessageListInstanceCreateOptions {
     return {
-      from: this.config.get('twilio.phoneNumber'),
+      from: this.config.get("twilio.phoneNumber"),
       to,
       body: message,
     };
@@ -76,31 +76,39 @@ export class NotificationService {
     );
 
     if (params?.stopPropagation) {
-      this.logger.log('[handleSmsException 2] Next send try will not be attempted.');
+      this.logger.log(
+        "[handleSmsException 2] Next send try will not be attempted."
+      );
       return;
     }
 
     const date = new Date().toISOString();
 
     if (!params?.isFromQueue) {
-      this.logger.log('[handleSmsException 3] Adding process to queue.', date);
+      this.logger.log("[handleSmsException 3] Adding process to queue.", date);
 
       await this.messageService.addJobToQueue(
         PROCESS.SMS,
         params,
-        this.config.get('queue.sendAfterTime.repeatTryingToSendMessage')
+        this.config.get("queue.sendAfterTime.repeatTryingToSendMessage")
       );
 
-      this.logger.log('[handleSmsException 3] Process added to queue.', date);
+      this.logger.log("[handleSmsException 3] Process added to queue.", date);
 
       throw new CustomError(SEND_SMS_FAILED, error);
     }
 
-    this.logger.log('[handleSmsException 4] Re sending same sms for the last time.', date);
+    this.logger.log(
+      "[handleSmsException 4] Re sending same sms for the last time.",
+      date
+    );
 
     await this.sendSms({ ...params, stopPropagation: true });
 
-    this.logger.log('[handleSmsException 4] Re sending process finished.', date);
+    this.logger.log(
+      "[handleSmsException 4] Re sending process finished.",
+      date
+    );
   }
 
   async sendSms(params: {
@@ -115,26 +123,36 @@ export class NotificationService {
         .create(params.data)
         .then(async (result) => {
           if (result.errorMessage) {
-            this.logger.error(`[sendSms 1] Twilio result contains error message`, JSON.stringify(result));
+            this.logger.error(
+              `[sendSms 1] Twilio result contains error message`,
+              JSON.stringify(result)
+            );
             throw result;
           } else {
-            this.logger.log(`[sendSms 2] Twilio result received`, JSON.stringify(result));
+            this.logger.log(
+              `[sendSms 2] Twilio result received`,
+              JSON.stringify(result)
+            );
           }
 
           if (params.isPositiveInfoQuestion && params.userId) {
-            this.logger.log(`[sendSms 3] Setting SMS time due to isPositiveInfoQuestion`);
+            this.logger.log(
+              `[sendSms 3] Setting SMS time due to isPositiveInfoQuestion`
+            );
 
             await this.positiveInfoRepository.setSmsTime(
               params.userId,
               this.config.get(
-                'queue.sendAfterTime.triggerIfNoPositiveInfoAfterSms'
+                "queue.sendAfterTime.triggerIfNoPositiveInfoAfterSms"
               ),
               this.config.get(
-                'queue.sendAfterTime.alertIfNoPositiveInfoAfterSms'
+                "queue.sendAfterTime.alertIfNoPositiveInfoAfterSms"
               )
             );
 
-            this.logger.log(`[sendSms 3] SMS time set due to isPositiveInfoQuestion`);
+            this.logger.log(
+              `[sendSms 3] SMS time set due to isPositiveInfoQuestion`
+            );
           }
 
           return result;
@@ -161,15 +179,15 @@ export class NotificationService {
     const escapedVariables = {};
     for (const [key, value] of Object.entries(variablesToEscapeAndSend)) {
       escapedVariables[key] =
-        typeof value === 'string' ? escapeHTML(value) : value;
+        typeof value === "string" ? escapeHTML(value) : value;
     }
 
     return {
       Messages: [
         {
           From: {
-            Email: this.config.get('mailJet.email'),
-            Name: this.config.get('mailJet.username'),
+            Email: this.config.get("mailJet.email"),
+            Name: this.config.get("mailJet.username"),
           },
           To: to,
           TemplateID: templateId,
@@ -190,7 +208,7 @@ export class NotificationService {
     const content = await this.exportService.exportDataAsBase64(userId);
 
     if (!content) {
-      this.logger.error('Exported content is empty');
+      this.logger.error("Exported content is empty");
 
       if (!isFromQueue) {
         throw new BadRequestException(EXPORT_DATA_FAILED);
@@ -198,8 +216,8 @@ export class NotificationService {
     }
 
     return {
-      ContentType: 'application/vnd.ms-excel',
-      Filename: 'exported-data.xls',
+      ContentType: "application/vnd.ms-excel",
+      Filename: "exported-data.xls",
       Base64Content: content,
     };
   }
@@ -257,10 +275,10 @@ export class NotificationService {
     params.data.Messages[0].Attachments = attachments;
 
     return this.mailJet
-      .post('send', { version: 'v3.1' })
+      .post("send", { version: "v3.1" })
       .request(params.data)
       .then((result: any) => {
-        if (result.body.Messages[0].Status !== 'success') {
+        if (result.body.Messages[0].Status !== "success") {
           throw result.body;
         } else {
           this.logger.log(result.body);
@@ -272,13 +290,21 @@ export class NotificationService {
         await this.messageService.addJobToQueue(
           PROCESS.EMAIL,
           params,
-          this.config.get('queue.sendAfterTime.repeatTryingToSendMessage')
+          this.config.get("queue.sendAfterTime.repeatTryingToSendMessage")
         );
 
         if (params?.isFromQueue) {
-          this.logger.error(`[sendEmail 1]`, JSON.stringify(error), JSON.stringify(params));
+          this.logger.error(
+            `[sendEmail 1]`,
+            JSON.stringify(error),
+            JSON.stringify(params)
+          );
         } else {
-          this.logger.error(`[sendEmail 2]`, JSON.stringify(error), JSON.stringify(params));
+          this.logger.error(
+            `[sendEmail 2]`,
+            JSON.stringify(error),
+            JSON.stringify(params)
+          );
           throw new CustomError(SEND_MAIL_FAILED, error);
         }
       });
@@ -291,7 +317,10 @@ export class NotificationService {
       phone: string;
     },
     user: UserEntity,
-    data: SendEmergencyMessageDTO & { isFromQueue?: boolean }
+    data: SendEmergencyMessageDTO & {
+      isFromQueue?: boolean;
+      locationUrl?: string;
+    }
   ): Promise<void> {
     if (user.profile?.emergencyEmailAndSms === false) {
       throw new BadRequestException(EMAIL_AND_SMS_NOT_ALLOWED);
@@ -300,10 +329,10 @@ export class NotificationService {
     let message =
       user.profile?.emergencyMessage ??
       this.config
-        .get('emergencyTrigger.defaultMessage')
+        .get("emergencyTrigger.defaultMessage")
         .toString()
         .replace(
-          '{name}',
+          "{name}",
           getNameOrEmail(user.profile?.name, user.profile?.surname, user.email)
         );
 
@@ -315,13 +344,13 @@ export class NotificationService {
         `${
           message === user.profile?.emergencyMessage
             ? `${this.config.get(
-                'emergencyTrigger.customMessagePrefix'
+                "emergencyTrigger.customMessagePrefix"
               )} ${message}`
             : message
         } ${
           user.profile?.locationAccess === true && data.locationUrl
             ? data.locationUrl
-            : ''
+            : ""
         }`.trim()
       );
 
@@ -344,19 +373,19 @@ export class NotificationService {
       message:
         files.length > 0
           ? `${message} ${this.config.get(
-              'emergencyTrigger.ifThereAreAttachments'
+              "emergencyTrigger.ifThereAreAttachments"
             )}`
           : message,
     };
 
     if (user.profile?.locationAccess === true) {
-      params.locationUrl = data.locationUrl ?? '';
+      params.locationUrl = data.locationUrl ?? "";
     }
 
     const emailData = this.prepareEmailData(
       getMailTemplateId(
         `EMERGENCY_MESSAGE_WITH${
-          user.profile?.locationAccess !== true ? 'OUT' : ''
+          user.profile?.locationAccess !== true ? "OUT" : ""
         }_LOCATION`
       ),
       params,

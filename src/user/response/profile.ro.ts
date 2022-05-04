@@ -3,9 +3,9 @@ import {
   Expose,
   Transform,
   TransformFnParams,
-} from 'class-transformer';
-import * as moment from 'moment';
-import { ApiProperty } from '@nestjs/swagger';
+} from "class-transformer";
+import * as moment from "moment";
+import { ApiProperty } from "@nestjs/swagger";
 
 @Exclude()
 export class ProfileRO {
@@ -42,7 +42,7 @@ export class ProfileRO {
 
   @Expose()
   @Transform(({ value }: TransformFnParams) =>
-    value ? moment(value).format('DD/MM/YYYY') : null
+    value ? moment(value).format("DD/MM/YYYY") : null
   )
   @ApiProperty({ type: String })
   dateOfBirth?: string;
@@ -76,7 +76,7 @@ export class ProfileRO {
 
   @Expose()
   @Transform(({ value }: TransformFnParams) =>
-    value ? moment(value).format('DD/MM/YYYY') : null
+    value ? moment(value).format("DD/MM/YYYY") : null
   )
   @ApiProperty({ type: String })
   lastHospitalVisit: string;
@@ -129,6 +129,10 @@ export class ProfileRO {
   @Expose()
   @ApiProperty({ type: Number })
   positiveInfoPeriod: number;
+
+  @Expose()
+  @ApiProperty({ type: String })
+  location: string;
 
   @Expose()
   @ApiProperty({ type: Boolean })

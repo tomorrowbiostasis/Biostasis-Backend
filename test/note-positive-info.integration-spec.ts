@@ -1,19 +1,19 @@
-import * as superTest from 'supertest';
-import { clearDatabase } from './helper';
-import { getTestApp } from './mock/app.mock';
-import { initializeDataset } from './helper/user';
-import * as faker from 'faker';
+import * as superTest from "supertest";
+import { clearDatabase } from "./helper";
+import { getTestApp } from "./mock/app.mock";
+import { initializeDataset } from "./helper/user";
+import * as faker from "faker";
 import {
   VALIDATION_FAILED,
   SAVE_POSITIVE_INFO_FAILED,
   MINUTES_TO_NEXT_MESSAGE_ARE_REQUIRED,
-} from '../src/common/error/keys';
-import { getPositiveInfoByUserId } from './entity/positive-info.mock';
-import { PositiveInfoRepository } from '../src/user/repository/positive-info.repository';
-import { addUser } from './entity/user.mock';
-import { addProfile } from './entity/profile.mock';
+} from "../src/common/error/keys";
+import { getPositiveInfoByUserId } from "./entity/positive-info.mock";
+import { PositiveInfoRepository } from "../src/user/repository/positive-info.repository";
+import { addUser } from "./entity/user.mock";
+import { addProfile } from "./entity/profile.mock";
 
-describe('/user (integration) ', () => {
+describe("/user (integration) ", () => {
   let app;
   let api: superTest.SuperTest<superTest.Test>;
   let dataset: any;
@@ -43,10 +43,10 @@ describe('/user (integration) ', () => {
     await app.close();
   });
 
-  describe('/user/positive-info (PATCH)', () => {
-    it('Should return status 403', async () => {
+  describe("/user/positive-info (PATCH)", () => {
+    it("Should return status 403", async () => {
       await api
-        .post('/user/positive-info')
+        .post("/user/positive-info")
         .send()
         .expect(({ status }) => {
           expect(status).toBe(403);
@@ -56,8 +56,8 @@ describe('/user (integration) ', () => {
     for (const minutesToNext of notValidPeriod) {
       it(`Should return status 400 and error VALIDATION_FAILED if minutesToNext is ${minutesToNext}`, async () =>
         api
-          .post('/user/positive-info')
-          .set('Authorization', dataset.user.id)
+          .post("/user/positive-info")
+          .set("Authorization", dataset.user.id)
           .send({
             minutesToNext,
           })
@@ -67,24 +67,9 @@ describe('/user (integration) ', () => {
           }));
     }
 
-    for (const locationUrl of notValidLocation) {
-      it(`Should return status 400 and error VALIDATION_FAILED if locationUrl is ${locationUrl}`, async () =>
-        api
-          .post('/user/positive-info')
-          .set('Authorization', dataset.user.id)
-          .send({
-            minutesToNext: 90,
-            locationUrl,
-          })
-          .then((result) => {
-            expect(result.status).toBe(400);
-            expect(result.body.error.code).toBe(VALIDATION_FAILED);
-          }));
-    }
-
-    it('Should return status 400 and error SAVE_POSITIVE_INFO_FAILED', async () => {
+    it("Should return status 400 and error SAVE_POSITIVE_INFO_FAILED", async () => {
       jest
-        .spyOn(PositiveInfoRepository.prototype, 'save')
+        .spyOn(PositiveInfoRepository.prototype, "save")
         .mockImplementationOnce(
           jest.fn(async () => {
             throw new Error();
@@ -92,8 +77,8 @@ describe('/user (integration) ', () => {
         );
 
       await api
-        .post('/user/positive-info')
-        .set('Authorization', dataset.user.id)
+        .post("/user/positive-info")
+        .set("Authorization", dataset.user.id)
         .send({
           minutesToNext: 90,
         })
@@ -103,10 +88,10 @@ describe('/user (integration) ', () => {
         });
     });
 
-    it('Should return status 400 and error MINUTES_TO_NEXT_MESSAGE_ARE_REQUIRED', async () => {
+    it("Should return status 400 and error MINUTES_TO_NEXT_MESSAGE_ARE_REQUIRED", async () => {
       await api
-        .post('/user/positive-info')
-        .set('Authorization', dataset.user.id)
+        .post("/user/positive-info")
+        .set("Authorization", dataset.user.id)
         .send({})
         .then(({ status, body }) => {
           expect(status).toBe(400);
@@ -114,14 +99,13 @@ describe('/user (integration) ', () => {
         });
     });
 
-    it('Should note positive info, return status 200 and valid body', async () => {
+    it("Should note positive info, return status 200 and valid body", async () => {
       let minutesToNext = 90;
-      let locationUrl = faker.datatype.string(200);
 
       await api
-        .post('/user/positive-info')
-        .set('Authorization', dataset.user.id)
-        .send({ minutesToNext, locationUrl })
+        .post("/user/positive-info")
+        .set("Authorization", dataset.user.id)
+        .send({ minutesToNext })
         .expect(({ status, body }) => {
           expect(status).toBe(201);
           expect(body.success).toBeTruthy();
@@ -130,11 +114,10 @@ describe('/user (integration) ', () => {
       const item = await getPositiveInfoByUserId(dataset.user.id);
 
       expect(item.minutesToNext).toBe(minutesToNext);
-      expect(item.location).toBe(locationUrl);
 
       await api
-        .post('/user/positive-info')
-        .set('Authorization', dataset.user.id)
+        .post("/user/positive-info")
+        .set("Authorization", dataset.user.id)
         .send({ minutesToNext })
         .expect(({ status, body }) => {
           expect(status).toBe(201);
@@ -148,12 +131,11 @@ describe('/user (integration) ', () => {
       expect(item.updatedAt !== newItem.updatedAt).toBeTruthy();
 
       minutesToNext = 91;
-      locationUrl = faker.datatype.string(200);
 
       await api
-        .post('/user/positive-info')
-        .set('Authorization', dataset.user.id)
-        .send({ minutesToNext, locationUrl })
+        .post("/user/positive-info")
+        .set("Authorization", dataset.user.id)
+        .send({ minutesToNext })
         .expect(({ status, body }) => {
           expect(status).toBe(201);
           expect(body.success).toBeTruthy();
@@ -171,8 +153,8 @@ describe('/user (integration) ', () => {
       });
 
       await api
-        .post('/user/positive-info')
-        .set('Authorization', user.id)
+        .post("/user/positive-info")
+        .set("Authorization", user.id)
         .send({})
         .expect(({ status, body }) => {
           expect(status).toBe(201);

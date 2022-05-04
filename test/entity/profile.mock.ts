@@ -1,11 +1,11 @@
-import * as moment from 'moment';
-import * as faker from 'faker';
-import { ProfileEntity } from '../../src/user/entity/profile.entity';
-import { getConnection, UpdateResult } from 'typeorm';
-import { omit } from '../../src/common/helper/omit';
-import { IProfileData } from '../interface/profile-data.interface';
-import { getRandomPhoneNumber, getRandomPhonePrefix } from './contact.mock';
-import { getUserById } from '../entity/user.mock';
+import * as moment from "moment";
+import * as faker from "faker";
+import { ProfileEntity } from "../../src/user/entity/profile.entity";
+import { getConnection, UpdateResult } from "typeorm";
+import { omit } from "../../src/common/helper/omit";
+import { IProfileData } from "../interface/profile-data.interface";
+import { getRandomPhoneNumber, getRandomPhonePrefix } from "./contact.mock";
+import { getUserById } from "../entity/user.mock";
 
 export const getProfileStub = (data: IProfileData): ProfileEntity => {
   const profile = new ProfileEntity();
@@ -15,6 +15,7 @@ export const getProfileStub = (data: IProfileData): ProfileEntity => {
   profile.surname = data?.surname ?? faker.name.lastName();
   profile.prefix =
     data?.prefix !== undefined ? data.prefix : getRandomPhonePrefix();
+  profile.location = data?.location;
   profile.phone =
     data?.phone !== undefined ? data.phone : getRandomPhoneNumber();
   profile.emergencyMessage = data?.emergencyMessage ?? faker.lorem.sentence();
@@ -74,7 +75,7 @@ export const getProfileById = async (
 ): Promise<ProfileEntity> => {
   return getConnection()
     .getRepository(ProfileEntity)
-    .findOne({ where: { userId }, relations: ['user'] });
+    .findOne({ where: { userId }, relations: ["user"] });
 };
 
 export const updateProfile = async (
@@ -93,11 +94,11 @@ export const checkProfile = async (response: any) => {
 
   expect(
     omit(response, [
-      'createdAt',
-      'updatedAt',
-      'dateOfBirth',
-      'lastHospitalVisit',
-      'deviceId',
+      "createdAt",
+      "updatedAt",
+      "dateOfBirth",
+      "lastHospitalVisit",
+      "deviceId",
     ])
   ).toEqual(
     omit(
@@ -106,14 +107,14 @@ export const checkProfile = async (response: any) => {
         prefix: Number(profileDB.prefix),
       },
       [
-        'createdAt',
-        'updatedAt',
-        'contacts',
-        'dateOfBirth',
-        'lastHospitalVisit',
-        'regularNotificationTime',
-        'user',
-        'id',
+        "createdAt",
+        "updatedAt",
+        "contacts",
+        "dateOfBirth",
+        "lastHospitalVisit",
+        "regularNotificationTime",
+        "user",
+        "id",
       ]
     )
   );
@@ -124,13 +125,13 @@ export const checkProfile = async (response: any) => {
 
   if (response.dateOfBirth) {
     expect(response.dateOfBirth).toBe(
-      moment(profileDB.dateOfBirth).format('DD/MM/YYYY')
+      moment(profileDB.dateOfBirth).format("DD/MM/YYYY")
     );
   }
 
   if (response.lastHospitalVisit) {
     expect(response.lastHospitalVisit).toBe(
-      moment(profileDB.lastHospitalVisit).format('DD/MM/YYYY')
+      moment(profileDB.lastHospitalVisit).format("DD/MM/YYYY")
     );
   }
 

@@ -1,25 +1,21 @@
-import * as superTest from 'supertest';
-import { clearDatabase } from './helper';
-import { getTestApp } from './mock/app.mock';
-import { initializeDataset } from './helper/message';
-import * as faker from 'faker';
-import * as moment from 'moment';
+import * as superTest from "supertest";
+import { clearDatabase } from "./helper";
+import { getTestApp } from "./mock/app.mock";
+import { initializeDataset } from "./helper/message";
+import * as faker from "faker";
 import {
   VALIDATION_FAILED,
-  LOCATION_DATA_IS_NEEDED,
   EMAIL_AND_SMS_NOT_ALLOWED,
   TIME_SLOT_IS_UNAVAILABLE,
-} from '../src/common/error/keys';
-import { MESSAGE_TYPE } from '../src/message/enum/message-type.enum';
-import { addUser } from './entity/user.mock';
-import { addProfile } from './entity/profile.mock';
-import { addContact } from './entity/contact.mock';
-import { addTimeSlot } from './entity/trigger-time-slot.mock';
-import { DAYS_OF_WEEKS } from '../src/trigger-time-slot/enum/days-of-week.enum';
-import { TimeSlotRepository } from '../src/trigger-time-slot/repository/time-slot.repository';
-import { TimeSlotEntity } from '../src/trigger-time-slot/entity/time-slot.entity';
+} from "../src/common/error/keys";
+import { MESSAGE_TYPE } from "../src/message/enum/message-type.enum";
+import { addUser } from "./entity/user.mock";
+import { addProfile } from "./entity/profile.mock";
+import { addContact } from "./entity/contact.mock";
+import { TimeSlotRepository } from "../src/trigger-time-slot/repository/time-slot.repository";
+import { TimeSlotEntity } from "../src/trigger-time-slot/entity/time-slot.entity";
 
-describe('/message (integration) ', () => {
+describe("/message (integration) ", () => {
   let app;
   let api: superTest.SuperTest<superTest.Test>;
   let dataset: any;
@@ -42,84 +38,55 @@ describe('/message (integration) ', () => {
     await app.close();
   });
 
-  describe('/message/send/emergency (POST)', () => {
-    it('Should return status 403', async () => {
+  describe("/message/send/emergency (POST)", () => {
+    it("Should return status 403", async () => {
       await api
-        .post('/message/send/emergency')
+        .post("/message/send/emergency")
         .send()
         .expect(({ status }) => {
           expect(status).toBe(403);
         });
 
       await api
-        .post('/message/send/emergency')
-        .set('Authorization', faker.datatype.uuid())
+        .post("/message/send/emergency")
+        .set("Authorization", faker.datatype.uuid())
         .send()
         .expect(({ status }) => {
           expect(status).toBe(403);
         });
     });
 
-    it('Should return status 400 and error VALIDATION_FAILED for invalid dataset', async () => {
+    it("Should return status 400 and error VALIDATION_FAILED for invalid dataset", async () => {
       await api
-        .post('/message/send/emergency')
-        .set('Authorization', dataset.user.id)
-        .send({
-          locationUrl: faker.internet.url(),
-          delayed: true,
-        })
+        .post("/message/send/emergency")
+        .set("Authorization", dataset.user.id)
+        .send({ delayed: faker.datatype.string() })
         .then(({ status, body }) => {
           expect(status).toBe(400);
           expect(body.error.code).toBe(VALIDATION_FAILED);
         });
 
       await api
-        .post('/message/send/emergency')
-        .set('Authorization', dataset.user.id)
+        .post("/message/send/emergency")
+        .set("Authorization", dataset.user.id)
         .send({
-          locationUrl: faker.internet.url(),
           messageType: faker.datatype.string(),
         })
         .then(({ status, body }) => {
           expect(status).toBe(400);
           expect(body.error.code).toBe(VALIDATION_FAILED);
         });
-
-      for (const urlValue of notValidUrlValue) {
-        await api
-          .post('/message/send/emergency')
-          .set('Authorization', dataset.user.id)
-          .send({
-            locationUrl: urlValue,
-          })
-          .then(({ status, body }) => {
-            expect(status).toBe(400);
-            expect(body.error.code).toBe(VALIDATION_FAILED);
-          });
-      }
     });
 
-    it('Should return status 400 and error LOCATION_DATA_IS_NEEDED for invalid dataset', async () => {
-      await api
-        .post('/message/send/emergency')
-        .set('Authorization', dataset.user.id)
-        .send({})
-        .then((result) => {
-          expect(result.status).toBe(400);
-          expect(result.body.error.code).toBe(LOCATION_DATA_IS_NEEDED);
-        });
-    });
-
-    it('Should return status 400 and error TIME_SLOT_IS_UNAVAILABLE for invalid dataset', async () => {
+    it("Should return status 400 and error TIME_SLOT_IS_UNAVAILABLE for invalid dataset", async () => {
       jest
-        .spyOn(TimeSlotRepository.prototype, 'findActiveTimeSlots')
+        .spyOn(TimeSlotRepository.prototype, "findActiveTimeSlots")
         .mockImplementationOnce(jest.fn(async () => [{} as TimeSlotEntity]));
 
       await api
-        .post('/message/send/emergency')
-        .set('Authorization', dataset.user.id)
+        .post("/message/send/emergency")
+        .set("Authorization", dataset.user.id)
         .send({
-          locationUrl: faker.internet.url(),
           delayed: true,
           messageType: MESSAGE_TYPE.HEART_RATE_INVALID,
         })
@@ -129,11 +96,12 @@ describe('/message (integration) ', () => {
         });
     });
 
-    it('Should return status 400 and error EMAIL_AND_SMS_NOT_ALLOWED for invalid dataset', async () => {
+    it("Should return status 400 and error EMAIL_AND_SMS_NOT_ALLOWED for invalid dataset", async () => {
       const user = await addUser();
       user.profile = await addProfile({
         userId: user.id,
         emergencyEmailAndSms: false,
+        location: faker.internet.url(),
       });
 
       await addContact({
@@ -142,10 +110,9 @@ describe('/message (integration) ', () => {
       });
 
       await api
-        .post('/message/send/emergency')
-        .set('Authorization', user.id)
+        .post("/message/send/emergency")
+        .set("Authorization", user.id)
         .send({
-          locationUrl: faker.internet.url(),
           delayed: true,
           messageType: MESSAGE_TYPE.HEART_RATE_INVALID,
         })
@@ -160,13 +127,13 @@ describe('/message (integration) ', () => {
       user.profile = await addProfile({
         userId: user.id,
         emergencyEmailAndSms: false,
+        location: faker.internet.url(),
       });
 
       await api
-        .post('/message/send/emergency')
-        .set('Authorization', user.id)
+        .post("/message/send/emergency")
+        .set("Authorization", user.id)
         .send({
-          locationUrl: faker.internet.url(),
           delayed: true,
           messageType: MESSAGE_TYPE.HEART_RATE_INVALID,
         })
@@ -176,11 +143,9 @@ describe('/message (integration) ', () => {
         });
 
       await api
-        .post('/message/send/emergency')
-        .set('Authorization', user.id)
-        .send({
-          locationUrl: faker.internet.url(),
-        })
+        .post("/message/send/emergency")
+        .set("Authorization", user.id)
+        .send({})
         .then(({ status, body }) => {
           expect(status).toBe(201);
           expect(body).toEqual({ success: false });
@@ -192,10 +157,9 @@ describe('/message (integration) ', () => {
       });
 
       await api
-        .post('/message/send/emergency')
-        .set('Authorization', user.id)
+        .post("/message/send/emergency")
+        .set("Authorization", user.id)
         .send({
-          locationUrl: faker.internet.url(),
           delayed: false,
         })
         .then(({ status, body }) => {
@@ -206,11 +170,9 @@ describe('/message (integration) ', () => {
 
     it('Should send sms, return status 201 and key "success" with value true', async () => {
       await api
-        .post('/message/send/emergency')
-        .set('Authorization', dataset.user.id)
-        .send({
-          locationUrl: faker.internet.url(),
-        })
+        .post("/message/send/emergency")
+        .set("Authorization", dataset.user.id)
+        .send({ delayed: false })
         .then(({ status, body }) => {
           expect(status).toBe(201);
           expect(body).toEqual({ success: true });
