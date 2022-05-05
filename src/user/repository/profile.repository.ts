@@ -29,6 +29,7 @@ export class ProfileRepository extends Repository<ProfileEntity> {
       .where('frequency_of_regular_notification IS NOT NULL')
       .andWhere('user.device_id IS NOT NULL')
       .andWhere('regular_push_notification = 1')
+      .andWhere('automated_emergency = 1')
       .andWhere(
         new Brackets((qb) => {
           qb.where('regular_notification_time IS NULL');

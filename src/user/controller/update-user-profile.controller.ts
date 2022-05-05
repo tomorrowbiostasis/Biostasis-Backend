@@ -94,7 +94,9 @@ export class UpdateUserProfileController {
         data.positiveInfoPeriod) ||
       (profile?.regularPushNotification &&
         !profile?.frequencyOfRegularNotification &&
-        data.frequencyOfRegularNotification)
+        data.frequencyOfRegularNotification) ||
+      (isDefined(data.automatedEmergency) &&
+        profile?.automatedEmergency !== data.automatedEmergency)
     ) {
       return true;
     }

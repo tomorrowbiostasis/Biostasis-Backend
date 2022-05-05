@@ -16,6 +16,7 @@ export class PositiveInfoRepository extends Repository<PositiveInfoEntity> {
         )
         .andWhere('user.device_id IS NOT NULL')
         .andWhere('push_notification_time IS NULL')
+        .andWhere('profile.automated_emergency = 1')
         .andWhere(
           new Brackets((qb) => {
             qb.where('regular_push_notification IS NULL');

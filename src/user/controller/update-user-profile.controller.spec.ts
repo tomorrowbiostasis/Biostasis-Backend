@@ -73,6 +73,25 @@ describe('Update User Profile Controller', () => {
     const user = getUserStub();
     const profile = getProfileStub({ userId: user.id });
 
+    it('updateUserProfile() clears positive info if automatedEmergency flag has been changed', async () => {
+      jest
+        .spyOn(profileServiceMock, 'findByUserId')
+        .mockReturnValue(new Promise((res) => res(profile)));
+
+      await controller.updateUserProfile(
+        user, 
+        { automatedEmergency: !profile.automatedEmergency } as UpdateUserProfileDTO
+      );
+
+      const minutesToNext = profile.regularPushNotification
+        ? null
+        : profile.positiveInfoPeriod;
+
+      expect(positiveInfoServiceMock.savePositiveInfo).toHaveBeenNthCalledWith(1, user.id, { minutesToNext });
+
+      jest.clearAllMocks();
+    });
+
     it('updateUserProfile() does call generateAndSendCodeConfirmingEmailChange()', async () => {
       let data = {
         email: faker.internet.email(),
