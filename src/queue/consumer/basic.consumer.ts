@@ -12,9 +12,7 @@ export class BasicConsumer {
   @OnQueueActive()
   onActive(job: Job): void {
     this.logger.debug(
-      `Processing job ${job.id} of type ${job.name}. Data: ${JSON.stringify(
-        job.data
-      )}`
+      `Processing job ${job.id} of type ${job.name}`
     );
   }
 

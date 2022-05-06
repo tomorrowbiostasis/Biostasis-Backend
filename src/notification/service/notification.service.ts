@@ -69,46 +69,21 @@ export class NotificationService {
       stopPropagation?: boolean;
     }
   ) {
-    this.logger.error(
-      `[handleSmsException 1] SMS exception occurred:`,
-      JSON.stringify(params),
-      JSON.stringify(error)
-    );
-
     if (params?.stopPropagation) {
-      this.logger.log(
-        "[handleSmsException 2] Next send try will not be attempted."
-      );
       return;
     }
 
-    const date = new Date().toISOString();
-
     if (!params?.isFromQueue) {
-      this.logger.log("[handleSmsException 3] Adding process to queue.", date);
-
       await this.messageService.addJobToQueue(
         PROCESS.SMS,
         params,
         this.config.get("queue.sendAfterTime.repeatTryingToSendMessage")
       );
 
-      this.logger.log("[handleSmsException 3] Process added to queue.", date);
-
       throw new CustomError(SEND_SMS_FAILED, error);
     }
 
-    this.logger.log(
-      "[handleSmsException 4] Re sending same sms for the last time.",
-      date
-    );
-
     await this.sendSms({ ...params, stopPropagation: true });
-
-    this.logger.log(
-      "[handleSmsException 4] Re sending process finished.",
-      date
-    );
   }
 
   async sendSms(params: {
@@ -128,18 +103,9 @@ export class NotificationService {
               JSON.stringify(result)
             );
             throw result;
-          } else {
-            this.logger.log(
-              `[sendSms 2] Twilio result received`,
-              JSON.stringify(result)
-            );
           }
 
           if (params.isPositiveInfoQuestion && params.userId) {
-            this.logger.log(
-              `[sendSms 3] Setting SMS time due to isPositiveInfoQuestion`
-            );
-
             await this.positiveInfoRepository.setSmsTime(
               params.userId,
               this.config.get(
@@ -148,10 +114,6 @@ export class NotificationService {
               this.config.get(
                 "queue.sendAfterTime.alertIfNoPositiveInfoAfterSms"
               )
-            );
-
-            this.logger.log(
-              `[sendSms 3] SMS time set due to isPositiveInfoQuestion`
             );
           }
 
@@ -280,9 +242,7 @@ export class NotificationService {
       .then((result: any) => {
         if (result.body.Messages[0].Status !== "success") {
           throw result.body;
-        } else {
-          this.logger.log(result.body);
-        }
+        } 
 
         return result;
       })
