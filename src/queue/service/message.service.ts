@@ -24,14 +24,14 @@ export class MessageService {
     return this.messageQueue
       .getJob(`${PROCESS.EMERGENCY}_${userId}`)
       .catch((error) => {
-        this.logger.log(JSON.stringify(error));
+        this.logger.error(JSON.stringify(error));
         throw new BadRequestException(GET_JOB_FAILED, error);
       });
   }
 
   async removeJobsByUserId(userId: string): Promise<void> {
     return this.messageQueue.removeJobs(`*_${userId}*`).catch((error) => {
-      this.logger.log(JSON.stringify(error));
+      this.logger.error(JSON.stringify(error));
       throw new BadRequestException(JOB_REMOVE_FAILED, error);
     });
   }
@@ -50,6 +50,6 @@ export class MessageService {
         delay,
         jobId,
       })
-      .catch((error) => this.logger.log(JSON.stringify(error)));
+      .catch((error) => this.logger.error(JSON.stringify(error)));
   }
 }

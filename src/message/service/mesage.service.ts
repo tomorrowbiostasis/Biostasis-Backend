@@ -43,8 +43,6 @@ export class MessageService {
       )
       .then((result) => {
         if (result.successCount === 1) {
-          this.logger.log(result, JSON.stringify(payload));
-
           return result;
         }
 
