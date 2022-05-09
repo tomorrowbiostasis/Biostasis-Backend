@@ -47,6 +47,8 @@ export class SchedulerService extends NestSchedule {
         hour > parseInt(this.config.get("night.end")) &&
         hour < parseInt(this.config.get("night.start"))
       ) {
+        this.logger.log(`[TIME BASED] Escalation started for ${profile.userId} at ${new Date().toISOString()}. Step: push notification.`);
+
         operations.push(
           this.messageService.sendMessageToDevice(profile.deviceId, {
             title: this.config.get("firebase.notification.title"),
@@ -88,6 +90,8 @@ export class SchedulerService extends NestSchedule {
     const userIds = [];
 
     for (const information of expiredInformation) {
+      this.logger.log(`[PULSE BASED] Escalation started for ${information.userId} at ${new Date().toISOString()}. Step: push notification (setPushNotificationTime).`);
+
       operations.push(
         this.messageService.sendMessageToDevice(information.user.deviceId, {
           title: this.config.get("firebase.notification.title"),
@@ -118,6 +122,8 @@ export class SchedulerService extends NestSchedule {
       );
 
     for (const item of pushNotificationWithoutReaction) {
+      this.logger.log(`Escalation continues for ${item.userId} at ${new Date().toISOString()}. Step: sms.`);
+
       this.notificationService.sendSms({
         data: this.notificationService.prepareSmsData(
           `${item.user.profile.prefix}${item.user.profile.phone}`,
@@ -142,6 +148,8 @@ export class SchedulerService extends NestSchedule {
     const userIds = [];
 
     for (const item of smsWithoutReaction) {
+      this.logger.log(`Escalation continues for ${item.userId} at ${new Date().toISOString()}. Step: alert  (clearAlertTime).`);
+
       operations.push(
         this.messageService.sendMessageToDevice(item.user.deviceId, {
           title: this.config.get("firebase.notification.title"),
@@ -170,6 +178,8 @@ export class SchedulerService extends NestSchedule {
     const operations = [];
 
     for (const item of smsWithoutReaction) {
+      this.logger.log(`Escalation continues for ${item.userId} at ${new Date().toISOString()}. Step: emergency message (setTriggerTime).`);
+
       for (const contact of item.user.contacts) {
         operations.push(
           this.notificationService.sendEmergencyMessage(
