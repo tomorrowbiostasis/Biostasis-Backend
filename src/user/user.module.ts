@@ -65,6 +65,7 @@ import configuration from '../config/default';
   exports: [
     UserService,
     ProfileService,
+    PositiveInfoService,
     ExportService,
     PositiveInfoRepositoryProvider,
     ProfileRepositoryProvider,

@@ -8,6 +8,7 @@ import { UserModule } from '../user/user.module';
 import { GetAccessTokenController } from './controller/get-access-token.controller';
 import { ConfigModule } from '@nestjs/config';
 import configuration from '../config/default';
+import { LogoutController } from './controller/logout.controller';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import configuration from '../config/default';
       load: [configuration],
     }),
   ],
-  controllers: [GetAccessTokenController],
+  controllers: [GetAccessTokenController, LogoutController],
   providers: [
     CognitoStrategy,
     AuthenticationService,
