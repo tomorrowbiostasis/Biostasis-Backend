@@ -247,24 +247,14 @@ export class NotificationService {
         return result;
       })
       .catch(async (error) => {
-        await this.messageService.addJobToQueue(
-          PROCESS.EMAIL,
-          params,
-          this.config.get("queue.sendAfterTime.repeatTryingToSendMessage")
-        );
-
-        if (params?.isFromQueue) {
-          this.logger.error(
-            `[sendEmail 1]`,
-            JSON.stringify(error),
-            JSON.stringify(params)
+        Logger.error(`${error?.ErrorMessage || 'Mail has not been sent.'}`)
+        if (!params.isFromQueue) {
+          await this.messageService.addJobToQueue(
+            PROCESS.EMAIL,
+            params,
+            this.config.get("queue.sendAfterTime.repeatTryingToSendMessage")
           );
         } else {
-          this.logger.error(
-            `[sendEmail 2]`,
-            JSON.stringify(error),
-            JSON.stringify(params)
-          );
           throw new CustomError(SEND_MAIL_FAILED, error);
         }
       });
