@@ -22,7 +22,7 @@ export class ProfileRepository extends Repository<ProfileEntity> {
     }[]
   > {
     return this.createQueryBuilder('profile')
-      .select('user_id', 'userId')
+      .select('profile.user_id', 'userId')
       .leftJoinAndSelect('profile.user', 'user')
       .leftJoin('user.positiveInfo', 'positiveInfo')
       .addSelect('NOW()', 'now')
