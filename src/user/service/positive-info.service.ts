@@ -38,7 +38,7 @@ export class PositiveInfoService {
       triggerTime: null,
     };
 
-    if (params.minutesToNext) {
+    if (params && params?.minutesToNext) {
       data.minutesToNext = params.minutesToNext;
     }
 
