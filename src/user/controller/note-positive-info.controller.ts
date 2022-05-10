@@ -52,11 +52,17 @@ export class NotePositiveInfoController {
       throw new BadRequestException(MINUTES_TO_NEXT_MESSAGE_ARE_REQUIRED);
     }
 
-    const positiveInfo = await this.positiveInfoService.savePositiveInfo(
-      user.id,
-      data
-    );
+    let success = false;
 
-    return plainToClass(SuccessRO, { success: !!positiveInfo.id });
+    if (profile?.automatedEmergency) {
+      await this.positiveInfoService.savePositiveInfo(
+        user.id,
+        data
+      );
+
+      success = true;
+    }
+
+    return plainToClass(SuccessRO, { success });
   }
 }

@@ -130,7 +130,19 @@ export class PositiveInfoRepository extends Repository<PositiveInfoEntity> {
         alertTime: null,
       })
       .where('user_id IN (:userIds)', { userIds })
+      .execute();
+  }
 
+  clearEverythingForUsers(userIds: string[]): Promise<UpdateResult> {
+    return this.createQueryBuilder()
+      .update(PositiveInfoEntity)
+      .set({
+        alertTime: null,
+        smsTime: null,
+        pushNotificationTime: null,
+        triggerTime: null,
+      })
+      .where('user_id IN (:userIds)', { userIds })
       .execute();
   }
 

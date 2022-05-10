@@ -19,7 +19,7 @@ export class SchedulerService extends NestSchedule {
     private readonly positiveInfoRepository: PositiveInfoRepository,
     private readonly messageService: MessageService,
     private readonly notificationService: NotificationService,
-    private readonly profileRepository: ProfileRepository
+    private readonly profileRepository: ProfileRepository,
   ) {
     super();
   }
@@ -175,10 +175,13 @@ export class SchedulerService extends NestSchedule {
         regularPushNotification,
         "sms_time"
       );
-    const operations = [];
+
+    const operations = [], userIds = [];
 
     for (const item of smsWithoutReaction) {
-      this.logger.log(`Escalation continues for ${item.userId} at ${new Date().toISOString()}. Step: emergency message (setTriggerTime).`);
+      this.logger.log(`Escalation ends for ${item.userId} at ${new Date().toISOString()}. Step: emergency message (clearPositiveInfo and disable automatedEmergency).`);
+
+      userIds.push(item.userId);
 
       for (const contact of item.user.contacts) {
         operations.push(
@@ -204,9 +207,12 @@ export class SchedulerService extends NestSchedule {
         );
       }
 
-      if (operations.length > 0) {
-        await Promise.all(operations);
-        await this.positiveInfoRepository.setTriggerTime(item.user.id);
+      if (userIds.length > 0) {
+        await Promise.all([
+          this.positiveInfoRepository.clearEverythingForUsers(userIds),
+          this.profileRepository.disableAutomatedEmergencyForUsers(userIds),
+          ...operations
+        ]);
       }
     }
   }

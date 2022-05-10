@@ -68,6 +68,13 @@ describe("/user (integration) ", () => {
     }
 
     it("Should return status 400 and error SAVE_POSITIVE_INFO_FAILED", async () => {
+      const user = await addUser();
+
+      user.profile = await addProfile({
+        userId: user.id,
+        automatedEmergency: true
+      });
+
       jest
         .spyOn(PositiveInfoRepository.prototype, "save")
         .mockImplementationOnce(
@@ -78,7 +85,7 @@ describe("/user (integration) ", () => {
 
       await api
         .post("/user/positive-info")
-        .set("Authorization", dataset.user.id)
+        .set("Authorization", user.id)
         .send({
           minutesToNext: 90,
         })
@@ -100,31 +107,38 @@ describe("/user (integration) ", () => {
     });
 
     it("Should note positive info, return status 200 and valid body", async () => {
+      const user2 = await addUser();
+
+      user2.profile = await addProfile({
+        userId: user2.id,
+        automatedEmergency: true
+      });
+      
       let minutesToNext = 90;
 
       await api
         .post("/user/positive-info")
-        .set("Authorization", dataset.user.id)
+        .set("Authorization", user2.id)
         .send({ minutesToNext })
         .expect(({ status, body }) => {
           expect(status).toBe(201);
           expect(body.success).toBeTruthy();
         });
 
-      const item = await getPositiveInfoByUserId(dataset.user.id);
+      const item = await getPositiveInfoByUserId(user2.id);
 
       expect(item.minutesToNext).toBe(minutesToNext);
 
       await api
         .post("/user/positive-info")
-        .set("Authorization", dataset.user.id)
+        .set("Authorization", user2.id)
         .send({ minutesToNext })
         .expect(({ status, body }) => {
           expect(status).toBe(201);
           expect(body.success).toBeTruthy();
         });
 
-      let newItem = await getPositiveInfoByUserId(dataset.user.id);
+      let newItem = await getPositiveInfoByUserId(user2.id);
 
       expect(item.updatedAt).toBeDefined();
       expect(item.id).toBe(newItem.id);
@@ -134,32 +148,17 @@ describe("/user (integration) ", () => {
 
       await api
         .post("/user/positive-info")
-        .set("Authorization", dataset.user.id)
+        .set("Authorization", user2.id)
         .send({ minutesToNext })
         .expect(({ status, body }) => {
           expect(status).toBe(201);
           expect(body.success).toBeTruthy();
         });
 
-      newItem = await getPositiveInfoByUserId(dataset.user.id);
+      newItem = await getPositiveInfoByUserId(user2.id);
 
       expect(item.id).toBe(newItem.id);
       expect(newItem.minutesToNext).toBe(minutesToNext);
-
-      const user = await addUser();
-      user.profile = await addProfile({
-        userId: user.id,
-        regularPushNotification: true,
-      });
-
-      await api
-        .post("/user/positive-info")
-        .set("Authorization", user.id)
-        .send({})
-        .expect(({ status, body }) => {
-          expect(status).toBe(201);
-          expect(body.success).toBeTruthy();
-        });
     });
   });
 });
