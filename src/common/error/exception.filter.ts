@@ -37,6 +37,10 @@ export class ExceptionsFilter implements ExceptionFilter {
         path: request.url,
         method: request.method,
         code,
+        data: {
+          body: request ? request?.body : null,
+          query: request ? request?.query : null,
+        }
       },
     };
     if (process.env.NODE_ENV !== 'test' && status !== 404) {

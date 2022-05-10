@@ -89,7 +89,10 @@ export class SendEmergencyMessageController {
       );
     }
 
-    await Promise.all(operations);
+    await Promise.all([
+      this.userService.clearPositiveInfo(user.id),
+      ...operations
+    ]);
 
     return plainToClass(SuccessRO, { success: true });
   }

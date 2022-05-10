@@ -69,6 +69,9 @@ export class NotificationService {
       stopPropagation?: boolean;
     }
   ) {
+    this.logger.error(`Sms has not been sent (uid: ${params.userId})`);
+    this.logger.error(JSON.stringify(error));
+
     if (params?.stopPropagation) {
       return;
     }
@@ -193,6 +196,10 @@ export class NotificationService {
     let content: string;
 
     for (const file of files) {
+      /**
+       * Possible attachment's size problem
+       */
+
       content = await this.fileService.getFileAsBase64(file.key);
 
       if (!content && !isFromQueue) {

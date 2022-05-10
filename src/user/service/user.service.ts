@@ -18,6 +18,8 @@ import {
 import * as AWS from 'aws-sdk';
 import { ConfigService } from '@nestjs/config';
 import { DICTIONARY } from '../../common/constant/dictionary.constant';
+import { PositiveInfoRepository } from '../repository/positive-info.repository';
+import { ProfileRepository } from '../repository/profile.repository';
 
 @Injectable()
 export class UserService {
@@ -27,8 +29,17 @@ export class UserService {
     @Inject(AWS.CognitoIdentityServiceProvider)
     private readonly cognito: AWS.CognitoIdentityServiceProvider,
     @Inject(DICTIONARY.CONFIG) private readonly config: ConfigService,
-    @Inject(UserRepository) private readonly userRepository: UserRepository
+    @Inject(UserRepository) private readonly userRepository: UserRepository,
+    private readonly positiveInfoRepository: PositiveInfoRepository,
+    private readonly profileRepository: ProfileRepository,
   ) {}
+
+  clearPositiveInfo(userId: string) {
+    return Promise.all([
+      this.positiveInfoRepository.clearEverythingForUsers([userId]),
+      this.profileRepository.disableAutomatedEmergencyForUsers([userId]),
+    ]);
+  }
 
   findByEmail(email: string): Promise<UserEntity> {
     return this.userRepository.findByEmail(email);

@@ -53,4 +53,15 @@ export class ProfileRepository extends Repository<ProfileEntity> {
       .where('user_id IN (:userIds)', { userIds })
       .execute();
   }
+
+  disableAutomatedEmergencyForUsers(userIds: string[]): Promise<UpdateResult> {
+    return this.createQueryBuilder()
+      .update(ProfileEntity)
+      .set({
+        automatedEmergency: false
+      })
+      .where('user_id IN (:userIds)', { userIds })
+      .execute();
+  }
+
 }
