@@ -4,6 +4,7 @@ import {
   Body,
   UseGuards,
   BadRequestException,
+  Logger,
 } from "@nestjs/common";
 import {
   ApiTags,
@@ -93,6 +94,8 @@ export class SendEmergencyMessageController {
       this.userService.clearPositiveInfo(user.id),
       ...operations
     ]);
+
+    Logger.log(`Processed manually triggered emergency message at ${new Date().toISOString()} by ${user.id}. Number of informed contacts: ${operations.length}`)
 
     return plainToClass(SuccessRO, { success: true });
   }
