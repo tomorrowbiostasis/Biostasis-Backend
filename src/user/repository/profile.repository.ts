@@ -34,13 +34,16 @@ export class ProfileRepository extends Repository<ProfileEntity> {
       .andWhere('regular_push_notification = 1')
       .andWhere('automated_emergency = 1')
       .andWhere(
-        new Brackets((qb) => {
-          qb.where('regular_notification_time IS NULL');
-          qb.orWhere(
-            `regular_notification_time + INTERVAL frequency_of_regular_notification MINUTE <= NOW()`
-          );
-        })
+        'date_add(positiveInfo.updated_at, interval frequency_of_regular_notification minute) < NOW()'
       )
+      // .andWhere(
+      //   new Brackets((qb) => {
+      //     qb.where('regular_notification_time IS NULL');
+      //     qb.orWhere(
+      //       `regular_notification_time + INTERVAL frequency_of_regular_notification MINUTE <= NOW()`
+      //     );
+      //   })
+      // )
       .execute();
   }
 
@@ -50,7 +53,7 @@ export class ProfileRepository extends Repository<ProfileEntity> {
       .set({
         regularNotificationTime: () => 'NOW()',
       })
-      .where('user_id IN (:userIds)', { userIds })
+      .where('user_id IN (:...userIds)', { userIds })
       .execute();
   }
 
@@ -60,8 +63,7 @@ export class ProfileRepository extends Repository<ProfileEntity> {
       .set({
         automatedEmergency: false
       })
-      .where('user_id IN (:userIds)', { userIds })
+      .where('user_id IN (:...userIds)', { userIds })
       .execute();
   }
-
 }

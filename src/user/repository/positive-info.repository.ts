@@ -101,7 +101,7 @@ export class PositiveInfoRepository extends Repository<PositiveInfoEntity> {
       .set({
         pushNotificationTime: () => 'NOW() + INTERVAL :period MINUTE',
       })
-      .where('user_id IN (:userIds)', { userIds })
+      .where('user_id IN (:...userIds)', { userIds })
       .setParameter('period', period)
       .execute();
   }
@@ -129,7 +129,7 @@ export class PositiveInfoRepository extends Repository<PositiveInfoEntity> {
       .set({
         alertTime: null,
       })
-      .where('user_id IN (:userIds)', { userIds })
+      .where('user_id IN (:...userIds)', { userIds })
       .execute();
   }
 
@@ -142,7 +142,7 @@ export class PositiveInfoRepository extends Repository<PositiveInfoEntity> {
         pushNotificationTime: null,
         triggerTime: null,
       })
-      .where('user_id IN (:userIds)', { userIds })
+      .where('user_id IN (:...userIds)', { userIds })
       .execute();
   }
 
