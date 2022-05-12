@@ -100,6 +100,9 @@ export class NotificationService {
       return this.twilio.messages
         .create(params.data)
         .then(async (result) => {
+          this.logger.log(`SMS has been ${result?.status || 'sent to twilio'}. SMS status available at: ${result?.uri || 'not available'}. SMS body: `)
+          this.logger.log(result?.body || 'not delivered')
+
           if (result.errorMessage) {
             this.logger.error(
               `[sendSms 1] Twilio result contains error message`,
