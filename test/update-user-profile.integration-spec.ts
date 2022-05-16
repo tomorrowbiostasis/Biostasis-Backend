@@ -12,7 +12,7 @@ import {
   getRandomPhoneNumber,
   getRandomPhonePrefix,
 } from './entity/contact.mock';
-import { checkProfile } from './entity/profile.mock';
+import { checkUser } from './entity/user.mock';
 import { addUser } from './entity/user.mock';
 import { googlePhoneNumberMock } from './mock/google-phone-number.mock';
 
@@ -168,49 +168,9 @@ describe('/user (integration) ', () => {
           expect(status).toBe(200);
         });
 
-      await checkProfile(body);
+      await checkUser(body);
 
-      expect(body.userId).toBe(dataset.user.id);
-      expect(body.name).toBe(data.name);
-      expect(body.surname).toBe(data.surname);
-      expect(body.address).toBe(data.address);
-      expect(body.dateOfBirth).toBe(data.dateOfBirth);
-      expect(body.prefix).toBe(data.prefix);
-      expect(body.phone).toBe(data.phone);
-      expect(body.primaryPhysician).toBe(data.primaryPhysician);
-      expect(body.primaryPhysicianAddress).toBe(data.primaryPhysicianAddress);
-      expect(body.seriousMedicalIssues).toBe(data.seriousMedicalIssues);
-      expect(body.mostRecentDiagnosis).toBe(data.mostRecentDiagnosis);
-      expect(body.lastHospitalVisit).toBe(data.lastHospitalVisit);
-      expect(body.allowNotifications).toBe(data.allowNotifications);
-      expect(body.tipsAndTricks).toBe(data.tipsAndTricks);
-      expect(body.emergencyEmailAndSms).toBe(data.emergencyEmailAndSms);
-      expect(body.automatedVoiceCall).toBe(data.automatedVoiceCall);
-      expect(body.locationAccess).toBe(data.locationAccess);
-      expect(body.location).toBe(location);
-      expect(body.uploadedDocumentsAccess).toBe(data.uploadedDocumentsAccess);
-      expect(body.readManual).toBe(data.readManual);
-      expect(body.automatedEmergency).toBe(data.automatedEmergency);
-      expect(body.emergencyMessage).toBe(data.emergencyMessage);
-      expect(body.regularPushNotification).toBe(data.regularPushNotification);
-      expect(body.frequencyOfRegularNotification).toBe(
-        data.frequencyOfRegularNotification
-      );
-      expect(body.pulseBasedTriggerIOSHealthPermissions).toBe(
-        data.pulseBasedTriggerIOSHealthPermissions
-      );
-      expect(body.pulseBasedTriggerIOSAppleWatchPaired).toBe(
-        data.pulseBasedTriggerIOSAppleWatchPaired
-      );
-      expect(body.pulseBasedTriggerGoogleFitAuthenticated).toBe(
-        data.pulseBasedTriggerGoogleFitAuthenticated
-      );
-      expect(body.pulseBasedTriggerConnectedToGoogleFit).toBe(
-        data.pulseBasedTriggerConnectedToGoogleFit
-      );
-      expect(body.pulseBasedTriggerBackgroundModesEnabled).toBe(
-        data.pulseBasedTriggerBackgroundModesEnabled
-      );
+      expect(body.id).toBe(dataset.user.id);
 
       await api
         .patch('/api/v2/user')

@@ -16,6 +16,8 @@ import { ProfileEntity } from '../entity/profile.entity';
 import { googlePhoneNumberMock } from '../../../test/mock/google-phone-number.mock';
 import { PositiveInfoService } from '../service/positive-info.service';
 import { positiveInfoServiceMock } from '../../../test/mock/positive-info.service.mock';
+import { UserService } from '../service/user.service';
+import { userServiceMock } from '../../../test/mock/user.service.mock';
 
 describe('Update User Profile Controller', () => {
   let controller: UpdateUserProfileController;
@@ -47,6 +49,10 @@ describe('Update User Profile Controller', () => {
         {
           provide: PositiveInfoService,
           useValue: positiveInfoServiceMock,
+        },
+        {
+          provide: UserService,
+          useValue: userServiceMock,
         },
       ],
     }).compile();

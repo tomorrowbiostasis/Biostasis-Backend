@@ -40,6 +40,8 @@ import { PHONE_NUMBER_IS_INVALID } from '../../common/error/keys';
 import { checkPhoneNumber } from '../../common/helper/check-phone-number';
 import { isDefined } from '../../common/helper/is-defined';
 import { PositiveInfoService } from '../service/positive-info.service';
+import { UserService } from '../service/user.service';
+import { userMapper } from '../mapper/user.mapper';
 
 @ApiBearerAuth()
 @UseGuards(new RolesGuard(new Reflector()))
@@ -54,7 +56,8 @@ export class UpdateUserProfileController {
     private readonly notificationService: NotificationService,
     @Inject(DICTIONARY.CONFIG) private readonly config: ConfigService,
     @Inject(DICTIONARY.GOOGLE_PHONE_NUMBER)
-    private readonly phoneUtil: LibPhoneNumber.PhoneNumberUtil
+    private readonly phoneUtil: LibPhoneNumber.PhoneNumberUtil,
+    private readonly userService: UserService,
   ) {}
 
   @ApiResponse({ status: 200, type: ProfileRO })
@@ -133,7 +136,7 @@ export class UpdateUserProfileController {
       });
     }
 
-    return profileMapper(profile);
+    return userMapper(await this.userService.findByIdOrFail(logged.id), null);
   }
 
   async generateAndSendCodeConfirmingEmailChange(
