@@ -52,6 +52,6 @@ export const userMapper = (user: UserEntity, trigger: Bull.Job): UserRO => {
     ...getProfileDefaultValues(user?.profile),
     ...user,
     fillLevel: Math.round(calculatePercentByWeight(user)),
-    isEmergencyTriggerActive: !!trigger,
+    isEmergencyTriggerActive: trigger ? !!trigger : undefined,
   });
 };
