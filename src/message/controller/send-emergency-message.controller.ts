@@ -27,10 +27,7 @@ import { ContactService } from "../../contact/service/contact.service";
 import { ValidationPipe } from "../../common/pipe/validation.pipe";
 import { SendEmergencyMessageDTO } from "../request/dto/send-emergency-message.dto";
 import { sendEmergencyMessageSchema } from "../request/schema/send-emergency-message.schema";
-import {
-  LOCATION_DATA_IS_NEEDED,
-  TIME_SLOT_IS_UNAVAILABLE,
-} from "../../common/error/keys";
+import {  TIME_SLOT_IS_UNAVAILABLE } from "../../common/error/keys";
 import { getNameOrEmail } from "../../common/helper/get-name-or-email";
 import { TriggerTimeSlotService } from "../../trigger-time-slot/service/trigger-time-slot.service";
 

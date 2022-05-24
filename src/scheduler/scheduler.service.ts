@@ -184,6 +184,10 @@ export class SchedulerService extends NestSchedule {
       userIds.push(item.userId);
 
       for (const contact of item.user.contacts) {
+        if (!contact.active) {
+          continue;
+        }
+
         operations.push(
           this.notificationService.sendEmergencyMessage(
             {
