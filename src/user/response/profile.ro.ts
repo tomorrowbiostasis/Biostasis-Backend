@@ -95,10 +95,6 @@ export class ProfileRO {
 
   @Expose()
   @ApiProperty({ type: Boolean })
-  automatedVoiceCall: boolean;
-
-  @Expose()
-  @ApiProperty({ type: Boolean })
   locationAccess: boolean;
 
   @Expose()

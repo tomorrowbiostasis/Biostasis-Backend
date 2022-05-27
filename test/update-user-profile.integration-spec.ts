@@ -139,7 +139,6 @@ describe('/user (integration) ', () => {
         allowNotifications: true,
         tipsAndTricks: true,
         emergencyEmailAndSms: true,
-        automatedVoiceCall: true,
         locationAccess: true,
         location,
         uploadedDocumentsAccess: true,

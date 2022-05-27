@@ -59,9 +59,6 @@ export class ProfileEntity {
   @Column({ name: "emergency_email_and_sms", type: "boolean" })
   emergencyEmailAndSms: boolean;
 
-  @Column({ name: "automated_voice_call", type: "boolean" })
-  automatedVoiceCall: boolean;
-
   @Column({ name: "location_access", type: "boolean" })
   locationAccess: boolean;
 
