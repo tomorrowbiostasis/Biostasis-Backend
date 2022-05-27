@@ -34,7 +34,7 @@ audit:
     - merge_requests
   stage: dependencies
   script:
-    - yarn audit
+    - ./audit.sh
   dependencies:
     - install
 
