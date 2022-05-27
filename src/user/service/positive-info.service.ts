@@ -42,7 +42,7 @@ export class PositiveInfoService {
       data.minutesToNext = params.minutesToNext;
     }
 
-    this.logger.log(`Positive info noticed/updated for ${userId} at ${new Date().toISOString()}`);
+    this.logger.log(`Positive info noticed/updated for ${userId} (minToNext: ${data.minutesToNext}) at ${new Date().toISOString()}, `);
 
     return this.positiveInfoRepository.save(data).catch((error) => {
       this.logger.error(error);
