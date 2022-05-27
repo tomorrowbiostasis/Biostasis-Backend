@@ -55,9 +55,6 @@ export class UpdateUserProfileDTO {
   emergencyEmailAndSms: boolean;
 
   @ApiProperty({ type: Boolean, required: false })
-  automatedVoiceCall: boolean;
-
-  @ApiProperty({ type: Boolean, required: false })
   locationAccess: boolean;
 
   @ApiProperty({ type: Boolean, required: false })

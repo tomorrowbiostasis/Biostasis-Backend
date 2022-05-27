@@ -6,7 +6,6 @@ export const getProfileDefaultValues = (
   allowNotifications: profile?.allowNotifications !== false,
   tipsAndTricks: profile?.tipsAndTricks !== false,
   emergencyEmailAndSms: profile?.emergencyEmailAndSms !== false,
-  automatedVoiceCall: profile?.automatedVoiceCall !== false,
   uploadedDocumentsAccess: profile?.uploadedDocumentsAccess !== false,
   locationAccess: !!profile?.locationAccess,
   readManual: !!profile?.readManual,

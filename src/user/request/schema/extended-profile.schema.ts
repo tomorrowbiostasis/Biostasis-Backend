@@ -21,7 +21,6 @@ export const extendedProfileSchema = {
   allowNotifications: Joi.boolean(),
   tipsAndTricks: Joi.boolean(),
   emergencyEmailAndSms: Joi.boolean(),
-  automatedVoiceCall: Joi.boolean(),
   locationAccess: Joi.boolean(),
   uploadedDocumentsAccess: Joi.boolean(),
   readManual: Joi.boolean(),
