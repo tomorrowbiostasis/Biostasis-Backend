@@ -11,7 +11,6 @@ import { ContactService } from "../../contact/service/contact.service";
 import { contactServiceMock } from "../../../test/mock/contact.service.mock";
 import { getContactStub } from "../../../test/entity/contact.mock";
 import { MESSAGE_TYPE } from "../../../src/message/enum/message-type.enum";
-import { TriggerTimeSlotService } from "../../trigger-time-slot/service/trigger-time-slot.service";
 import { triggerTimeSlotServiceMock } from "../../../test/mock/trigger-time-slot.service.mock";
 
 describe("Send Emergency Message Controller", () => {
@@ -32,10 +31,6 @@ describe("Send Emergency Message Controller", () => {
         {
           provide: ContactService,
           useValue: contactServiceMock,
-        },
-        {
-          provide: TriggerTimeSlotService,
-          useValue: triggerTimeSlotServiceMock,
         },
       ],
     }).compile();

@@ -78,24 +78,6 @@ describe("/message (integration) ", () => {
         });
     });
 
-    it("Should return status 400 and error TIME_SLOT_IS_UNAVAILABLE for invalid dataset", async () => {
-      jest
-        .spyOn(TimeSlotRepository.prototype, "findActiveTimeSlots")
-        .mockImplementationOnce(jest.fn(async () => [{} as TimeSlotEntity]));
-
-      await api
-        .post("/message/send/emergency")
-        .set("Authorization", dataset.user.id)
-        .send({
-          delayed: true,
-          messageType: MESSAGE_TYPE.HEART_RATE_INVALID,
-        })
-        .then(({ status, body }) => {
-          expect(status).toBe(400);
-          expect(body.error.code).toBe(TIME_SLOT_IS_UNAVAILABLE);
-        });
-    });
-
     it("Should return status 400 and error EMAIL_AND_SMS_NOT_ALLOWED for invalid dataset", async () => {
       const user = await addUser();
       user.profile = await addProfile({

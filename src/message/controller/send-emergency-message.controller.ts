@@ -3,7 +3,6 @@ import {
   Post,
   Body,
   UseGuards,
-  BadRequestException,
   Logger,
 } from "@nestjs/common";
 import {
@@ -27,9 +26,7 @@ import { ContactService } from "../../contact/service/contact.service";
 import { ValidationPipe } from "../../common/pipe/validation.pipe";
 import { SendEmergencyMessageDTO } from "../request/dto/send-emergency-message.dto";
 import { sendEmergencyMessageSchema } from "../request/schema/send-emergency-message.schema";
-import {  TIME_SLOT_IS_UNAVAILABLE } from "../../common/error/keys";
 import { getNameOrEmail } from "../../common/helper/get-name-or-email";
-import { TriggerTimeSlotService } from "../../trigger-time-slot/service/trigger-time-slot.service";
 
 @ApiBearerAuth()
 @UseGuards(new RolesGuard(new Reflector()))
@@ -41,7 +38,6 @@ export class SendEmergencyMessageController {
     private readonly notificationService: NotificationService,
     private readonly userService: UserService,
     private readonly contactService: ContactService,
-    private readonly triggerTimeSlotService: TriggerTimeSlotService
   ) {}
 
   @ApiResponse({ status: 201, type: SuccessRO })
@@ -62,13 +58,6 @@ export class SendEmergencyMessageController {
 
     if (contacts.length === 0) {
       return plainToClass(SuccessRO, { success: false });
-    }
-
-    if (
-      data.delayed &&
-      (await this.triggerTimeSlotService.isActiveTimeSlot(user.id))
-    ) {
-      throw new BadRequestException(TIME_SLOT_IS_UNAVAILABLE);
     }
 
     const operations = [];
