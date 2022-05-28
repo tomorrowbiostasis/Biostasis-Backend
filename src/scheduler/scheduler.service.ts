@@ -32,21 +32,17 @@ export class SchedulerService extends NestSchedule {
     await this.triggerEmergencyMessage(true);
   }
 
-  // regular = time
   async sendRegularPushNotification() {
+    if (!this.shouldStartEscalation()) {
+      return;
+    }
+
     const profiles =
       await this.profileRepository.findWhereRegularNotificationIsNeeded();
-    const operations = [];
-    const userIds = [];
-    let hour: number;
+
+    const operations = [], userIds = [];
 
     for (const profile of profiles) {
-      hour = parseInt(moment(profile.now).utc().format("H"));
-
-      if (
-        hour > parseInt(this.config.get("night.end")) &&
-        hour < parseInt(this.config.get("night.start"))
-      ) {
         this.logger.log(`[TIME BASED] Escalation started for ${profile.userId} at ${new Date().toISOString()}. Step: push notification.`);
 
         operations.push(
@@ -57,7 +53,6 @@ export class SchedulerService extends NestSchedule {
           })
         );
         userIds.push(profile.userId);
-      }
     }
 
     if (operations.length > 0) {
@@ -82,12 +77,15 @@ export class SchedulerService extends NestSchedule {
     await this.triggerEmergencyMessage(false);
   }
 
-  // pulse base
   async sendPushNotificationDueToLackOfPositiveInfo() {
+    if (!this.shouldStartEscalation()) {
+      return;
+    }
+
     const expiredInformation =
       await this.positiveInfoRepository.findExpiredInformation();
-    const operations = [];
-    const userIds = [];
+
+    const operations = [], userIds = [];
 
     for (const information of expiredInformation) {
       this.logger.log(`[PULSE BASED] Escalation started for ${information.userId} at ${new Date().toISOString()}. Step: push notification (setPushNotificationTime).`);
@@ -219,5 +217,12 @@ export class SchedulerService extends NestSchedule {
         ]);
       }
     }
+  }
+
+  private shouldStartEscalation(): boolean {
+    const hour = parseInt(moment().utc().format("H"));
+
+    return hour >= parseInt(this.config.get("night.end")) &&
+      hour < parseInt(this.config.get("night.start"));
   }
 }

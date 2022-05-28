@@ -56,7 +56,7 @@ export default () => ({
     },
   },
   night: {
-    start: 20,
+    start: 22,
     end: 6,
   },
   database: {
