@@ -65,6 +65,12 @@ export class TriggerTimeSlotService {
     });
   }
 
+  async getActiveTimeSlot(userId: string): Promise<TimeSlotEntity> {
+    const slots = await this.timeSlotRepository.findActiveTimeSlots(userId);
+
+    return slots.length > 0 ? slots[0] : null;
+  }
+
   async findByUserIdOrFail(userId: string): Promise<TimeSlotEntity[]> {
     return this.timeSlotRepository.findByUserId(userId).then((data) => {
       if (!data) {

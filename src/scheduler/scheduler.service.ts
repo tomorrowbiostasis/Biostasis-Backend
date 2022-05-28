@@ -9,6 +9,7 @@ import { getNameOrEmail } from "../common/helper/get-name-or-email";
 import { ProfileRepository } from "../user/repository/profile.repository";
 import * as moment from "moment";
 import { MESSAGE_TYPE } from "../message/constant/message-type.constant";
+import { TriggerTimeSlotService } from "../trigger-time-slot/service/trigger-time-slot.service";
 
 @Injectable()
 export class SchedulerService extends NestSchedule {
@@ -20,6 +21,7 @@ export class SchedulerService extends NestSchedule {
     private readonly messageService: MessageService,
     private readonly notificationService: NotificationService,
     private readonly profileRepository: ProfileRepository,
+    private readonly triggerTimeSlotService: TriggerTimeSlotService,
   ) {
     super();
   }
@@ -43,16 +45,24 @@ export class SchedulerService extends NestSchedule {
     const operations = [], userIds = [];
 
     for (const profile of profiles) {
-        this.logger.log(`[TIME BASED] Escalation started for ${profile.userId} at ${new Date().toISOString()}. Step: push notification.`);
+      const activeSlot = await this.triggerTimeSlotService.getActiveTimeSlot(profile.userId);
 
-        operations.push(
-          this.messageService.sendMessageToDevice(profile.deviceId, {
-            title: this.config.get("firebase.notification.title"),
-            message: this.config.get("firebase.notification.message.regular"),
-            type: MESSAGE_TYPE.EMERGENCY_TIME_BASED_CHECK,
-          })
-        );
-        userIds.push(profile.userId);
+      if (activeSlot) {
+        await this.positiveInfoRepository.postponeBySlotTime(profile.userId, new Date(activeSlot.to).toISOString())
+        continue;
+      }
+
+      this.logger.log(`[TIME BASED] Escalation started for ${profile.userId} at ${new Date().toISOString()}. Step: push notification.`);
+
+      operations.push(
+        this.messageService.sendMessageToDevice(profile.deviceId, {
+          title: this.config.get("firebase.notification.title"),
+          message: this.config.get("firebase.notification.message.regular"),
+          type: MESSAGE_TYPE.EMERGENCY_TIME_BASED_CHECK,
+        })
+      );
+
+      userIds.push(profile.userId);
     }
 
     if (operations.length > 0) {
@@ -88,6 +98,13 @@ export class SchedulerService extends NestSchedule {
     const operations = [], userIds = [];
 
     for (const information of expiredInformation) {
+      const activeSlot = await this.triggerTimeSlotService.getActiveTimeSlot(information.user.id);
+
+      if (activeSlot) {
+        await this.positiveInfoRepository.postponeBySlotTime(information.user.id, new Date(activeSlot.to).toISOString())
+        continue;
+      }
+
       this.logger.log(`[PULSE BASED] Escalation started for ${information.userId} at ${new Date().toISOString()}. Step: push notification (setPushNotificationTime).`);
 
       operations.push(
@@ -99,6 +116,7 @@ export class SchedulerService extends NestSchedule {
           type: MESSAGE_TYPE.EMERGENCY_PULSE_BASED_CHECK,
         })
       );
+
       userIds.push(information.user.id);
     }
 

@@ -153,7 +153,16 @@ export class PositiveInfoRepository extends Repository<PositiveInfoEntity> {
         triggerTime: () => 'NOW()',
       })
       .where('user_id = :userId', { userId })
+      .execute();
+  }
 
+  postponeBySlotTime(userId: string, slotEndTime: string): Promise<UpdateResult> {
+    return this.createQueryBuilder()
+      .update(PositiveInfoEntity)
+      .set({
+        updatedAt: slotEndTime,
+      })
+      .where('user_id = :userId', { userId })
       .execute();
   }
 }
