@@ -8,6 +8,7 @@ import { ConfigProvider } from '../common/provider/config.provider';
 import { MessageModule } from '../message/message.module';
 import { ConfigModule } from '@nestjs/config';
 import configuration from '../config/default';
+import { TriggerTimeSlotModule } from '../trigger-time-slot/trigger-time-slot.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import configuration from '../config/default';
     NotificationModule,
     UserModule,
     MessageModule,
+    TriggerTimeSlotModule,
     forwardRef(() => AppModule),
     ConfigModule.forRoot({
       load: [configuration],

@@ -10,6 +10,8 @@ import { NotificationService } from '../notification/service/notification.servic
 import { notificationServiceMock } from '../../test/mock/notification.service.mock';
 import { ProfileRepository } from '../user/repository/profile.repository';
 import { profileRepositoryMock } from '../../test/mock/profile.repository.mock';
+import { TriggerTimeSlotService } from '../trigger-time-slot/service/trigger-time-slot.service';
+import { triggerTimeSlotServiceMock } from '../../test/mock/trigger-time-slot.service.mock';
 
 describe('SchedulerService', () => {
   let service: SchedulerService;
@@ -37,6 +39,10 @@ describe('SchedulerService', () => {
         {
           provide: ProfileRepository,
           useValue: profileRepositoryMock,
+        },
+        {
+          provide: TriggerTimeSlotService,
+          useValue: triggerTimeSlotServiceMock,
         },
       ],
     }).compile();
