@@ -92,6 +92,8 @@ export class UpdateUserProfileController {
     if (
       (isDefined(data.regularPushNotification) &&
         profile?.regularPushNotification !== data.regularPushNotification) ||
+      (isDefined(data.positiveInfoPeriod) &&
+        profile?.positiveInfoPeriod !== data.positiveInfoPeriod) ||
       (!profile?.regularPushNotification &&
         !profile?.positiveInfoPeriod &&
         data.positiveInfoPeriod) ||
@@ -131,7 +133,7 @@ export class UpdateUserProfileController {
     if (positiveInfoFlowHasChanged) {
       await this.positiveInfoService.savePositiveInfo(logged.id, {
         minutesToNext: profile.regularPushNotification
-          ? null
+          ? profile.frequencyOfRegularNotification
           : profile.positiveInfoPeriod,
       });
     }
