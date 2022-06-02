@@ -164,6 +164,10 @@ export class SchedulerService extends NestSchedule {
     const userIds = [];
 
     for (const item of smsWithoutReaction) {
+      if (await this.triggerTimeSlotService.isActiveTimeSlot(item.userId)) {
+        continue;
+      }
+      
       this.logger.log(`Escalation continues for ${item.userId} at ${new Date().toISOString()}. Step: alert  (clearAlertTime).`);
 
       operations.push(
