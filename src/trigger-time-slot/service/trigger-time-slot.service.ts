@@ -104,6 +104,8 @@ export class TriggerTimeSlotService {
     userId: string,
     data: AddTimeSlotDTO
   ): Promise<TimeSlotEntity> {
+    Logger.log(`Saving slot: `, data, userId);
+
     const addedSlot = await this.timeSlotRepository
       .save({
         ...omit(data, ['days']),
@@ -122,8 +124,10 @@ export class TriggerTimeSlotService {
           where: { id: addedSlot.id, userId },
           relations: ['days', 'user'],
         });
-        
-        await this.informAboutPause(user.deviceId, slot.to as any);
+
+        Logger.log(`Pause set: `, user.deviceId, slot.to);
+
+        slot.active && (await this.informAboutPause(user.deviceId, slot.to as any));
       }
   
       return addedSlot;
@@ -134,6 +138,8 @@ export class TriggerTimeSlotService {
     userId: string,
     data: AddTimeSlotDTO
   ): Promise<TimeSlotEntity> {
+    Logger.log(`Saving slot: `, data, userId);
+    
     const namesOfDays = timeSlot.days.map((item) =>
       getEnumKeyByValue(DAYS_OF_WEEKS, item.day)
     );
@@ -177,7 +183,9 @@ export class TriggerTimeSlotService {
       relations: ['days', 'user'],
     });
 
-    if (!data.from) {
+    if (!data.from && slot.active) {
+      Logger.log(`Pause set: `, user.deviceId, slot.to);
+
       await this.informAboutPause(user.deviceId, slot.to as any);
     }
 
