@@ -25,8 +25,8 @@ export class TimeSlotRepository extends Repository<TimeSlotEntity> {
   findSlotsToInform() {
     return this.createQueryBuilder('ts')
       .leftJoinAndSelect('ts.user', 'u')
-      .addSelect('date_sub(ts.to, interval 5', 'rightThreshold')
-      .addSelect('date_add(ts.from, interval 5)', 'leftThreshold')
+      .addSelect('date_sub(ts.to, interval 5 MINUTE)', 'rightThreshold')
+      .addSelect('date_add(ts.from, interval 5 MINUTE)', 'leftThreshold')
       .addSelect('DAYOFWEEK(NOW())', 'dayOfWeek')
       .addSelect('NOW()', 'now')
       .where('u.device_id IS NOT NULL')
