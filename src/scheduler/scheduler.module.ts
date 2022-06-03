@@ -13,10 +13,10 @@ import { TriggerTimeSlotModule } from '../trigger-time-slot/trigger-time-slot.mo
 @Module({
   imports: [
     ScheduleModule.register(),
-    NotificationModule,
+    forwardRef(() => NotificationModule),
     UserModule,
     MessageModule,
-    TriggerTimeSlotModule,
+    forwardRef(() => TriggerTimeSlotModule),
     forwardRef(() => AppModule),
     ConfigModule.forRoot({
       load: [configuration],

@@ -10,6 +10,7 @@ import { ProfileRepository } from "../user/repository/profile.repository";
 import * as moment from "moment";
 import { MESSAGE_TYPE } from "../message/constant/message-type.constant";
 import { TriggerTimeSlotService } from "../trigger-time-slot/service/trigger-time-slot.service";
+import { numberToDaysOfWeek } from "../trigger-time-slot/enum/days-of-week.enum";
 
 @Injectable()
 export class SchedulerService extends NestSchedule {
@@ -24,6 +25,49 @@ export class SchedulerService extends NestSchedule {
     private readonly triggerTimeSlotService: TriggerTimeSlotService,
   ) {
     super();
+  }
+
+  @Cron("0 */5 * * * *")
+  async informAboutTimeSlots() {
+    const slots = (await this.triggerTimeSlotService.getSlotsToInform()) as any[];
+
+    const operations = []
+
+    for (const slot of slots) {
+      if (slot.from && slot.now <= slot.leftThreshold) {
+        const day = numberToDaysOfWeek.get(slot.dayOfWeek);
+        const from = moment(slot.from).format('HH:mm');
+        const to = moment(slot.to).format('HH:mm');
+
+        operations.push(
+          this.messageService.sendMessageToDevice(slot.user.deviceId, {
+            title: 'Biostasis automated system is disabled',
+            message: `[BE] The system is paused on ${day} from ${from} to ${to}`,
+            type: MESSAGE_TYPE.TIME_SLOT_NOTIFICATION,
+          })
+        );
+
+        Logger.log(`Specific time slot started id: ${slot.id}`);
+
+        continue;
+      }
+
+      if (slot.now < slot.rightThreshold) {
+        continue;
+      }
+
+      Logger.log(`Time slot is ending id: ${slot.id}`);
+
+      operations.push(
+        this.messageService.sendMessageToDevice(slot.user.deviceId, {
+          title: 'Biostasis automated system will resume',
+          message: '[BE] The system will resume according to your normal settings',
+          type: MESSAGE_TYPE.TIME_SLOT_NOTIFICATION,
+        })
+      );
+    }
+
+    await Promise.allSettled(operations);
   }
 
   @Cron("0 */5 * * * *")

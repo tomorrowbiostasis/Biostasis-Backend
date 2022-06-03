@@ -15,6 +15,7 @@ import {
 import { DAYS_OF_WEEKS } from '../src/trigger-time-slot/enum/days-of-week.enum';
 import { getEnumKeys } from '../src/common/helper/get-enum-keys';
 import { getEnumKeyByValue } from '../src/common/helper/get-enum-key-by-value';
+import { MessageService } from '../src/message/service/mesage.service';
 
 describe('/time-slot (integration) ', () => {
   let app;
@@ -42,6 +43,8 @@ describe('/time-slot (integration) ', () => {
 
   describe('/time-slot (POST)', () => {
     it('Should return status 403', async () => {
+      jest.spyOn(MessageService.prototype, 'sendMessageToDevice').mockResolvedValue(null);
+
       await api
         .post('/time-slot')
         .send()
@@ -89,6 +92,8 @@ describe('/time-slot (integration) ', () => {
     }
 
     it('Should return status 400 and error VALIDATION_FAILED if period invalid', async () => {
+      jest.spyOn(MessageService.prototype, 'sendMessageToDevice').mockResolvedValue(null);
+
       await api
         .post('/time-slot')
         .set('Authorization', dataset.user.id)
@@ -103,6 +108,8 @@ describe('/time-slot (integration) ', () => {
     });
 
     it('Should update time slot if time slot without start time exists', async () => {
+      jest.spyOn(MessageService.prototype, 'sendMessageToDevice').mockResolvedValue(null);
+
       let params = {
         active: true,
         days: [daysOfWeekKeys[1], daysOfWeekKeys[2]],
@@ -165,6 +172,8 @@ describe('/time-slot (integration) ', () => {
     });
 
     it('Should add time slot, return status 201 and valid body', async () => {
+      jest.spyOn(MessageService.prototype, 'sendMessageToDevice').mockResolvedValue(null);
+
       let body;
 
       ({ body } = await api
