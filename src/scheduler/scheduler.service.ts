@@ -33,21 +33,23 @@ export class SchedulerService extends NestSchedule {
 
     const operations = []
 
-    for (const slot of slots) {
-      if (slot.from && slot.now <= slot.leftThreshold) {
+    for (let slot of slots) {
+      if (Array.isArray(slot) && slot.length > 0) slot = slot[0];
+
+      if (slot.ts_from && slot.now <= slot.leftThreshold) {
         const day = numberToDaysOfWeek.get(slot.dayOfWeek);
-        const from = moment(slot.from).format('HH:mm');
-        const to = moment(slot.to).format('HH:mm');
+        const from = moment(slot.ts_from).format('HH:mm');
+        const to = moment(slot.ts_to).format('HH:mm');
 
         operations.push(
-          this.messageService.sendMessageToDevice(slot.user.deviceId, {
+          this.messageService.sendMessageToDevice(slot.u_device_id, {
             title: 'Biostasis automated system is disabled',
             message: `[BE] The system is paused on ${day} from ${from} to ${to}`,
             type: MESSAGE_TYPE.TIME_SLOT_NOTIFICATION,
           })
         );
 
-        Logger.log(`Specific time slot started id: ${slot.id}`, JSON.stringify(slot));
+        Logger.log(`Specific time slot started id: ${slot.ts_id}`, JSON.stringify(slot));
 
         continue;
       }
@@ -56,10 +58,10 @@ export class SchedulerService extends NestSchedule {
         continue;
       }
 
-      Logger.log(`Time slot is ending id: ${slot.id}`, JSON.stringify(slot));
+      Logger.log(`Time slot is ending id: ${slot.ts_id}`, JSON.stringify(slot));
 
       operations.push(
-        this.messageService.sendMessageToDevice(slot.user.deviceId, {
+        this.messageService.sendMessageToDevice(slot.u_device_id, {
           title: 'Biostasis automated system will resume',
           message: '[BE] The system will resume according to your normal settings',
           type: MESSAGE_TYPE.TIME_SLOT_NOTIFICATION,
