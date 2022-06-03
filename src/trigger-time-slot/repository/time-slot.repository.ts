@@ -44,7 +44,7 @@ export class TimeSlotRepository extends Repository<TimeSlotEntity> {
         })
       )
       .innerJoin('ts.days', 'd', 'd.day_of_week = DAYOFWEEK(NOW())')
-      .getMany();
+      .execute();
   }
 
   findActiveTimeSlots(userId: string): Promise<TimeSlotEntity[]> {

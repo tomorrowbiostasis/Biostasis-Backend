@@ -43,8 +43,12 @@ export class MessageService {
       )
       .then((result) => {
         if (result.successCount === 1) {
+          Logger.log(`Push notification has been sent: `, JSON.stringify({ deviceId, ...payload }));
+
           return result;
         }
+
+        Logger.error(`Push notification has NOT been sent: `, JSON.stringify({ deviceId, ...payload }));
 
         throw result;
       })
