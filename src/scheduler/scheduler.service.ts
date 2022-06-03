@@ -36,8 +36,8 @@ export class SchedulerService extends NestSchedule {
     for (let slot of slots) {
       if (Array.isArray(slot) && slot.length > 0) slot = slot[0];
 
-      if (slot.ts_from && slot.now <= slot.leftThreshold) {
-        const day = numberToDaysOfWeek.get(slot.dayOfWeek);
+      if (slot.ts_from && slot.now <= slot.leftThreshold && slot.now > slot.ts_from) {
+        const day = numberToDaysOfWeek.get(parseInt(slot.dayOfWeek));
         const from = moment(slot.ts_from).format('HH:mm');
         const to = moment(slot.ts_to).format('HH:mm');
 
