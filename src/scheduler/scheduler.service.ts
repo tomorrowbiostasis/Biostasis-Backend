@@ -47,7 +47,7 @@ export class SchedulerService extends NestSchedule {
           })
         );
 
-        Logger.log(`Specific time slot started id: ${slot.id}`, slot);
+        Logger.log(`Specific time slot started id: ${slot.id}`, JSON.stringify(slot));
 
         continue;
       }
@@ -56,7 +56,7 @@ export class SchedulerService extends NestSchedule {
         continue;
       }
 
-      Logger.log(`Time slot is ending id: ${slot.id}`, slot);
+      Logger.log(`Time slot is ending id: ${slot.id}`, JSON.stringify(slot));
 
       operations.push(
         this.messageService.sendMessageToDevice(slot.user.deviceId, {

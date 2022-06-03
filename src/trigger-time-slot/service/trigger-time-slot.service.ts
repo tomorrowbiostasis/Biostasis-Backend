@@ -125,7 +125,7 @@ export class TriggerTimeSlotService {
           relations: ['days', 'user'],
         });
 
-        Logger.log(`Pause set: `, user.deviceId, slot.to);
+        Logger.log(`Pause set: `, slot.to);
 
         slot.active && (await this.informAboutPause(user.deviceId, slot.to as any));
       }
@@ -184,7 +184,7 @@ export class TriggerTimeSlotService {
     });
 
     if (!data.from && slot.active) {
-      Logger.log(`Pause set: `, user.deviceId, slot.to);
+      Logger.log(`Pause set: `, slot.to);
 
       await this.informAboutPause(user.deviceId, slot.to as any);
     }
