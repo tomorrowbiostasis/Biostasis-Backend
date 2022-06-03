@@ -7,3 +7,13 @@ export enum DAYS_OF_WEEKS {
   SATURDAY = 7,
   SUNDAY = 1,
 }
+
+export const numberToDaysOfWeek = new Map([
+  [2, 'Monday'],
+  [3, 'Tuesday'],
+  [4, 'Wednesday'],
+  [5, 'Thursday'],
+  [6, 'Friday'],
+  [7, 'Saturday'],
+  [1, 'Sunday'],
+]);

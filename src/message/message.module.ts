@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ConfigProvider } from '../common/provider/config.provider';
 import { NotificationModule } from '../notification/notification.module';
 import { UserModule } from '../user/user.module';
@@ -15,11 +15,11 @@ import configuration from '../config/default';
 
 @Module({
   imports: [
-    NotificationModule,
-    UserModule,
+    forwardRef(() => NotificationModule),
+    forwardRef(() => UserModule),
     ContactModule,
-    QueueModule,
-    TriggerTimeSlotModule,
+    forwardRef(() => QueueModule),
+    forwardRef(() => TriggerTimeSlotModule),
     ConfigModule.forRoot({
       load: [configuration],
     }),

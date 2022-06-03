@@ -21,6 +21,10 @@ import { DAYS_OF_WEEKS } from '../enum/days-of-week.enum';
 import { getEnumKeyByValue } from '../../common/helper/get-enum-key-by-value';
 import { In, Connection, DeleteResult } from 'typeorm';
 import { DICTIONARY } from '../../common/constant/dictionary.constant';
+import { MessageService } from '../../message/service/mesage.service';
+import { MESSAGE_TYPE } from '../../message/constant/message-type.constant';
+import * as moment from "moment";
+import { date } from 'joi';
 
 @Injectable()
 export class TriggerTimeSlotService {
@@ -30,7 +34,8 @@ export class TriggerTimeSlotService {
     @Inject(TimeSlotRepository)
     private readonly timeSlotRepository: TimeSlotRepository,
     @Inject(DICTIONARY.CONNECTION)
-    private readonly connection: Connection
+    private readonly connection: Connection,
+    private readonly messageService: MessageService,
   ) {}
 
   async findByUserIdAndPeriodStart(
@@ -71,6 +76,10 @@ export class TriggerTimeSlotService {
     return slots.length > 0 ? slots[0] : null;
   }
 
+  async getSlotsToInform() {
+    return this.timeSlotRepository.findSlotsToInform();
+  }
+
   async findByUserIdOrFail(userId: string): Promise<TimeSlotEntity[]> {
     return this.timeSlotRepository.findByUserId(userId).then((data) => {
       if (!data) {
@@ -95,7 +104,7 @@ export class TriggerTimeSlotService {
     userId: string,
     data: AddTimeSlotDTO
   ): Promise<TimeSlotEntity> {
-    return this.timeSlotRepository
+    const addedSlot = await this.timeSlotRepository
       .save({
         ...omit(data, ['days']),
         userId,
@@ -107,6 +116,17 @@ export class TriggerTimeSlotService {
         this.logger.error(error);
         throw new BadRequestException(SAVE_TIME_SLOT_FAILED);
       });
+  
+      if (!data.from) {
+        const { user, ...slot } = await this.timeSlotRepository.findOneByParams({
+          where: { id: addedSlot.id, userId },
+          relations: ['days', 'user'],
+        });
+        
+        await this.informAboutPause(user.deviceId, slot.to as any);
+      }
+  
+      return addedSlot;
   }
 
   async updateTimeSlot(
@@ -152,9 +172,25 @@ export class TriggerTimeSlotService {
       throw new BadRequestException(UPDATE_TIME_SLOT_FAILED);
     }
 
-    return this.timeSlotRepository.findOneByParams({
+    const { user, ...slot } = await this.timeSlotRepository.findOneByParams({
       where: { id: timeSlot.id, userId },
-      relations: ['days'],
+      relations: ['days', 'user'],
+    });
+
+    if (!data.from) {
+      await this.informAboutPause(user.deviceId, slot.to as any);
+    }
+
+    return slot as any;
+  }
+
+  private async informAboutPause(deviceId: string, to: string) {
+    const until = moment(to).format('DD.MM.YYYY HH:mm:ss');
+
+    await this.messageService.sendMessageToDevice(deviceId, {
+      title: 'Biostasis automated system is disabled',
+      message: `[BE] The system will be paused until ${until}`,
+      type: MESSAGE_TYPE.TIME_SLOT_NOTIFICATION,
     });
   }
 }
