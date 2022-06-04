@@ -39,6 +39,7 @@ export class SchedulerService extends NestSchedule {
 
       const nowTime = moment(slot.now).format('HH:mm');
       const fromTime = moment(slot.ts_from).format('HH:mm')
+      const toTime = moment(slot.ts_to).format('HH:mm')
       const leftThresholdTime = moment(slot.leftThreshold).format('HH:mm')
       const rightThresholdTime = moment(slot.rightThreshold).format('HH:mm')
 
@@ -60,7 +61,10 @@ export class SchedulerService extends NestSchedule {
         continue;
       }
 
-      if ((!slot.ts_from && nowTime < rightThresholdTime) || (slot.ts_from && slot.now < slot.rightThreshold)) {
+      const shouldProceedSpecific = slot.ts_from && nowTime >= rightThresholdTime && nowTime < toTime;
+      const shouldProceedPause = !slot.ts_from && slot.now >= slot.rightThreshold && slot.now < slot.ts_to;
+
+      if (!shouldProceedSpecific && !shouldProceedPause) {
         continue;
       }
 
