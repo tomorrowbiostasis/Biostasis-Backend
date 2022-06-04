@@ -11,6 +11,7 @@ import * as moment from "moment";
 import { MESSAGE_TYPE } from "../message/constant/message-type.constant";
 import { TriggerTimeSlotService } from "../trigger-time-slot/service/trigger-time-slot.service";
 import { numberToDaysOfWeek } from "../trigger-time-slot/enum/days-of-week.enum";
+import { getTimeFromDate } from "../common/helper/get-time-from-date";
 
 @Injectable()
 export class SchedulerService extends NestSchedule {
@@ -36,7 +37,13 @@ export class SchedulerService extends NestSchedule {
     for (let slot of slots) {
       if (Array.isArray(slot) && slot.length > 0) slot = slot[0];
 
-      if (slot.ts_from && slot.now <= slot.leftThreshold && slot.now > slot.ts_from) {
+      const nowTime = getTimeFromDate(slot.now);
+      const fromTime = getTimeFromDate(slot.ts_from);
+      const toTime = getTimeFromDate(slot.ts_to);
+      const leftThresholdTime = getTimeFromDate(slot.leftThreshold);
+      const rightThresholdTime = getTimeFromDate(slot.rightThreshold);
+
+      if (slot.ts_from && nowTime <= leftThresholdTime && nowTime > fromTime) {
         const day = numberToDaysOfWeek.get(parseInt(slot.dayOfWeek));
         const from = moment(slot.ts_from).format('HH:mm');
         const to = moment(slot.ts_to).format('HH:mm');
@@ -54,7 +61,7 @@ export class SchedulerService extends NestSchedule {
         continue;
       }
 
-      if (slot.now < slot.rightThreshold) {
+      if ((!slot.ts_from && nowTime < rightThresholdTime) || (slot.ts_from && slot.now < slot.rightThreshold)) {
         continue;
       }
 
