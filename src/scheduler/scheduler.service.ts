@@ -37,11 +37,10 @@ export class SchedulerService extends NestSchedule {
     for (let slot of slots) {
       if (Array.isArray(slot) && slot.length > 0) slot = slot[0];
 
-      const nowTime = getTimeFromDate(slot.now);
-      const fromTime = getTimeFromDate(slot.ts_from);
-      const toTime = getTimeFromDate(slot.ts_to);
-      const leftThresholdTime = getTimeFromDate(slot.leftThreshold);
-      const rightThresholdTime = getTimeFromDate(slot.rightThreshold);
+      const nowTime = moment(slot.now).format('HH:mm');
+      const fromTime = moment(slot.ts_from).format('HH:mm')
+      const leftThresholdTime = moment(slot.leftThreshold).format('HH:mm')
+      const rightThresholdTime = moment(slot.rightThreshold).format('HH:mm')
 
       if (slot.ts_from && nowTime <= leftThresholdTime && nowTime > fromTime) {
         const day = numberToDaysOfWeek.get(parseInt(slot.dayOfWeek));
