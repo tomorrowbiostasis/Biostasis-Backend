@@ -40,7 +40,7 @@ export class TimeSlotRepository extends Repository<TimeSlotEntity> {
             `IF (
                     TIME(ts.to) > TIME(ts.from),
                     TIME(:now2) BETWEEN TIME(ts.from) AND TIME(ts.to),
-                    TIME(:now2) < TIME(ts.to) OR TIME(:now2) > TIME(ts.from)
+                    TIME(:now2) BETWEEN TIME(ts.to) AND TIME(ts.from)
                   )`,
 
                   { now2: now }
@@ -64,7 +64,7 @@ export class TimeSlotRepository extends Repository<TimeSlotEntity> {
             `IF (
                     TIME(ts.to) > TIME(ts.from),
                     TIME(:now2) BETWEEN TIME(ts.from) AND TIME(ts.to),
-                    TIME(:now2) < TIME(ts.to) OR TIME(:now2) > TIME(ts.from)
+                    TIME(:now2) BETWEEN TIME(ts.to) AND TIME(ts.from)
                   )`,
 
                   { now2: now }
