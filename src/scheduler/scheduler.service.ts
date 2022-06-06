@@ -69,11 +69,22 @@ export class SchedulerService extends NestSchedule {
         continue;
       }
 
-      const shouldProceedSpecific = slot.ts_from && nowTime >= rightThresholdTime && nowTime < toTime;
+      const shouldProceedSpecific = !!slot.ts_from && nowTime >= rightThresholdTime && nowTime < toTime;
       const shouldProceedPause = !slot.ts_from && slot.now >= slot.rightThreshold && slot.now < slot.ts_to;
 
       if (!shouldProceedSpecific && !shouldProceedPause) {
         Logger.log(`Time slot has been ignored`);
+        Logger.log(JSON.stringify({
+          "slot.ts_from": !!slot.ts_from,
+          "nowTime >= rightThresholdTime": nowTime >= rightThresholdTime,
+          "nowTime < toTime": nowTime < toTime,
+          "slot.now >= slot.rightThreshold": slot.now >= slot.rightThreshold,
+          "slot.now < slot.ts_to": slot.now < slot.ts_to
+        }));
+        Logger.log(JSON.stringify({
+          shouldProceedSpecific,
+          shouldProceedPause
+        }));
 
         continue;
       }
