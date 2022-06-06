@@ -32,8 +32,6 @@ export class SchedulerService extends NestSchedule {
   async informAboutTimeSlots() {
     const slots = (await this.triggerTimeSlotService.getSlotsToInform()) as any[];
 
-    const operations = []
-
     for (let slot of slots) {
       if (Array.isArray(slot) && slot.length > 0) slot = slot[0];
 
@@ -60,13 +58,11 @@ export class SchedulerService extends NestSchedule {
         const from = moment(slot.ts_from).format('HH:mm');
         const to = moment(slot.ts_to).format('HH:mm');
 
-        operations.push(
-          this.messageService.sendMessageToDevice(slot.u_device_id, {
-            title: 'Biostasis automated system is disabled',
-            message: `[BE] The system is paused on ${day} from ${from} to ${to}`,
-            type: MESSAGE_TYPE.TIME_SLOT_NOTIFICATION,
-          })
-        );
+        this.messageService.sendMessageToDevice(slot.u_device_id, {
+          title: 'Biostasis automated system is disabled',
+          message: `[BE] The system is paused on ${day} from ${from} to ${to}`,
+          type: MESSAGE_TYPE.TIME_SLOT_NOTIFICATION,
+        });
 
         Logger.log(`Specific time slot started id: ${slot.ts_id}`, JSON.stringify(slot));
 
@@ -77,21 +73,19 @@ export class SchedulerService extends NestSchedule {
       const shouldProceedPause = !slot.ts_from && slot.now >= slot.rightThreshold && slot.now < slot.ts_to;
 
       if (!shouldProceedSpecific && !shouldProceedPause) {
+        Logger.log(`Time slot has been ignored`);
+
         continue;
       }
 
       Logger.log(`Time slot is ending id: ${slot.ts_id}`, JSON.stringify(slot));
 
-      operations.push(
-        this.messageService.sendMessageToDevice(slot.u_device_id, {
-          title: 'Biostasis automated system will resume',
-          message: '[BE] The system will resume according to your normal settings',
-          type: MESSAGE_TYPE.TIME_SLOT_NOTIFICATION,
-        })
-      );
+      this.messageService.sendMessageToDevice(slot.u_device_id, {
+        title: 'Biostasis automated system will resume',
+        message: '[BE] The system will resume according to your normal settings',
+        type: MESSAGE_TYPE.TIME_SLOT_NOTIFICATION,
+      });
     }
-
-    await Promise.allSettled(operations);
   }
 
   @Cron("0 */5 * * * *")
