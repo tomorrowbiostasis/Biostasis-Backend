@@ -37,7 +37,7 @@ export class SchedulerService extends NestSchedule {
     for (let slot of slots) {
       if (Array.isArray(slot) && slot.length > 0) slot = slot[0];
 
-      slot.now = new Date().toISOString();
+      slot.now = new Date().toISOString().slice(0,19) + '.000Z';
 
       const nowTime = moment(slot.now).format('HH:mm');
       const fromTime = moment(slot.ts_from).format('HH:mm')
