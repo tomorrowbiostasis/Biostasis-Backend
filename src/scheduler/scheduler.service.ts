@@ -37,12 +37,13 @@ export class SchedulerService extends NestSchedule {
     for (let slot of slots) {
       if (Array.isArray(slot) && slot.length > 0) slot = slot[0];
 
+      slot.now = new Date().toISOString();
+
       const nowTime = moment(slot.now).format('HH:mm');
       const fromTime = moment(slot.ts_from).format('HH:mm')
       const toTime = moment(slot.ts_to).format('HH:mm')
       const leftThresholdTime = moment(slot.leftThreshold).format('HH:mm')
       const rightThresholdTime = moment(slot.rightThreshold).format('HH:mm')
-
 
       Logger.log(`Processing slot ${slot.ts_from ? 'specific time' : 'pause'}: `);
       Logger.log(JSON.stringify(slot));
