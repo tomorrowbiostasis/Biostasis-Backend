@@ -43,6 +43,17 @@ export class SchedulerService extends NestSchedule {
       const leftThresholdTime = moment(slot.leftThreshold).format('HH:mm')
       const rightThresholdTime = moment(slot.rightThreshold).format('HH:mm')
 
+
+      Logger.log(`Processing slot ${slot.ts_from ? 'specific time' : 'pause'}: `);
+      Logger.log(JSON.stringify(slot));
+      Logger.log(JSON.stringify({
+        nowTime,
+        fromTime,
+        toTime,
+        leftThresholdTime,
+        rightThresholdTime
+      }));
+
       if (slot.ts_from && nowTime <= leftThresholdTime && nowTime > fromTime) {
         const day = numberToDaysOfWeek.get(parseInt(slot.dayOfWeek));
         const from = moment(slot.ts_from).format('HH:mm');
