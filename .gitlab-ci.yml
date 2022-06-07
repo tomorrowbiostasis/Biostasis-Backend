@@ -105,11 +105,6 @@ integration-tests:
   dependencies:
     - install
 
-stages:
-  - deploy-dev
-  - deploy-prod
-
-
 deploy:
   stage: deploy   
   before_script:
