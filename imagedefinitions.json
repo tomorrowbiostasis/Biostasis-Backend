@@ -1,6 +1,6 @@
 [
     {
-        "name": "develop-backend",
-        "imageUri": "some-address"
+        "name": "backend",
+        "imageUri": "192295657924.dkr.ecr.eu-central-1.amazonaws.com/biostasis-backend:staging"
     }
 ]
