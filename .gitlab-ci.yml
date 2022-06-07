@@ -137,4 +137,4 @@ deploy-prod:
     - git remote add awscodecommit ssh://APKASZRNW4HCOWUBHBG6@git-codecommit.eu-central-1.amazonaws.com/v1/repos/biostasis-backend || true
     - git push awscodecommit HEAD:refs/heads/production --force
   only:
-    - tag
+    - web
