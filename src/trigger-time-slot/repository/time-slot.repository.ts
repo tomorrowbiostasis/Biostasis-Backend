@@ -35,7 +35,7 @@ export class TimeSlotRepository extends Repository<TimeSlotEntity> {
       .andWhere('ts.active = true')
       .andWhere(
         new Brackets((qb) => {
-          qb.where('(ts.from IS NULL and :now < ts.to)', { now });
+          qb.where('(ts.from IS NULL and :now1 < ts.to)', { now1: now });
           qb.orWhere(
             `IF (
                     TIME(ts.to) > TIME(ts.from),
@@ -59,7 +59,7 @@ export class TimeSlotRepository extends Repository<TimeSlotEntity> {
       .andWhere('ts.active = true')
       .andWhere(
         new Brackets((qb) => {
-          qb.where('(ts.from IS NULL and :now < ts.to)', { now });
+          qb.where('(ts.from IS NULL and :now1 < ts.to)', { now1: now });
           qb.orWhere(
             `IF (
                     TIME(ts.to) > TIME(ts.from),
