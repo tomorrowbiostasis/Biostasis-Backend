@@ -23,8 +23,6 @@ export class TimeSlotRepository extends Repository<TimeSlotEntity> {
   }
 
   findSlotsToInform() {
-    const now = new Date().toISOString().slice(0,19) + '.000Z';
-
     return this.createQueryBuilder('ts')
       .leftJoinAndSelect('ts.user', 'u')
       .addSelect('date_sub(ts.to, interval 5 MINUTE)', 'rightThreshold')
@@ -35,15 +33,13 @@ export class TimeSlotRepository extends Repository<TimeSlotEntity> {
       .andWhere('ts.active = true')
       .andWhere(
         new Brackets((qb) => {
-          qb.where('(ts.from IS NULL and :now1 < ts.to)', { now1: now });
+          qb.where('(ts.from IS NULL and NOW() < ts.to)');
           qb.orWhere(
             `IF (
                     TIME(ts.to) > TIME(ts.from),
-                    TIME(:now2) BETWEEN TIME(ts.from) AND TIME(ts.to),
-                    TIME(:now2) BETWEEN TIME(ts.to) AND TIME(ts.from)
-                  )`,
-
-                  { now2: now }
+                    current_time() BETWEEN TIME(ts.from) AND TIME(ts.to),
+                    current_time() < TIME(ts.to) OR current_time() > TIME(ts.from)
+                  )`
           );
         })
       )
@@ -52,22 +48,18 @@ export class TimeSlotRepository extends Repository<TimeSlotEntity> {
   }
 
   findActiveTimeSlots(userId: string): Promise<TimeSlotEntity[]> {
-    const now = new Date().toISOString().slice(0,19) + '.000Z';
-
     return this.createQueryBuilder('ts')
       .where('ts.user_id = :userId', { userId })
       .andWhere('ts.active = true')
       .andWhere(
         new Brackets((qb) => {
-          qb.where('(ts.from IS NULL and :now1 < ts.to)', { now1: now });
+          qb.where('(ts.from IS NULL and NOW() < ts.to)');
           qb.orWhere(
             `IF (
                     TIME(ts.to) > TIME(ts.from),
-                    TIME(:now2) BETWEEN TIME(ts.from) AND TIME(ts.to),
-                    TIME(:now2) BETWEEN TIME(ts.to) AND TIME(ts.from)
-                  )`,
-
-                  { now2: now }
+                    current_time() BETWEEN TIME(ts.from) AND TIME(ts.to),
+                    current_time() < TIME(ts.to) OR current_time() > TIME(ts.from)
+                  )`
           );
         })
       )
