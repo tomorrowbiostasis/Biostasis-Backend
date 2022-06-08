@@ -11,6 +11,7 @@ import * as moment from "moment";
 import { MESSAGE_TYPE } from "../message/constant/message-type.constant";
 import { TriggerTimeSlotService } from "../trigger-time-slot/service/trigger-time-slot.service";
 import { numberToDaysOfWeek } from "../trigger-time-slot/enum/days-of-week.enum";
+import { modifyTimeAccordingTimezone } from "../common/helper/modify-time-according-timezone";
 
 @Injectable()
 export class SchedulerService extends NestSchedule {
@@ -34,7 +35,7 @@ export class SchedulerService extends NestSchedule {
     for (let slot of slots) {
       if (Array.isArray(slot) && slot.length > 0) slot = slot[0];
 
-      slot.now = new Date().toISOString().slice(0,19) + '.000Z';
+      slot.now = new Date().toISOString().slice(0, 19) + '.000Z';
 
       const nowTime = moment(slot.now).format('HH:mm');
       const fromTime = moment(slot.ts_from).format('HH:mm')
@@ -52,14 +53,14 @@ export class SchedulerService extends NestSchedule {
         rightThresholdTime
       }));
 
-      const shouldStartSpecific = !!slot.ts_from 
+      const shouldStartSpecific = !!slot.ts_from
         && moment(leftThresholdTime, 'HH:mm').isSameOrAfter(moment(nowTime, 'HH:mm'))
         && moment(nowTime, 'HH:mm').isAfter(moment(fromTime, 'HH:mm'));
 
       if (shouldStartSpecific) {
         const day = numberToDaysOfWeek.get(parseInt(slot.dayOfWeek));
-        const from = moment(slot.ts_from).format('HH:mm');
-        const to = moment(slot.ts_to).format('HH:mm');
+        const from = moment(modifyTimeAccordingTimezone(slot.ts_from, slot.ts_timezone)).format('HH:mm');
+        const to = moment(modifyTimeAccordingTimezone(slot.ts_to, slot.ts_timezone)).format('HH:mm');
 
         this.messageService.sendMessageToDevice(slot.u_device_id, {
           title: 'Biostasis automated system is disabled',
@@ -236,7 +237,7 @@ export class SchedulerService extends NestSchedule {
       if (await this.triggerTimeSlotService.isActiveTimeSlot(item.userId)) {
         continue;
       }
-      
+
       this.logger.log(`Escalation continues for ${item.userId} at ${new Date().toISOString()}. Step: alert  (clearAlertTime).`);
 
       operations.push(

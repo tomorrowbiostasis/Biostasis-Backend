@@ -71,6 +71,7 @@ describe('/time-slot (integration) ', () => {
           .send({
             days: [daysOfWeekKeys[1]],
             to: value,
+            timezone: '+02:00'
           })
           .then((result) => {
             expect(result.status).toBe(400);
@@ -83,6 +84,7 @@ describe('/time-slot (integration) ', () => {
           .send({
             days: [daysOfWeekKeys[1]],
             from: moment().toISOString(),
+            timezone: '+02:00'
           })
           .then((result) => {
             expect(result.status).toBe(400);
@@ -100,6 +102,7 @@ describe('/time-slot (integration) ', () => {
         .send({
           days: [daysOfWeekKeys[1]],
           from: moment().toISOString(),
+          timezone: '+02:00'
         })
         .then(({ status, body }) => {
           expect(status).toBe(400);
@@ -114,6 +117,7 @@ describe('/time-slot (integration) ', () => {
         active: true,
         days: [daysOfWeekKeys[1], daysOfWeekKeys[2]],
         to: moment().add(7, 'days').toISOString(),
+        timezone: '+02:00'
       };
 
       const { body: firstCall } = await api
@@ -123,6 +127,7 @@ describe('/time-slot (integration) ', () => {
           active: true,
           days: [daysOfWeekKeys[1], daysOfWeekKeys[2]],
           to: moment().add(7, 'days').toISOString(),
+          timezone: '+02:00'
         })
         .expect(async ({ status }) => {
           expect(status).toBe(201);
@@ -139,12 +144,14 @@ describe('/time-slot (integration) ', () => {
           getEnumKeyByValue(DAYS_OF_WEEKS, item.day)
         ),
         to: moment(timeSlot.to).format('YYYY-MM-DD HH:mm:ss'),
+        timezone: '+02:00'
       });
 
       params = {
         active: false,
         days: [daysOfWeekKeys[1], daysOfWeekKeys[2]],
         to: moment().add(5, 'days').toISOString(),
+        timezone: '+02:00'
       };
 
       const { body: secondCall } = await api
@@ -166,6 +173,7 @@ describe('/time-slot (integration) ', () => {
           getEnumKeyByValue(DAYS_OF_WEEKS, item.day)
         ),
         to: moment(timeSlot.to).format('YYYY-MM-DD HH:mm:ss'),
+        timezone: '+02:00'
       });
 
       expect(firstCall.id).toBe(secondCall.id);
@@ -184,6 +192,7 @@ describe('/time-slot (integration) ', () => {
           days: [daysOfWeekKeys[1], daysOfWeekKeys[2]],
           from: moment().toISOString(),
           to: moment().add(1, 'days').toISOString(),
+          timezone: '+02:00'
         })
         .expect(async ({ status }) => {
           expect(status).toBe(201);
@@ -202,6 +211,7 @@ describe('/time-slot (integration) ', () => {
         .send({
           days: [daysOfWeekKeys[1]],
           to: moment().add(1, 'days').toISOString(),
+          timezone: '+02:00'
         })
         .expect(async ({ status }) => {
           expect(status).toBe(201);
@@ -214,6 +224,7 @@ describe('/time-slot (integration) ', () => {
           days: [daysOfWeekKeys[1]],
           from: null,
           to: moment().add(1, 'days').toISOString(),
+          timezone: '+02:00'
         })
         .expect(async ({ status }) => {
           expect(status).toBe(201);

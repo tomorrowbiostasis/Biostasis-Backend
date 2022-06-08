@@ -27,6 +27,9 @@ export class TimeSlotEntity {
   @Column({ type: 'datetime' })
   to: Date;
 
+  @Column({ type: 'varchar', nullable: true })
+  timezone?: string;
+
   @CreateDateColumn({ name: 'created_at', type: 'datetime' })
   createdAt: Date;
 

@@ -54,6 +54,7 @@ describe('/time-slot (integration) ', () => {
           days: [daysOfWeekKeys[1], daysOfWeekKeys[2]],
           from: moment().toISOString(),
           to: moment().add(1, 'days').toISOString(),
+          timezone: '+02:00'
         })
         .then((result) => {
           expect(result.status).toBe(400);
@@ -74,6 +75,7 @@ describe('/time-slot (integration) ', () => {
         days: [daysOfWeekKeys[1], daysOfWeekKeys[2]],
         from: moment().toISOString(),
         to: moment().add(2, 'days').toISOString(),
+        timezone: '+02:00'
       };
 
       ({ body } = await api
@@ -92,6 +94,7 @@ describe('/time-slot (integration) ', () => {
           days: [daysOfWeekKeys[1], daysOfWeekKeys[2], daysOfWeekKeys[3]],
           from: moment().toISOString(),
           to: moment().add(1, 'days').toISOString(),
+          timezone: '+02:00'
         })
         .then((result) => {
           expect(result.status).toBe(400);
@@ -107,6 +110,7 @@ describe('/time-slot (integration) ', () => {
         ),
         from: timeSlot.from.toISOString(),
         to: timeSlot.to.toISOString(),
+        timezone: '+02:00'
       });
     });
 
@@ -117,6 +121,7 @@ describe('/time-slot (integration) ', () => {
         days: [daysOfWeekKeys[1], daysOfWeekKeys[2]],
         from: moment().toISOString(),
         to: moment().add(2, 'days').toISOString(),
+        timezone: '+02:00'
       };
 
       ({ body } = await api
@@ -135,6 +140,7 @@ describe('/time-slot (integration) ', () => {
           days: [daysOfWeekKeys[1], daysOfWeekKeys[2], daysOfWeekKeys[3]],
           from: moment().toISOString(),
           to: moment().add(1, 'days').toISOString(),
+          timezone: '+02:00'
         })
         .then(({ status, body }) => {
           expect(status).toBe(200);

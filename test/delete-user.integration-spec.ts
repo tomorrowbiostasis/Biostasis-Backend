@@ -55,6 +55,7 @@ describe('/user (integration) ', () => {
           days: [daysOfWeekKeys[1], daysOfWeekKeys[2]],
           from: moment().toISOString(),
           to: moment().add(1, 'days').toISOString(),
+          timezone: '+02:00'
         })
         .expect(201);
 

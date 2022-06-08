@@ -12,6 +12,9 @@ export class AddTimeSlotDTO {
   @ApiProperty({ type: Date, required: true })
   to: Date;
 
+  @ApiProperty({ type: String, required: true })
+  timezone: string;
+
   @ApiProperty({
     type: 'enum',
     required: false,

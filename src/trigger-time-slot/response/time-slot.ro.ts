@@ -20,6 +20,10 @@ export class TimeSlotRO {
   to: string;
 
   @Expose()
+  @ApiProperty({ type: String })
+  timezone: string;
+
+  @Expose()
   @ApiProperty({ type: String, isArray: true })
   days: string[];
 
