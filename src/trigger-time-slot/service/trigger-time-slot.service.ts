@@ -76,7 +76,7 @@ export class TriggerTimeSlotService {
     return slots.length > 0 ? slots[0] : null;
   }
 
-  async getSlotsToInform() {
+  async getSlotsToInform(): Promise<any> {
     return this.timeSlotRepository.findSlotsToInform();
   }
 
