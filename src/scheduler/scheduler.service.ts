@@ -29,14 +29,12 @@ export class SchedulerService extends NestSchedule {
 
   @Cron("0 */5 * * * *")
   async informAboutTimeSlots() {
-    const localNow = new Date().toISOString().slice(0,19) + '.000Z';
-    Logger.log(`Getting slots to inform ${localNow}`);
-    const slots = (await this.triggerTimeSlotService.getSlotsToInform()) as any[];
+    const slots = await this.triggerTimeSlotService.getSlotsToInform();
 
     for (let slot of slots) {
       if (Array.isArray(slot) && slot.length > 0) slot = slot[0];
 
-      slot.now = localNow;
+      slot.now = new Date().toISOString().slice(0,19) + '.000Z';
 
       const nowTime = moment(slot.now).format('HH:mm');
       const fromTime = moment(slot.ts_from).format('HH:mm')

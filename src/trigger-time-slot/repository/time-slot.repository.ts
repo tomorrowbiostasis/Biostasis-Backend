@@ -23,9 +23,9 @@ export class TimeSlotRepository extends Repository<TimeSlotEntity> {
   }
 
   findSlotsToInform() {
-    const now = new Date().toISOString().slice(0,19) + '.000Z';
+    const now = new Date().toISOString().slice(0,19).replace('T', ' ');
 
-    const q = this.createQueryBuilder('ts')
+    return this.createQueryBuilder('ts')
       .leftJoinAndSelect('ts.user', 'u')
       .addSelect('date_sub(ts.to, interval 5 MINUTE)', 'rightThreshold')
       .addSelect('date_add(ts.from, interval 5 MINUTE)', 'leftThreshold')
@@ -48,14 +48,11 @@ export class TimeSlotRepository extends Repository<TimeSlotEntity> {
         })
       )
       .innerJoin('ts.days', 'd', 'd.day_of_week = DAYOFWEEK(NOW())')
-      
-      Logger.log(`Getting slots query: \n\n`, q.getQueryAndParameters());
-
-      return q.execute();
+      .execute();
   }
 
   findActiveTimeSlots(userId: string): Promise<TimeSlotEntity[]> {
-    const now = new Date().toISOString().slice(0,19) + '.000Z';
+    const now = new Date().toISOString().slice(0,19).replace('T', ' ');
 
     return this.createQueryBuilder('ts')
       .where('ts.user_id = :userId', { userId })
