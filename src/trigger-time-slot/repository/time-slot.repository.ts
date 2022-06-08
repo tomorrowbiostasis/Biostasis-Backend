@@ -49,8 +49,7 @@ export class TimeSlotRepository extends Repository<TimeSlotEntity> {
       )
       .innerJoin('ts.days', 'd', 'd.day_of_week = DAYOFWEEK(NOW())')
       
-
-      q.printSql();
+      Logger.log(`Getting slots query: \n\n`, q.getQueryAndParameters());
 
       return q.execute();
   }
