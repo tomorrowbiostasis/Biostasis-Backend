@@ -25,6 +25,7 @@ import { MessageService } from '../../message/service/mesage.service';
 import { MESSAGE_TYPE } from '../../message/constant/message-type.constant';
 import * as moment from "moment";
 import { date } from 'joi';
+import { modifyTimeAccordingTimezone } from '../../common/helper/modify-time-according-timezone';
 
 @Injectable()
 export class TriggerTimeSlotService {
@@ -36,7 +37,7 @@ export class TriggerTimeSlotService {
     @Inject(DICTIONARY.CONNECTION)
     private readonly connection: Connection,
     private readonly messageService: MessageService,
-  ) {}
+  ) { }
 
   async findByUserIdAndPeriodStart(
     userId: string,
@@ -118,19 +119,19 @@ export class TriggerTimeSlotService {
         this.logger.error(error);
         throw new BadRequestException(SAVE_TIME_SLOT_FAILED);
       });
-  
-      if (!data.from) {
-        const { user, ...slot } = await this.timeSlotRepository.findOneByParams({
-          where: { id: addedSlot.id, userId },
-          relations: ['days', 'user'],
-        });
 
-        Logger.log(`Pause set: `, slot.to);
+    if (!data.from) {
+      const { user, ...slot } = await this.timeSlotRepository.findOneByParams({
+        where: { id: addedSlot.id, userId },
+        relations: ['days', 'user'],
+      });
 
-        slot.active && (await this.informAboutPause(user.deviceId, slot.to as any));
-      }
-  
-      return addedSlot;
+      Logger.log(`Pause set: `, slot.to);
+
+      slot.active && (await this.informAboutPause(user.deviceId, slot.to as any, data.timezone));
+    }
+
+    return addedSlot;
   }
 
   async updateTimeSlot(
@@ -139,7 +140,7 @@ export class TriggerTimeSlotService {
     data: AddTimeSlotDTO
   ): Promise<TimeSlotEntity> {
     Logger.log(`Saving slot: `, data, userId);
-    
+
     const namesOfDays = timeSlot.days.map((item) =>
       getEnumKeyByValue(DAYS_OF_WEEKS, item.day)
     );
@@ -186,18 +187,16 @@ export class TriggerTimeSlotService {
     if (!data.from && slot.active) {
       Logger.log(`Pause set: `, slot.to);
 
-      await this.informAboutPause(user.deviceId, slot.to as any);
+      await this.informAboutPause(user.deviceId, slot.to as any, data.timezone);
     }
 
     return slot as any;
   }
 
-  private async informAboutPause(deviceId: string, to: string) {
-    const until = moment(to).format('DD.MM.YYYY HH:mm:ss');
-
+  private async informAboutPause(deviceId: string, to: string, timezone: string) {
     await this.messageService.sendMessageToDevice(deviceId, {
       title: 'Biostasis automated system is disabled',
-      message: `[BE] The system will be paused until ${until}`,
+      message: `[BE] The system will be paused until ${modifyTimeAccordingTimezone(to, timezone)}`,
       type: MESSAGE_TYPE.TIME_SLOT_NOTIFICATION,
     });
   }

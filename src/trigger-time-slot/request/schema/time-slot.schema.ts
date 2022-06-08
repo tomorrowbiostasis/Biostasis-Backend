@@ -6,6 +6,7 @@ export const timeSlotSchema = {
   active: Joi.boolean(),
   from: Joi.date().iso().allow(null),
   to: Joi.date().iso().required(),
+  timezone: Joi.string().required(),
   days: Joi.array()
     .items(
       Joi.string()
