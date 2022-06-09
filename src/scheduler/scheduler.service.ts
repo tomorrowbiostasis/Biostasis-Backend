@@ -118,7 +118,7 @@ export class SchedulerService extends NestSchedule {
       const activeSlot = await this.triggerTimeSlotService.getActiveTimeSlot(profile.userId);
 
       if (activeSlot) {
-        await this.positiveInfoRepository.postponeBySlotTime(profile.userId, activeSlot.to as any);
+        await this.positiveInfoRepository.postponeBySlotTime(profile.userId);
         continue;
       }
 
@@ -171,7 +171,7 @@ export class SchedulerService extends NestSchedule {
       const activeSlot = await this.triggerTimeSlotService.getActiveTimeSlot(information.user.id);
 
       if (activeSlot) {
-        await this.positiveInfoRepository.postponeBySlotTime(information.user.id, activeSlot.to as any);
+        await this.positiveInfoRepository.postponeBySlotTime(information.user.id);
         continue;
       }
 
