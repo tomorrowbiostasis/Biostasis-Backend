@@ -18,7 +18,7 @@ export class PositiveInfoService {
     @Inject(PositiveInfoRepository)
     private readonly positiveInfoRepository: PositiveInfoRepository,
     private readonly triggerTimeSlotService: TriggerTimeSlotService,
-  ) {}
+  ) { }
 
   findByUserId(id: string): Promise<{ id: number; now: string }> {
     return this.positiveInfoRepository.findByUserId(id);
@@ -32,11 +32,11 @@ export class PositiveInfoService {
 
     let updatedAt = positiveInfo?.now;
 
-    const activeSlot = await this.triggerTimeSlotService.getActiveTimeSlot(userId);
+    // const activeSlot = await this.triggerTimeSlotService.getActiveTimeSlot(userId);
 
-    if (activeSlot) {
-      updatedAt = activeSlot.to as any;
-    }
+    // if (activeSlot) {
+    //   updatedAt = activeSlot.to as any;
+    // }
 
     let data: Partial<PositiveInfoEntity> = {
       ...positiveInfo,

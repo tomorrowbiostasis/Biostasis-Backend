@@ -156,11 +156,11 @@ export class PositiveInfoRepository extends Repository<PositiveInfoEntity> {
       .execute();
   }
 
-  postponeBySlotTime(userId: string, slotEndTime: string): Promise<UpdateResult> {
+  postponeBySlotTime(userId: string): Promise<UpdateResult> {
     return this.createQueryBuilder()
       .update(PositiveInfoEntity)
       .set({
-        updatedAt: slotEndTime,
+        updatedAt: () => 'NOW()',
       })
       .where('user_id = :userId', { userId })
       .execute();
