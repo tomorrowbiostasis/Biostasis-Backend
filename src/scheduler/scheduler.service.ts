@@ -33,6 +33,8 @@ export class SchedulerService extends NestSchedule {
     const slots = await this.triggerTimeSlotService.getSlotsToInform();
 
     for (let slot of slots) {
+      await this.positiveInfoRepository.postponeBySlotTime(slot.u_id);
+
       if (Array.isArray(slot) && slot.length > 0) slot = slot[0];
 
       slot.now = new Date().toISOString().slice(0, 19) + '.000Z';
