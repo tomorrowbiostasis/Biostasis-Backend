@@ -6,8 +6,8 @@ export const CognitoIdentityServiceProvider = {
   inject: [ConfigService],
   useFactory: (config: ConfigService) => {
     AWS.config.update({
-      accessKeyId: config.get('authorization.accessKeyId'),
-      secretAccessKey: config.get('authorization.secretAccessKey'),
+      accessKeyId: config.get('authorization.accessKeyId') || undefined,
+      secretAccessKey: config.get('authorization.secretAccessKey') || undefined,
       region: config.get('authorization.region'),
     });
 

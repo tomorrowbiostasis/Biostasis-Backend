@@ -7,9 +7,9 @@ export const AWSS3Provider = {
   inject: [ConfigService],
   useFactory: (config: ConfigService) => {
     return new AWS.S3({
-      accessKeyId: config.get('s3.accessKeyId'),
+      accessKeyId: config.get('s3.accessKeyId') || undefined,
       signatureVersion: 'v4',
-      secretAccessKey: config.get('s3.secretAccessKey'),
+      secretAccessKey: config.get('s3.secretAccessKey') || undefined,
     });
   },
 };
