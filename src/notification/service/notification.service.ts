@@ -46,7 +46,7 @@ export class NotificationService {
     private readonly fileService: FileService,
     @Inject(PositiveInfoRepository)
     private readonly positiveInfoRepository: PositiveInfoRepository
-  ) {}
+  ) { }
 
   prepareSmsData(
     to: string,
@@ -252,7 +252,7 @@ export class NotificationService {
       .then((result: any) => {
         if (result.body.Messages[0].Status !== "success") {
           throw result.body;
-        } 
+        }
 
         return result;
       })
@@ -298,20 +298,18 @@ export class NotificationService {
 
     let smsData: MessageListInstanceCreateOptions;
 
-    if (contact.phone && user.email !== contact.email) {
+    if (contact.phone) {
       smsData = this.prepareSmsData(
         contact.phone,
-        `${
-          message === user.profile?.emergencyMessage
-            ? `${this.config.get(
-                "emergencyTrigger.customMessagePrefix"
-              )} ${message}`
-            : message
-        } ${
-          user.profile?.locationAccess === true && data.locationUrl
+        `${message === user.profile?.emergencyMessage
+          ? `${this.config.get(
+            "emergencyTrigger.customMessagePrefix"
+          )} ${message}`
+          : message
+          } ${user.profile?.locationAccess === true && data.locationUrl
             ? data.locationUrl
             : ""
-        }`.trim()
+          }`.trim()
       );
 
       if (!data.delayed) {
@@ -333,8 +331,8 @@ export class NotificationService {
       message:
         files.length > 0
           ? `${message} ${this.config.get(
-              "emergencyTrigger.ifThereAreAttachments"
-            )}`
+            "emergencyTrigger.ifThereAreAttachments"
+          )}`
           : message,
     };
 
@@ -344,8 +342,7 @@ export class NotificationService {
 
     const emailData = this.prepareEmailData(
       getMailTemplateId(
-        `EMERGENCY_MESSAGE_WITH${
-          user.profile?.locationAccess !== true ? "OUT" : ""
+        `EMERGENCY_MESSAGE_WITH${user.profile?.locationAccess !== true ? "OUT" : ""
         }_LOCATION`
       ),
       params,

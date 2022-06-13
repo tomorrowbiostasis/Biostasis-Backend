@@ -229,32 +229,5 @@ describe('NotificationService', () => {
       expect(service.sendEmail).toBeCalledTimes(1);
       expect(service.sendSms).toBeCalledTimes(1);
     });
-
-    it('sendEmergencyMessage() does not call sendSms() fo test message', async () => {
-      jest.clearAllMocks();
-
-      jest
-        .spyOn(service, 'sendEmail')
-        .mockReturnValue(new Promise((res) => res({} as Email.Response)));
-      jest
-        .spyOn(service, 'sendSms')
-        .mockReturnValue(new Promise((res) => res({} as MessageInstance)));
-
-      const spyOnPrepareSmsData = jest.spyOn(service, 'prepareSmsData');
-      const spyOnPrepareEmailData = jest.spyOn(service, 'prepareEmailData');
-      const data = {
-        locationUrl: faker.internet.url(),
-      };
-      const contact = {
-        name: `${faker.name.firstName()} ${faker.name.lastName()}`,
-        email: user.email,
-        phone: getRandomPhoneNumber(),
-      };
-
-      await service.sendEmergencyMessage(contact, user, data);
-
-      expect(spyOnPrepareEmailData).toBeCalledTimes(1);
-      expect(spyOnPrepareSmsData).toBeCalledTimes(0);
-    });
   });
 });
