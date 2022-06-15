@@ -81,7 +81,7 @@ export default () => ({
   firebase: {
     accountKey: firebaseAccountKey,
     notification: {
-      sound: 'alarm30.wav',
+      sound: 'alarm.mp3',
       title: 'Click to verify your health status now',
       message: {
         regular: '[BE] Automated check from the Biostasis Emergency App',
