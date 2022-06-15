@@ -56,7 +56,7 @@ export class SchedulerService extends NestSchedule {
 
         this.messageService.sendMessageToDevice(slot.u_device_id, {
           title: 'Biostasis automated system is disabled',
-          message: `[BE] The system is paused on ${day} from ${from} to ${to}`,
+          message: `The system is paused on ${day} from ${from} to ${to}`,
           type: MESSAGE_TYPE.TIME_SLOT_NOTIFICATION,
         });
 
@@ -72,7 +72,7 @@ export class SchedulerService extends NestSchedule {
 
       this.messageService.sendMessageToDevice(slot.u_device_id, {
         title: 'Biostasis automated system will resume',
-        message: '[BE] The system will resume according to your normal settings',
+        message: 'The system will resume according to your normal settings',
         type: MESSAGE_TYPE.TIME_SLOT_NOTIFICATION,
       });
     }
@@ -87,16 +87,16 @@ export class SchedulerService extends NestSchedule {
   }
 
   async sendRegularPushNotification() {
-    if (!this.shouldStartEscalation()) {
-      return;
-    }
-
     const profiles =
       await this.profileRepository.findWhereRegularNotificationIsNeeded();
 
     const operations = [], userIds = [];
 
     for (const profile of profiles) {
+      if (!this.shouldStartEscalation(profile?.timezone)) {
+        continue;
+      }
+
       const activeSlot = await this.triggerTimeSlotService.getActiveTimeSlot(profile.userId);
 
       if (activeSlot) {
@@ -140,16 +140,16 @@ export class SchedulerService extends NestSchedule {
   }
 
   async sendPushNotificationDueToLackOfPositiveInfo() {
-    if (!this.shouldStartEscalation()) {
-      return;
-    }
-
     const expiredInformation =
       await this.positiveInfoRepository.findExpiredInformation();
 
     const operations = [], userIds = [];
 
     for (const information of expiredInformation) {
+      if (!this.shouldStartEscalation(information.user?.profile?.timezone)) {
+        continue;
+      }
+
       const activeSlot = await this.triggerTimeSlotService.getActiveTimeSlot(information.user.id);
 
       if (activeSlot) {
@@ -293,8 +293,10 @@ export class SchedulerService extends NestSchedule {
     }
   }
 
-  private shouldStartEscalation(): boolean {
-    const hour = parseInt(moment().utc().format("H"));
+  private shouldStartEscalation(timezone?: string): boolean {
+    const currentDateTime = modifyTimeAccordingTimezone(new Date().toISOString(), timezone);
+
+    const hour = parseInt(currentDateTime.slice(11, 13));
 
     return hour >= parseInt(this.config.get("night.end")) &&
       hour < parseInt(this.config.get("night.start"));

@@ -196,7 +196,7 @@ export class TriggerTimeSlotService {
   private async informAboutPause(deviceId: string, to: string, timezone: string) {
     await this.messageService.sendMessageToDevice(deviceId, {
       title: 'Biostasis automated system is disabled',
-      message: `[BE] The system will be paused until ${modifyTimeAccordingTimezone(to, timezone)}`,
+      message: `The system will be paused until ${modifyTimeAccordingTimezone(to, timezone)}`,
       type: MESSAGE_TYPE.TIME_SLOT_NOTIFICATION,
     });
   }

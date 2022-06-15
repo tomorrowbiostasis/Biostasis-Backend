@@ -2,7 +2,7 @@ import * as moment from "moment";
 
 export const modifyTimeAccordingTimezone = (dateTime: string, timezone: string): string => {
     if (!timezone || timezone.length !== 6 || !["+", "-"].includes(timezone[0]) || timezone[3] !== ':') {
-        return dateTime;
+        return moment(dateTime).format('DD.MM.YYYY HH:mm:ss');
     }
 
     const operation = timezone[0];
