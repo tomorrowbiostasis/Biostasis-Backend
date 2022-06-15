@@ -10,16 +10,10 @@ export class BasicConsumer {
   }
 
   @OnQueueActive()
-  onActive(job: Job): void {
-    this.logger.debug(
-      `Processing job ${job.id} of type ${job.name}`
-    );
-  }
+  onActive(job: Job): void { }
 
   @OnQueueCompleted()
-  onComplete(job: Job): void {
-    this.logger.debug(`Completed job ${job.id} of type ${job.name}`);
-  }
+  onComplete(job: Job): void { }
 
   @OnQueueFailed()
   onError(job: Job<any>, error: any): void {
