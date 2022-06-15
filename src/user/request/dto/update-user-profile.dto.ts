@@ -16,6 +16,9 @@ export class UpdateUserProfileDTO {
   @ApiProperty({ type: String, required: false })
   location?: string;
 
+  @ApiProperty({ type: String, required: false })
+  timezone?: string;
+
   @ApiProperty({
     type: String,
     maxLength: 12,

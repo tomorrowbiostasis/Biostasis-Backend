@@ -9,6 +9,7 @@ export const extendedProfileSchema = {
   surname: profileSchema.surname.optional(),
   prefix: profileSchema.prefix,
   location: Joi.string().max(200),
+  timezone: Joi.string().optional().allow('').max(200),
   phone: profileSchema.phone,
   email: Joi.string().email(),
   address: Joi.string().max(200),
