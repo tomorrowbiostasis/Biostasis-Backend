@@ -19,6 +19,7 @@ export class ProfileRepository extends Repository<ProfileEntity> {
       userId: string;
       now: Date;
       deviceId: string;
+      timezone?: string;
     }[]
   > {
     return this.createQueryBuilder('profile')
@@ -27,6 +28,7 @@ export class ProfileRepository extends Repository<ProfileEntity> {
       .leftJoin('user.positiveInfo', 'positiveInfo')
       .addSelect('NOW()', 'now')
       .addSelect('user.device_id', 'deviceId')
+      .addSelect('profile.timezone', 'timezone')
       .where('frequency_of_regular_notification IS NOT NULL')
       .andWhere('positiveInfo.push_notification_time IS NULL')
       .andWhere('positiveInfo.sms_time IS NULL')

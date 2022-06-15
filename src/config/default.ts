@@ -8,7 +8,7 @@ let firebaseAccountKey = {};
 
 try {
   firebaseAccountKey = JSON.parse(env.FIREBASE_ACCOUNT_KEY);
-} catch {}
+} catch { }
 
 export default () => ({
   application: {
@@ -84,9 +84,9 @@ export default () => ({
       sound: 'alarm.mp3',
       title: 'Click to verify your health status now',
       message: {
-        regular: '[BE] Automated check from the Biostasis Emergency App',
-        pulseBased: '[BE] No pulse data for {minutes}+ minutes.',
-        alert: '[BE] Are you ok? Open to cancel emergency trigger!',
+        regular: 'Automated check from the Biostasis Emergency App',
+        pulseBased: 'No pulse data for {minutes}+ minutes.',
+        alert: 'Are you ok? Open to cancel emergency trigger!',
       },
     },
     sms: 'Verify your health status now, click here {domain}/deeplink/are-you-ok to app page where health status can be verified. If you ignore this message, your emergency contacts will be notified in a few minutes.',
