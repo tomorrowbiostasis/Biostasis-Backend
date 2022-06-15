@@ -45,16 +45,6 @@ export class SchedulerService extends NestSchedule {
       const leftThresholdTime = moment(slot.leftThreshold).format('HH:mm')
       const rightThresholdTime = moment(slot.rightThreshold).format('HH:mm')
 
-      Logger.log(`Processing slot ${slot.ts_from ? 'specific time' : 'pause'}: `);
-      Logger.log(JSON.stringify(slot));
-      Logger.log(JSON.stringify({
-        nowTime,
-        fromTime,
-        toTime,
-        leftThresholdTime,
-        rightThresholdTime
-      }));
-
       const shouldStartSpecific = !!slot.ts_from
         && moment(leftThresholdTime, 'HH:mm').isSameOrAfter(moment(nowTime, 'HH:mm'))
         && moment(nowTime, 'HH:mm').isAfter(moment(fromTime, 'HH:mm'));
@@ -70,8 +60,6 @@ export class SchedulerService extends NestSchedule {
           type: MESSAGE_TYPE.TIME_SLOT_NOTIFICATION,
         });
 
-        Logger.log(`Specific time slot started id: ${slot.ts_id}`, JSON.stringify(slot));
-
         continue;
       }
 
@@ -79,16 +67,8 @@ export class SchedulerService extends NestSchedule {
       const shouldProceedPause = !slot.ts_from && moment(slot.now).isSameOrAfter(slot.rightThreshold) && moment(slot.ts_to).isAfter(slot.now);
 
       if (!shouldProceedSpecific && !shouldProceedPause) {
-        Logger.log(`Time slot has been ignored`);
-        Logger.log(JSON.stringify({
-          shouldProceedSpecific,
-          shouldProceedPause
-        }));
-
         continue;
       }
-
-      Logger.log(`Time slot is ending id: ${slot.ts_id}`, JSON.stringify(slot));
 
       this.messageService.sendMessageToDevice(slot.u_device_id, {
         title: 'Biostasis automated system will resume',
