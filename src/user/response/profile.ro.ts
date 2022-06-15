@@ -131,6 +131,10 @@ export class ProfileRO {
   location: string;
 
   @Expose()
+  @ApiProperty({ type: String })
+  timezone: string;
+
+  @Expose()
   @ApiProperty({ type: Boolean })
   pulseBasedTriggerIOSHealthPermissions: boolean;
 

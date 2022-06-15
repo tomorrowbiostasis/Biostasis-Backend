@@ -116,6 +116,9 @@ export class ProfileEntity {
   @Column({ type: "varchar", length: 200 })
   location: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  timezone?: string;
+
   @CreateDateColumn({ name: "created_at", type: "datetime" })
   createdAt: Date;
 
