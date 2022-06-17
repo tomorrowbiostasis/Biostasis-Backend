@@ -4,6 +4,8 @@ import database from './typeorm';
 
 const env = process.env;
 
+console.log(`Redis without tls: ${env.REDIS_DISABLE_TLS === '1'}`)
+
 let firebaseAccountKey = {};
 
 try {
