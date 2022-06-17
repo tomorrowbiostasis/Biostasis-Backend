@@ -4,7 +4,7 @@ import database from './typeorm';
 
 const env = process.env;
 
-console.log(`Redis without tls: ${env.REDIS_DISABLE_TLS == 1}, ${env.REDIS_DISABLE_TLS}`)
+console.log(`Redis without tls: ${parseInt(env.REDIS_DISABLE_TLS) == 1}, ${env.REDIS_DISABLE_TLS}`)
 
 let firebaseAccountKey = {};
 
@@ -44,7 +44,7 @@ export default () => ({
     user: env.REDIS_USER || 'redis',
     port: env.REDIS_PORT || '',
     password: env.REDIS_PASSWORD || '',
-    disableTls: env.REDIS_DISABLE_TLS == 1,
+    disableTls: parseInt(env.REDIS_DISABLE_TLS) == 1,
     db: 0,
   },
   queue: {
