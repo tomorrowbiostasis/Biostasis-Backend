@@ -51,8 +51,8 @@ export class SchedulerService extends NestSchedule {
 
       if (shouldStartSpecific) {
         const day = numberToDaysOfWeek.get(parseInt(slot.dayOfWeek));
-        const from = moment(modifyTimeAccordingTimezone(slot.ts_from, slot.ts_timezone)).format('HH:mm');
-        const to = moment(modifyTimeAccordingTimezone(slot.ts_to, slot.ts_timezone)).format('HH:mm');
+        const from = modifyTimeAccordingTimezone(slot.ts_from, slot.ts_timezone).slice(11, 16);
+        const to = modifyTimeAccordingTimezone(slot.ts_to, slot.ts_timezone).slice(11, 16);
 
         this.messageService.sendMessageToDevice(slot.u_device_id, {
           title: 'Biostasis automated system is disabled',
