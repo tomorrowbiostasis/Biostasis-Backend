@@ -12,9 +12,9 @@ export const QueueMessageProvider: FactoryProvider<any> = {
         password: config.get('redis.password'),
         port: config.get('redis.port'),
         host: config.get('redis.host'),
-        tls: {
-            servername: config.get('redis.host'),
-            rejectUnauthorized: false,
+        tls: config.get('redis.disableTls') ? undefined : {
+          servername: config.get('redis.host'),
+          rejectUnauthorized: false,
         },
       },
       defaultJobOptions: {
