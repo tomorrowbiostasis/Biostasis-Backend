@@ -24,6 +24,7 @@ const config = configuration();
       entities: [`${__dirname}/**/*.entity{.ts,.js}`],
       migrationsRun: process.env.NODE_ENV === 'test',
       migrations: [`${__dirname}/migrations/*{.ts,.js}`],
+      subscribers: [`${__dirname}/**/*.entity-subscriber{.ts,.js}`],
       timezone: 'Z',
     } as TypeOrmModuleOptions),
     ThrottlerModule.forRoot({
@@ -52,4 +53,4 @@ const config = configuration();
   ],
   providers: [RedisProvider],
 })
-export class AppModule {}
+export class AppModule { }

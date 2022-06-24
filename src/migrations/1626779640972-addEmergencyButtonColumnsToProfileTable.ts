@@ -1,8 +1,7 @@
 import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
 
 export class AddEmergencyButtonColumnsToProfileTable1626779640972
-  implements MigrationInterface
-{
+  implements MigrationInterface {
   private tableName = 'profile';
   private newColumns = [
     new TableColumn({
@@ -31,9 +30,8 @@ export class AddEmergencyButtonColumnsToProfileTable1626779640972
     }),
     new TableColumn({
       name: 'emergency_message',
-      type: 'varchar',
+      type: 'LONGTEXT',
       isNullable: true,
-      length: '1000',
     }),
   ];
 

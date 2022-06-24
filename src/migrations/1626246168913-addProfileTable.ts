@@ -30,37 +30,32 @@ export class AddProfileTable1626246168913 implements MigrationInterface {
           },
           {
             name: 'name',
-            type: 'varchar',
+            type: 'LONGTEXT',
             isNullable: true,
-            length: '100',
           },
           {
             name: 'surname',
-            type: 'varchar',
+            type: 'LONGTEXT',
             isNullable: true,
-            length: '100',
           },
           {
             name: 'prefix',
-            type: 'varchar',
-            length: '3',
+            type: 'LONGTEXT',
             isNullable: true,
           },
           {
             name: 'phone',
-            type: 'varchar',
-            length: '12',
+            type: 'LONGTEXT',
             isNullable: true,
           },
           {
             name: 'address',
-            type: 'varchar',
-            length: '200',
+            type: 'LONGTEXT',
             isNullable: true,
           },
           {
             name: 'date_of_birth',
-            type: 'date',
+            type: 'LONGTEXT',
             isNullable: true,
           },
           {

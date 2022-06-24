@@ -26,8 +26,7 @@ export class UserEntity {
   @Column({ type: 'enum', enum: [ROLES.USER] })
   role: ROLES;
 
-  @Column({ name: 'email', type: 'varchar', length: 320 })
-  @Index({ unique: true })
+  @Column({ name: 'email', type: 'longtext' })
   email: string;
 
   @Column({ name: 'device_id', type: 'varchar', length: 200 })

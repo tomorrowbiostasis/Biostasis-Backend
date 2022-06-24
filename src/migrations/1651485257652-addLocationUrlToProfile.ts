@@ -1,14 +1,12 @@
 import { MigrationInterface, QueryRunner, TableColumn } from "typeorm";
 
 export class AddLocationUrlToProfile1651485257652
-  implements MigrationInterface
-{
+  implements MigrationInterface {
   private tableName = "profile";
 
   private column = new TableColumn({
     name: "location",
-    type: "varchar",
-    length: "200",
+    type: "LONGTEXT",
     isNullable: true,
     default: null,
   });

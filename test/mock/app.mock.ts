@@ -34,6 +34,8 @@ jest.mock('../../src/config/default', () => ({
       port: 5000,
       global_prefix: 'v1',
       timeoutForTests: 100000,
+      encryptionKey: 'nrz4ms2rfppvj3jxlo285o0pbw6w2n63',
+      encryptionIv: '24695113615289383436929733217552'
     },
     authorization: {
       accessKeyId: '',

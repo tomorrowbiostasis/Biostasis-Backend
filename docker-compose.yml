@@ -60,6 +60,8 @@ services:
       - CDN_PRIV_KEY_ID=${CDN_PRIV_KEY_ID}
       - CDN_PRIV_KEY=${CDN_PRIV_KEY}
       - CDN_PRIV_DNS=${CDN_PRIV_DNS}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - ENCRYPTION_IV=${ENCRYPTION_IV}
 
   biostasis_database:
     env_file:
