@@ -41,7 +41,7 @@ export class ProfileEntity {
   @Column({ name: "primary_phisican_address", type: "varchar", length: 200 })
   primaryPhysicianAddress: string;
 
-  @Column({ name: "serious_medical_issues", type: "boolean" })
+  @Column({ name: "serious_medical_issues", type: "longtext" })
   seriousMedicalIssues: boolean;
 
   @Column({ name: "most_recent_diagnosis", type: "varchar", length: 300 })

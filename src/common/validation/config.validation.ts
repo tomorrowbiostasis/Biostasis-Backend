@@ -34,4 +34,6 @@ export const configSchema: Joi.ObjectSchema = Joi.object({
   S3_BUCKET: Joi.string(),
   S3_URL: Joi.string(),
   FIREBASE_ACCOUNT_KEY: Joi.string(),
+  ENCRYPTION_IV: Joi.string().required(),
+  ENCRYPTION_KEY: Joi.string().required(),
 }).options({ allowUnknown: true, presence: 'required' });

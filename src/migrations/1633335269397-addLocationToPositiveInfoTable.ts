@@ -1,13 +1,11 @@
 import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
 
 export class AddLocationToPositiveInfoTable1633335269397
-  implements MigrationInterface
-{
+  implements MigrationInterface {
   private tableName = 'positive_info';
   private column = new TableColumn({
     name: 'location',
-    type: 'varchar',
-    length: '200',
+    type: 'LONGTEXT',
     isNullable: true,
   });
 

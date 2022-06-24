@@ -1,37 +1,32 @@
 import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
 
 export class AddMedicalInfoColumnsToProfileTable1626332132301
-  implements MigrationInterface
-{
+  implements MigrationInterface {
   private tableName = 'profile';
   private newColumns = [
     new TableColumn({
       name: 'primary_phisican',
-      type: 'varchar',
+      type: 'LONGTEXT',
       isNullable: true,
-      length: '200',
     }),
     new TableColumn({
       name: 'primary_phisican_address',
-      type: 'varchar',
+      type: 'LONGTEXT',
       isNullable: true,
-      length: '200',
     }),
     new TableColumn({
       name: 'serious_medical_issues',
-      type: 'tinyint',
-      length: '1',
+      type: 'LONGTEXT',
       isNullable: true,
     }),
     new TableColumn({
       name: 'most_recent_diagnosis',
-      type: 'varchar',
-      length: '300',
+      type: 'LONGTEXT',
       isNullable: true,
     }),
     new TableColumn({
       name: 'last_hospital_visit',
-      type: 'date',
+      type: 'LONGTEXT',
       isNullable: true,
     }),
   ];

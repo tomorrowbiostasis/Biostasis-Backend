@@ -35,32 +35,27 @@ export class AddContactTable1625819654567 implements MigrationInterface {
           },
           {
             name: 'email',
-            type: 'varchar',
-            length: '320',
+            type: 'LONGTEXT',
             isNullable: true,
           },
           {
             name: 'name',
-            type: 'varchar',
-            length: '100',
+            type: 'LONGTEXT',
             isNullable: false,
           },
           {
             name: 'surname',
-            type: 'varchar',
-            length: '100',
+            type: 'LONGTEXT',
             isNullable: false,
           },
           {
             name: 'prefix',
-            type: 'varchar',
-            length: '3',
+            type: 'LONGTEXT',
             isNullable: true,
           },
           {
             name: 'phone',
-            type: 'varchar',
-            length: '12',
+            type: 'LONGTEXT',
             isNullable: true,
           },
           {

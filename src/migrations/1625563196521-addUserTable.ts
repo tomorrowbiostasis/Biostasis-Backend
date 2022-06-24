@@ -16,10 +16,8 @@ export class AddUserTable1625563196521 implements MigrationInterface {
           },
           {
             name: 'email',
-            type: 'varchar',
-            length: '320',
+            type: 'LONGTEXT',
             isNullable: false,
-            isUnique: true,
           },
           {
             name: 'created_at',

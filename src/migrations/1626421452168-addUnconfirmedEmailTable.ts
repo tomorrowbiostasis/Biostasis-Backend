@@ -7,8 +7,7 @@ import {
 } from 'typeorm';
 
 export class AddUnconfirmedEmailTable1626421452168
-  implements MigrationInterface
-{
+  implements MigrationInterface {
   private tableName = 'unconfirmed_email';
   private foreignKeyUserId = 'FK_unconfirmedEmailToUser';
 
@@ -32,9 +31,8 @@ export class AddUnconfirmedEmailTable1626421452168
           },
           {
             name: 'email',
-            type: 'varchar',
+            type: 'LONGTEXT',
             isNullable: false,
-            length: '320',
           },
           {
             name: 'code',

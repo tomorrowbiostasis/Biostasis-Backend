@@ -4,8 +4,6 @@ import database from './typeorm';
 
 const env = process.env;
 
-console.log(`Redis without tls: ${parseInt(env.REDIS_DISABLE_TLS) == 1}, ${env.REDIS_DISABLE_TLS}`)
-
 let firebaseAccountKey = {};
 
 try {
@@ -17,6 +15,8 @@ export default () => ({
     call_timeout: 30,
     port: env.APP_PORT || 5000,
     global_prefix: env.GLOBAL_PREFIX || 'v1',
+    encryptionKey: env.ENCRYPTION_KEY,
+    encryptionIv: env.ENCRYPTION_IV
   },
   authorization: {
     accessKeyId: process.env.COGNITO_ACCESS_KEY_ID,

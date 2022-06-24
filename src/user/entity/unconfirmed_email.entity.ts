@@ -16,7 +16,7 @@ export class UnconfirmedEmailEntity {
   @Column({ name: 'user_id', type: 'varchar', length: 36 })
   userId: string;
 
-  @Column({ type: 'varchar', length: 320 })
+  @Column({ type: 'longtext' })
   email: string;
 
   @Column({ type: 'varchar', length: 36 })
