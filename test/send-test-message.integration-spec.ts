@@ -81,20 +81,6 @@ describe("/user/message/test (integration) ", () => {
         .expect(async ({ status }) => {
           expect(status).toBe(201);
         });
-
-      jest
-        .spyOn(s3Mock, "getObject")
-        .mockImplementationOnce(
-          jest.fn((params, cb) => cb(new Error("error"), {}))
-        );
-
-      await api
-        .post("/user/message/test")
-        .set("Authorization", dataset.users[0].id)
-        .then(({ status, body }) => {
-          expect(status).toBe(400);
-          expect(body.error.code).toBe(GET_FILE_CONTENT_FAILED);
-        });
     });
 
     it("Should return status 201 and valid body", async () => {

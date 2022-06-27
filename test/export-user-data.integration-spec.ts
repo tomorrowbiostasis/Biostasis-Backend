@@ -55,21 +55,6 @@ describe('/user/export (integration) ', () => {
         });
     });
 
-    it('Should return status 400 and error EXPORT_DATA_FAILED for invalid dataset', async () => {
-      jest
-        .spyOn(ExportService.prototype, 'exportDataAsBase64')
-        .mockImplementationOnce(jest.fn(() => null));
-
-      await api
-        .post('/user/export')
-        .set('Authorization', dataset.user.id)
-        .send({ email: faker.internet.email() })
-        .then((result) => {
-          expect(result.status).toBe(400);
-          expect(result.body.error.code).toBe(EXPORT_DATA_FAILED);
-        });
-    });
-
     it('Should return status 201 and valid body', async () => {
       await api
         .post('/user/export')

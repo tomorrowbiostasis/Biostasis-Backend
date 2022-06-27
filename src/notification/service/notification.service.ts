@@ -30,6 +30,7 @@ import { ExportService } from "../../user/service/export.service";
 import { FileRepository } from "../../file/repository/file.repository";
 import { FileService } from "../../file/service/file.service";
 import { PositiveInfoRepository } from "../../user/repository/positive-info.repository";
+import { UserService } from "../../user/service/user.service";
 
 @Injectable()
 export class NotificationService {
@@ -45,7 +46,8 @@ export class NotificationService {
     private readonly fileRepository: FileRepository,
     private readonly fileService: FileService,
     @Inject(PositiveInfoRepository)
-    private readonly positiveInfoRepository: PositiveInfoRepository
+    private readonly positiveInfoRepository: PositiveInfoRepository,
+    private readonly userService: UserService
   ) { }
 
   prepareSmsData(
@@ -226,25 +228,29 @@ export class NotificationService {
     emergencyMessage?: boolean;
     userId?: string;
   }): Promise<Email.Response> {
-    let attachments: Email.Attachment[] = [];
+    const user = await this.userService.findById(params.userId);
 
-    if (params?.exportedData) {
-      const attachment = await this.prepareAttachmentWithExportedData(
-        params?.userId,
-        params?.isFromQueue
-      );
+    if (!params.userId || !user || user?.profile?.uploadedDocumentsAccess) {
+      let attachments: Email.Attachment[] = [];
 
-      attachments.push(attachment);
+      if (params?.exportedData) {
+        const attachment = await this.prepareAttachmentWithExportedData(
+          params?.userId,
+          params?.isFromQueue
+        );
+
+        attachments.push(attachment);
+      }
+
+      if (params?.emergencyMessage) {
+        attachments = await this.prepareEmergencyMessageAttachments(
+          params.userId,
+          params.isFromQueue
+        );
+      }
+
+      params.data.Messages[0].Attachments = attachments;
     }
-
-    if (params?.emergencyMessage) {
-      attachments = await this.prepareEmergencyMessageAttachments(
-        params.userId,
-        params.isFromQueue
-      );
-    }
-
-    params.data.Messages[0].Attachments = attachments;
 
     return this.mailJet
       .post("send", { version: "v3.1" })
