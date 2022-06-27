@@ -20,6 +20,7 @@ import { ConfigService } from '@nestjs/config';
 import { DICTIONARY } from '../../common/constant/dictionary.constant';
 import { PositiveInfoRepository } from '../repository/positive-info.repository';
 import { ProfileRepository } from '../repository/profile.repository';
+import { Encrypter } from '../../common/helper/encrypter';
 
 @Injectable()
 export class UserService {
@@ -32,7 +33,7 @@ export class UserService {
     @Inject(UserRepository) private readonly userRepository: UserRepository,
     private readonly positiveInfoRepository: PositiveInfoRepository,
     private readonly profileRepository: ProfileRepository,
-  ) {}
+  ) { }
 
   clearPositiveInfo(userId: string) {
     return Promise.all([
@@ -42,7 +43,7 @@ export class UserService {
   }
 
   findByEmail(email: string): Promise<UserEntity> {
-    return this.userRepository.findByEmail(email);
+    return this.userRepository.findByEmail(Encrypter.encrypt(email));
   }
 
   findById(id: string): Promise<UserEntity> {
