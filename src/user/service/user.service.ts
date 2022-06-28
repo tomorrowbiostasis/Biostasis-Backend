@@ -50,6 +50,10 @@ export class UserService {
     return this.userRepository.findById(id);
   }
 
+  findByDeviceId(deviceId: string): Promise<UserEntity> {
+    return this.userRepository.findByDeviceId(deviceId);
+  }
+
   async findByIdOrFail(id: string): Promise<UserEntity> {
     return this.findById(id).then((data) => {
       if (!data) {
