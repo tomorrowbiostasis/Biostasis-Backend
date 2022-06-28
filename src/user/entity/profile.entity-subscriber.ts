@@ -35,7 +35,9 @@ export class ProfileEntitySubscriber implements EntitySubscriberInterface<Profil
     afterLoad(entity: ProfileEntity) {
         decryptEntity(entity, this.encryptionColumns);
 
-        entity.seriousMedicalIssues = (entity.seriousMedicalIssues as any) == 1;
+        const seriousMedicalIssues = (entity.seriousMedicalIssues as any);
+
+        entity.seriousMedicalIssues = seriousMedicalIssues == 1 || seriousMedicalIssues == 'true';
         entity.prefix = parseInt(`${entity.prefix}`) || null;
         entity.lastHospitalVisit = entity.lastHospitalVisit ? new Date(entity.lastHospitalVisit) : null;
         entity.dateOfBirth = entity.dateOfBirth ? new Date(entity.dateOfBirth) : null;
