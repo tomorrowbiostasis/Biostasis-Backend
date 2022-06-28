@@ -22,14 +22,6 @@ export class UserRepository extends Repository<UserEntity> {
     });
   }
 
-  findByDeviceId(deviceId: string): Promise<UserEntity> {
-    return new Promise((resolve) => {
-      this.findOne({ where: { deviceId }, relations: ['profile'] })
-        .then((data) => resolve(data))
-        .catch((error) => this.logger.error(error));
-    });
-  }
-
   findByEmail(email: string): Promise<UserEntity> {
     return new Promise((resolve) => {
       this.findOne({ where: { email } })
