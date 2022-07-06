@@ -93,9 +93,7 @@ describe('/file (integration) ', () => {
       expect(Object.keys(otherFiles[0])).toEqual([
         'id',
         'name',
-        'size',
         'mimeType',
-        'url',
         'createdAt',
       ]);
     });

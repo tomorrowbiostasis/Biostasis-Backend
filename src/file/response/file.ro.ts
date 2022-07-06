@@ -11,7 +11,7 @@ export class FileRO {
   @ApiProperty({ type: String })
   name: string;
 
-  @Expose()
+  @Exclude()
   @ApiProperty({ type: Number })
   size: number;
 
@@ -19,7 +19,7 @@ export class FileRO {
   @ApiProperty({ type: String })
   mimeType: string;
 
-  @Expose()
+  @Exclude()
   @ApiProperty({ type: String })
   url: string;
 
