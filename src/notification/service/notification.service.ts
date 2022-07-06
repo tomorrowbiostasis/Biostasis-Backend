@@ -249,6 +249,11 @@ export class NotificationService {
         );
       }
 
+      attachments = attachments.map((a, i) => ({
+        ...a,
+        Filename: `${i + 1}-${a.Filename}`,
+      }));
+
       params.data.Messages[0].Attachments = attachments;
     }
 
