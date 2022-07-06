@@ -1,0 +1,1144 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>biostasis documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">biostasis documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Classes</li>
+  <li >PositiveInfoRepository</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/user/repository/positive-info.repository.ts</code>
+        </p>
+
+
+
+            <p class="comment">
+                <h3>Extends</h3>
+            </p>
+            <p class="comment">
+                    <code>Repository</code>
+            </p>
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#logger" >logger</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#clearAlertTime" >clearAlertTime</a>
+                            </li>
+                            <li>
+                                <a href="#clearEverythingForUsers" >clearEverythingForUsers</a>
+                            </li>
+                            <li>
+                                <a href="#findByUserId" >findByUserId</a>
+                            </li>
+                            <li>
+                                <a href="#findExpiredInformation" >findExpiredInformation</a>
+                            </li>
+                            <li>
+                                <a href="#findPushNotificationWithoutReaction" >findPushNotificationWithoutReaction</a>
+                            </li>
+                            <li>
+                                <a href="#findSmsWithoutReaction" >findSmsWithoutReaction</a>
+                            </li>
+                            <li>
+                                <a href="#postponeBySlotTime" >postponeBySlotTime</a>
+                            </li>
+                            <li>
+                                <a href="#setPushNotificationTime" >setPushNotificationTime</a>
+                            </li>
+                            <li>
+                                <a href="#setSmsTime" >setSmsTime</a>
+                            </li>
+                            <li>
+                                <a href="#setTriggerTime" >setTriggerTime</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+            <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logger"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Logger(PositiveInfoRepository.name)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="7" class="link-to-prism">src/user/repository/positive-info.repository.ts:7</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="clearAlertTime"></a>
+                    <span class="name">
+                        <span ><b>clearAlertTime</b></span>
+                        <a href="#clearAlertTime"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>clearAlertTime(userIds: string[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="126"
+                            class="link-to-prism">src/user/repository/positive-info.repository.ts:126</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userIds</td>
+                                    <td>
+                                            <code>string[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;UpdateResult&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="clearEverythingForUsers"></a>
+                    <span class="name">
+                        <span ><b>clearEverythingForUsers</b></span>
+                        <a href="#clearEverythingForUsers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>clearEverythingForUsers(userIds: string[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="136"
+                            class="link-to-prism">src/user/repository/positive-info.repository.ts:136</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userIds</td>
+                                    <td>
+                                            <code>string[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;UpdateResult&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findByUserId"></a>
+                    <span class="name">
+                        <span ><b>findByUserId</b></span>
+                        <a href="#findByUserId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>findByUserId(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="85"
+                            class="link-to-prism">src/user/repository/positive-info.repository.ts:85</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;literal type&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findExpiredInformation"></a>
+                    <span class="name">
+                        <span ><b>findExpiredInformation</b></span>
+                        <a href="#findExpiredInformation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>findExpiredInformation()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="9"
+                            class="link-to-prism">src/user/repository/positive-info.repository.ts:9</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../entitys/PositiveInfoEntity.html" target="_self" >Promise&lt;PositiveInfoEntity[]&gt;</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findPushNotificationWithoutReaction"></a>
+                    <span class="name">
+                        <span ><b>findPushNotificationWithoutReaction</b></span>
+                        <a href="#findPushNotificationWithoutReaction"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>findPushNotificationWithoutReaction(regularPushNotification: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="34"
+                            class="link-to-prism">src/user/repository/positive-info.repository.ts:34</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>regularPushNotification</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../entitys/PositiveInfoEntity.html" target="_self" >Promise&lt;PositiveInfoEntity[]&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findSmsWithoutReaction"></a>
+                    <span class="name">
+                        <span ><b>findSmsWithoutReaction</b></span>
+                        <a href="#findSmsWithoutReaction"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>findSmsWithoutReaction(regularPushNotification: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>, column: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="59"
+                            class="link-to-prism">src/user/repository/positive-info.repository.ts:59</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>regularPushNotification</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>column</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../entitys/PositiveInfoEntity.html" target="_self" >Promise&lt;PositiveInfoEntity[]&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="postponeBySlotTime"></a>
+                    <span class="name">
+                        <span ><b>postponeBySlotTime</b></span>
+                        <a href="#postponeBySlotTime"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>postponeBySlotTime(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="159"
+                            class="link-to-prism">src/user/repository/positive-info.repository.ts:159</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;UpdateResult&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setPushNotificationTime"></a>
+                    <span class="name">
+                        <span ><b>setPushNotificationTime</b></span>
+                        <a href="#setPushNotificationTime"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>setPushNotificationTime(userIds: string[], period: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="95"
+                            class="link-to-prism">src/user/repository/positive-info.repository.ts:95</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userIds</td>
+                                    <td>
+                                            <code>string[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>period</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;UpdateResult&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setSmsTime"></a>
+                    <span class="name">
+                        <span ><b>setSmsTime</b></span>
+                        <a href="#setSmsTime"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>setSmsTime(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, smsTime: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, alertTime: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="109"
+                            class="link-to-prism">src/user/repository/positive-info.repository.ts:109</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>smsTime</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>alertTime</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;UpdateResult&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setTriggerTime"></a>
+                    <span class="name">
+                        <span ><b>setTriggerTime</b></span>
+                        <a href="#setTriggerTime"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>setTriggerTime(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="149"
+                            class="link-to-prism">src/user/repository/positive-info.repository.ts:149</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;UpdateResult&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { EntityRepository, Repository, UpdateResult, Brackets } from &#x27;typeorm&#x27;;
+import { Logger } from &#x27;@nestjs/common&#x27;;
+import { PositiveInfoEntity } from &#x27;../entity/positive-info.entity&#x27;;
+
+@EntityRepository(PositiveInfoEntity)
+export class PositiveInfoRepository extends Repository&lt;PositiveInfoEntity&gt; {
+  protected readonly logger &#x3D; new Logger(PositiveInfoRepository.name);
+
+  findExpiredInformation(): Promise&lt;PositiveInfoEntity[]&gt; {
+    return new Promise((resolve) &#x3D;&gt; {
+      this.createQueryBuilder(&#x27;positiveInfo&#x27;)
+        .leftJoinAndSelect(&#x27;positiveInfo.user&#x27;, &#x27;user&#x27;)
+        .leftJoinAndSelect(&#x27;user.profile&#x27;, &#x27;profile&#x27;)
+        .where(
+          &#x27;date_add(positiveInfo.updated_at , interval minutes_to_next minute) &lt; NOW()&#x27;
+        )
+        .andWhere(&#x27;user.device_id IS NOT NULL&#x27;)
+        .andWhere(&#x27;push_notification_time IS NULL&#x27;)
+        .andWhere(&#x27;profile.automated_emergency &#x3D; 1&#x27;)
+        .andWhere(
+          new Brackets((qb) &#x3D;&gt; {
+            qb.where(&#x27;regular_push_notification IS NULL&#x27;);
+            qb.orWhere(&#x60;regular_push_notification &#x3D; 0&#x60;);
+          })
+        )
+        .andWhere(&#x27;positive_info_period IS NOT NULL&#x27;)
+        .andWhere(&#x27;sms_time IS NULL&#x27;)
+        .getMany()
+        .then((data) &#x3D;&gt; resolve(data))
+        .catch((error) &#x3D;&gt; this.logger.error(error));
+    });
+  }
+
+  findPushNotificationWithoutReaction(
+    regularPushNotification: boolean
+  ): Promise&lt;PositiveInfoEntity[]&gt; {
+    let query &#x3D; this.createQueryBuilder(&#x27;positiveInfo&#x27;)
+      .leftJoinAndSelect(&#x27;positiveInfo.user&#x27;, &#x27;user&#x27;)
+      .leftJoinAndSelect(&#x27;user.profile&#x27;, &#x27;profile&#x27;)
+      .where(&#x27;push_notification_time IS NOT NULL&#x27;)
+      .andWhere(&#x27;NOW() &gt;&#x3D; push_notification_time&#x27;)
+      .andWhere(&#x27;sms_time IS NULL&#x27;)
+      .andWhere(&#x27;prefix IS NOT NULL&#x27;);
+
+    if (regularPushNotification) {
+      query.andWhere(&#x27;regular_push_notification &#x3D; 1&#x27;);
+    } else {
+      query.andWhere(
+        new Brackets((qb) &#x3D;&gt; {
+          qb.where(&#x27;regular_push_notification IS NULL&#x27;);
+          qb.orWhere(&#x60;regular_push_notification &#x3D; 0&#x60;);
+        })
+      );
+    }
+
+    return query.getMany();
+  }
+
+  findSmsWithoutReaction(
+    regularPushNotification: boolean,
+    column: string
+  ): Promise&lt;PositiveInfoEntity[]&gt; {
+    let query &#x3D; this.createQueryBuilder(&#x27;positiveInfo&#x27;)
+      .leftJoinAndSelect(&#x27;positiveInfo.user&#x27;, &#x27;user&#x27;)
+      .leftJoinAndSelect(&#x27;user.profile&#x27;, &#x27;profile&#x27;)
+      .leftJoinAndSelect(&#x27;user.contacts&#x27;, &#x27;contacts&#x27;)
+      .where(&#x60;${column} IS NOT NULL&#x60;)
+      .andWhere(&#x60;NOW() &gt;&#x3D; ${column}&#x60;)
+      .andWhere(&#x27;trigger_time IS NULL&#x27;);
+
+    if (regularPushNotification) {
+      query.andWhere(&#x27;regular_push_notification &#x3D; 1&#x27;);
+    } else {
+      query.andWhere(
+        new Brackets((qb) &#x3D;&gt; {
+          qb.where(&#x27;regular_push_notification IS NULL&#x27;);
+          qb.orWhere(&#x60;regular_push_notification &#x3D; 0&#x60;);
+        })
+      );
+    }
+
+    return query.getMany();
+  }
+
+  findByUserId(userId: string): Promise&lt;{ id: number; now: string }&gt; {
+    return this.createQueryBuilder()
+      .select(&#x27;id&#x27;)
+      .addSelect(&#x27;NOW()&#x27;, &#x27;now&#x27;)
+      .where(&#x27;user_id &#x3D; :userId&#x27;, { userId })
+      .execute()
+      .then((data) &#x3D;&gt; data.pop())
+      .catch((error) &#x3D;&gt; this.logger.error(error));
+  }
+
+  setPushNotificationTime(
+    userIds: string[],
+    period: number
+  ): Promise&lt;UpdateResult&gt; {
+    return this.createQueryBuilder()
+      .update(PositiveInfoEntity)
+      .set({
+        pushNotificationTime: () &#x3D;&gt; &#x27;NOW() + INTERVAL :period MINUTE&#x27;,
+      })
+      .where(&#x27;user_id IN (:...userIds)&#x27;, { userIds })
+      .setParameter(&#x27;period&#x27;, period)
+      .execute();
+  }
+
+  setSmsTime(
+    userId: string,
+    smsTime: number,
+    alertTime: number
+  ): Promise&lt;UpdateResult&gt; {
+    return this.createQueryBuilder()
+      .update(PositiveInfoEntity)
+      .set({
+        smsTime: () &#x3D;&gt; &#x27;NOW() + INTERVAL :smsTime MINUTE&#x27;,
+        alertTime: () &#x3D;&gt; &#x27;NOW() + INTERVAL :alertTime MINUTE&#x27;,
+      })
+      .where(&#x27;user_id &#x3D; :userId&#x27;, { userId })
+      .setParameter(&#x27;smsTime&#x27;, smsTime)
+      .setParameter(&#x27;alertTime&#x27;, alertTime)
+      .execute();
+  }
+
+  clearAlertTime(userIds: string[]): Promise&lt;UpdateResult&gt; {
+    return this.createQueryBuilder()
+      .update(PositiveInfoEntity)
+      .set({
+        alertTime: null,
+      })
+      .where(&#x27;user_id IN (:...userIds)&#x27;, { userIds })
+      .execute();
+  }
+
+  clearEverythingForUsers(userIds: string[]): Promise&lt;UpdateResult&gt; {
+    return this.createQueryBuilder()
+      .update(PositiveInfoEntity)
+      .set({
+        alertTime: null,
+        smsTime: null,
+        pushNotificationTime: null,
+        triggerTime: null,
+      })
+      .where(&#x27;user_id IN (:...userIds)&#x27;, { userIds })
+      .execute();
+  }
+
+  setTriggerTime(userId: string): Promise&lt;UpdateResult&gt; {
+    return this.createQueryBuilder()
+      .update(PositiveInfoEntity)
+      .set({
+        triggerTime: () &#x3D;&gt; &#x27;NOW()&#x27;,
+      })
+      .where(&#x27;user_id &#x3D; :userId&#x27;, { userId })
+      .execute();
+  }
+
+  postponeBySlotTime(userId: string): Promise&lt;UpdateResult&gt; {
+    return this.createQueryBuilder()
+      .update(PositiveInfoEntity)
+      .set({
+        updatedAt: () &#x3D;&gt; &#x27;NOW()&#x27;,
+      })
+      .where(&#x27;user_id &#x3D; :userId&#x27;, { userId })
+      .execute();
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'PositiveInfoRepository.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -1,0 +1,1228 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>biostasis documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">biostasis documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li >ExportService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/user/service/export.service.ts</code>
+        </p>
+
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#logger" >logger</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#exportDataAsBase64" >exportDataAsBase64</a>
+                            </li>
+                            <li>
+                                <a href="#prepareContactsToExport" >prepareContactsToExport</a>
+                            </li>
+                            <li>
+                                <a href="#prepareFilesToExport" >prepareFilesToExport</a>
+                            </li>
+                            <li>
+                                <a href="#prepareProfileToExport" >prepareProfileToExport</a>
+                            </li>
+                            <li>
+                                <a href="#prepareTimeSlotsToExport" >prepareTimeSlotsToExport</a>
+                            </li>
+                            <li>
+                                <a href="#prepareUnconfirmedEmailsToExport" >prepareUnconfirmedEmailsToExport</a>
+                            </li>
+                            <li>
+                                <a href="#prepareUserToExport" >prepareUserToExport</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(contactRepository: <a href="../classes/ContactRepository.html" target="_self">ContactRepository</a>, userRepository: <a href="../classes/UserRepository.html" target="_self">UserRepository</a>, profileRepository: <a href="../classes/ProfileRepository.html" target="_self">ProfileRepository</a>, timeSlotRepository: <a href="../classes/TimeSlotRepository.html" target="_self">TimeSlotRepository</a>, contactService: <a href="../injectables/ContactService.html" target="_self">ContactService</a>, unconfirmedEmailRepository: <a href="../classes/UnconfirmedEmailRepository.html" target="_self">UnconfirmedEmailRepository</a>, fileRepository: <a href="../interfaces/File.html" target="_self">FileRepository</a>, fileService: <a href="../injectables/FileService.html" target="_self">FileService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/user/service/export.service.ts:26</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>contactRepository</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../classes/ContactRepository.html" target="_self" >ContactRepository</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>userRepository</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../classes/UserRepository.html" target="_self" >UserRepository</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>profileRepository</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../classes/ProfileRepository.html" target="_self" >ProfileRepository</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>timeSlotRepository</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../classes/TimeSlotRepository.html" target="_self" >TimeSlotRepository</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>contactService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ContactService.html" target="_self" >ContactService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>unconfirmedEmailRepository</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../classes/UnconfirmedEmailRepository.html" target="_self" >UnconfirmedEmailRepository</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>fileRepository</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/File.html" target="_self" >FileRepository</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>fileService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/FileService.html" target="_self" >FileService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="exportDataAsBase64"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>exportDataAsBase64</b></span>
+                        <a href="#exportDataAsBase64"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>exportDataAsBase64(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="226"
+                            class="link-to-prism">src/user/service/export.service.ts:226</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="prepareContactsToExport"></a>
+                    <span class="name">
+                        <span ><b>prepareContactsToExport</b></span>
+                        <a href="#prepareContactsToExport"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>prepareContactsToExport(contacts: <a href="../entitys/ContactEntity.html" target="_self">ContactEntity[]</a>, data: Record<string, >[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="101"
+                            class="link-to-prism">src/user/service/export.service.ts:101</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>contacts</td>
+                                    <td>
+                                                <code><a href="../entitys/ContactEntity.html" target="_self" >ContactEntity[]</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                            <code>Record&lt;string, &gt;[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Record[]</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="prepareFilesToExport"></a>
+                    <span class="name">
+                        <span ><b>prepareFilesToExport</b></span>
+                        <a href="#prepareFilesToExport"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>prepareFilesToExport(files: <a href="../interfaces/File.html" target="_self">FileEntity[]</a>, data: Record<string, >[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="195"
+                            class="link-to-prism">src/user/service/export.service.ts:195</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>files</td>
+                                    <td>
+                                                <code><a href="../interfaces/File.html" target="_self" >FileEntity[]</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                            <code>Record&lt;string, &gt;[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Record[]</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="prepareProfileToExport"></a>
+                    <span class="name">
+                        <span ><b>prepareProfileToExport</b></span>
+                        <a href="#prepareProfileToExport"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>prepareProfileToExport(profile: <a href="../entitys/ProfileEntity.html" target="_self">ProfileEntity</a>, data: Record<string, >[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="71"
+                            class="link-to-prism">src/user/service/export.service.ts:71</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>profile</td>
+                                    <td>
+                                                <code><a href="../entitys/ProfileEntity.html" target="_self" >ProfileEntity</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                            <code>Record&lt;string, &gt;[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Record[]</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="prepareTimeSlotsToExport"></a>
+                    <span class="name">
+                        <span ><b>prepareTimeSlotsToExport</b></span>
+                        <a href="#prepareTimeSlotsToExport"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>prepareTimeSlotsToExport(timeSlots: <a href="../entitys/TimeSlotEntity.html" target="_self">TimeSlotEntity[]</a>, data: Record<string, >[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="131"
+                            class="link-to-prism">src/user/service/export.service.ts:131</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>timeSlots</td>
+                                    <td>
+                                                <code><a href="../entitys/TimeSlotEntity.html" target="_self" >TimeSlotEntity[]</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                            <code>Record&lt;string, &gt;[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Record[]</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="prepareUnconfirmedEmailsToExport"></a>
+                    <span class="name">
+                        <span ><b>prepareUnconfirmedEmailsToExport</b></span>
+                        <a href="#prepareUnconfirmedEmailsToExport"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>prepareUnconfirmedEmailsToExport(unconfirmedEmails: <a href="../entitys/UnconfirmedEmailEntity.html" target="_self">UnconfirmedEmailEntity[]</a>, data: Record<string, >[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="166"
+                            class="link-to-prism">src/user/service/export.service.ts:166</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>unconfirmedEmails</td>
+                                    <td>
+                                                <code><a href="../entitys/UnconfirmedEmailEntity.html" target="_self" >UnconfirmedEmailEntity[]</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                            <code>Record&lt;string, &gt;[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Record[]</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="prepareUserToExport"></a>
+                    <span class="name">
+                        <span ><b>prepareUserToExport</b></span>
+                        <a href="#prepareUserToExport"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>prepareUserToExport(user: <a href="../entitys/UserEntity.html" target="_self">UserEntity</a>, data: Record<string, >[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="44"
+                            class="link-to-prism">src/user/service/export.service.ts:44</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>user</td>
+                                    <td>
+                                                <code><a href="../entitys/UserEntity.html" target="_self" >UserEntity</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                            <code>Record&lt;string, &gt;[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Record[]</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logger"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Logger(ExportService.name)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/user/service/export.service.ts:26</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Inject, Injectable, Logger } from &#x27;@nestjs/common&#x27;;
+import * as fs from &#x27;fs&#x27;;
+import * as path from &#x27;path&#x27;;
+import * as uuid from &#x27;uuid&#x27;;
+import * as moment from &#x27;moment&#x27;;
+import { UserRepository } from &#x27;../repository/user.repository&#x27;;
+import { ProfileRepository } from &#x27;../repository/profile.repository&#x27;;
+import { omit } from &#x27;../../common/helper/omit&#x27;;
+import { ContactService } from &#x27;../../contact/service/contact.service&#x27;;
+import { UserEntity } from &#x27;../entity/user.entity&#x27;;
+import { ProfileEntity } from &#x27;../entity/profile.entity&#x27;;
+import { ContactRepository } from &#x27;../../contact/repository/contact.repository&#x27;;
+import { ContactEntity } from &#x27;../../contact/entity/contact.entity&#x27;;
+import { TimeSlotRepository } from &#x27;../../trigger-time-slot/repository/time-slot.repository&#x27;;
+import { TimeSlotEntity } from &#x27;../../trigger-time-slot/entity/time-slot.entity&#x27;;
+import { getEnumKeyByValue } from &#x27;../../common/helper/get-enum-key-by-value&#x27;;
+import { DAYS_OF_WEEKS } from &#x27;../../trigger-time-slot/enum/days-of-week.enum&#x27;;
+import { UnconfirmedEmailRepository } from &#x27;../../user/repository/unconfirmed-email.repository&#x27;;
+import { UnconfirmedEmailEntity } from &#x27;../entity/unconfirmed_email.entity&#x27;;
+import { FileRepository } from &#x27;../../file/repository/file.repository&#x27;;
+import { FileEntity } from &#x27;../../file/entity/file.entity&#x27;;
+import { FileService } from &#x27;../../file/service/file.service&#x27;;
+
+@Injectable()
+export class ExportService {
+  private readonly logger &#x3D; new Logger(ExportService.name);
+
+  constructor(
+    @Inject(ContactRepository)
+    private readonly contactRepository: ContactRepository,
+    @Inject(UserRepository) private readonly userRepository: UserRepository,
+    @Inject(ProfileRepository)
+    private readonly profileRepository: ProfileRepository,
+    @Inject(TimeSlotRepository)
+    private readonly timeSlotRepository: TimeSlotRepository,
+    private readonly contactService: ContactService,
+    @Inject(UnconfirmedEmailRepository)
+    private readonly unconfirmedEmailRepository: UnconfirmedEmailRepository,
+    @Inject(FileRepository)
+    private readonly fileRepository: FileRepository,
+    private readonly fileService: FileService
+  ) {}
+
+  prepareUserToExport(
+    user: UserEntity,
+    data: Record&lt;string, unknown&gt;[]
+  ): Record&lt;string, unknown&gt;[] {
+    const useKeys &#x3D; {};
+    const tableName &#x3D; this.userRepository.metadata.tableName;
+
+    Object.keys(omit(user, [&#x27;id&#x27;, &#x27;role&#x27;, &#x27;profile&#x27;])).forEach(
+      (key, index) &#x3D;&gt; (useKeys[index] &#x3D; &#x60;${key} [${tableName}]&#x60;)
+    );
+
+    data.push(useKeys);
+    data.push(
+      omit(
+        {
+          ...user,
+          updatedAt: moment(user.updatedAt).toISOString(),
+          createdAt: moment(user.createdAt).toISOString(),
+        },
+        [&#x27;id&#x27;, &#x27;role&#x27;, &#x27;profile&#x27;]
+      )
+    );
+    data.push({});
+
+    return data;
+  }
+
+  prepareProfileToExport(
+    profile: ProfileEntity,
+    data: Record&lt;string, unknown&gt;[]
+  ): Record&lt;string, unknown&gt;[] {
+    const profileKeys &#x3D; {};
+    const tableName &#x3D; this.profileRepository.metadata.tableName;
+
+    Object.keys(omit(profile, [&#x27;id&#x27;, &#x27;userId&#x27;])).forEach(
+      (key, index) &#x3D;&gt; (profileKeys[index] &#x3D; &#x60;${key} [${tableName}]&#x60;)
+    );
+
+    data.push(profileKeys);
+    data.push(
+      omit(
+        {
+          ...profile,
+          updatedAt: moment(profile.updatedAt).toISOString(),
+          createdAt: moment(profile.createdAt).toISOString(),
+          regularNotificationTime: moment(
+            profile.regularNotificationTime
+          ).toISOString(),
+        },
+        [&#x27;id&#x27;, &#x27;userId&#x27;]
+      )
+    );
+    data.push({});
+
+    return data;
+  }
+
+  prepareContactsToExport(
+    contacts: ContactEntity[],
+    data: Record&lt;string, unknown&gt;[]
+  ): Record&lt;string, unknown&gt;[] {
+    const contactKeys &#x3D; {};
+    const tableName &#x3D; this.contactRepository.metadata.tableName;
+
+    Object.keys(omit(contacts[0], [&#x27;id&#x27;, &#x27;userId&#x27;])).forEach(
+      (key, index) &#x3D;&gt; (contactKeys[index] &#x3D; &#x60;${key} [${tableName}]&#x60;)
+    );
+    data.push(contactKeys);
+
+    for (const contact of contacts) {
+      data.push(
+        omit(
+          {
+            ...contact,
+            updatedAt: moment(contact.updatedAt).toISOString(),
+            createdAt: moment(contact.createdAt).toISOString(),
+          },
+          [&#x27;id&#x27;, &#x27;userId&#x27;]
+        )
+      );
+    }
+
+    data.push({});
+
+    return data;
+  }
+
+  prepareTimeSlotsToExport(
+    timeSlots: TimeSlotEntity[],
+    data: Record&lt;string, unknown&gt;[]
+  ): Record&lt;string, unknown&gt;[] {
+    let timeSlotKeys &#x3D; {};
+    const tableName &#x3D; this.timeSlotRepository.metadata.tableName;
+
+    Object.keys(omit(timeSlots[0], [&#x27;id&#x27;, &#x27;userId&#x27;])).forEach(
+      (key, index) &#x3D;&gt; (timeSlotKeys[index] &#x3D; &#x60;${key} [${tableName}]&#x60;)
+    );
+
+    data.push(timeSlotKeys);
+
+    for (const timeSlot of timeSlots) {
+      data.push(
+        omit(
+          {
+            ...timeSlot,
+            from: timeSlot.from ? moment(timeSlot.from).toISOString() : null,
+            to: moment(timeSlot.from).toISOString(),
+            days: timeSlot.days
+              .map((item) &#x3D;&gt; getEnumKeyByValue(DAYS_OF_WEEKS, item.day))
+              .join(&#x27;, &#x27;),
+            createdAt: moment(timeSlot.createdAt).toISOString(),
+          },
+          [&#x27;id&#x27;, &#x27;userId&#x27;]
+        )
+      );
+    }
+
+    data.push({});
+
+    return data;
+  }
+
+  prepareUnconfirmedEmailsToExport(
+    unconfirmedEmails: UnconfirmedEmailEntity[],
+    data: Record&lt;string, unknown&gt;[]
+  ): Record&lt;string, unknown&gt;[] {
+    const unconfirmedEmailKeys &#x3D; {};
+    const tableName &#x3D; this.unconfirmedEmailRepository.metadata.tableName;
+
+    Object.keys(omit(unconfirmedEmails[0], [&#x27;id&#x27;, &#x27;userId&#x27;, &#x27;code&#x27;])).forEach(
+      (key, index) &#x3D;&gt; (unconfirmedEmailKeys[index] &#x3D; &#x60;${key} [${tableName}]&#x60;)
+    );
+    data.push(unconfirmedEmailKeys);
+
+    for (const unconfirmedEmail of unconfirmedEmails) {
+      data.push(
+        omit(
+          {
+            ...unconfirmedEmail,
+            createdAt: moment(unconfirmedEmail.createdAt).toISOString(),
+          },
+          [&#x27;id&#x27;, &#x27;userId&#x27;, &#x27;code&#x27;]
+        )
+      );
+    }
+
+    data.push({});
+
+    return data;
+  }
+
+  prepareFilesToExport(
+    files: FileEntity[],
+    data: Record&lt;string, unknown&gt;[]
+  ): Record&lt;string, unknown&gt;[] {
+    const fileKeys &#x3D; {};
+    const tableName &#x3D; this.fileRepository.metadata.tableName;
+
+    Object.keys(omit(files[0], [&#x27;id&#x27;, &#x27;userId&#x27;, &#x27;categoryId&#x27;])).forEach(
+      (key, index) &#x3D;&gt; (fileKeys[index] &#x3D; &#x60;${key} [${tableName}]&#x60;)
+    );
+    data.push(fileKeys);
+
+    for (const file of files) {
+      data.push(
+        omit(
+          {
+            ...file,
+            category: file.category.code,
+            url: this.fileService.getFileURL(file.key),
+            createdAt: moment(file.createdAt).toISOString(),
+          },
+          [&#x27;id&#x27;, &#x27;userId&#x27;, &#x27;categoryId&#x27;]
+        )
+      );
+    }
+
+    data.push({});
+
+    return data;
+  }
+
+  async exportDataAsBase64(userId: string): Promise&lt;string&gt; {
+    const filePath &#x3D; &#x60;storage/${uuid.v4()}.xls&#x60;;
+    const [user, contacts, timeSlots, unconfirmedEmails, files] &#x3D;
+      await Promise.all([
+        this.userRepository.findById(userId),
+        this.contactService.findContactsByUserId(userId),
+        this.timeSlotRepository.findByUserId(userId),
+        this.unconfirmedEmailRepository.findByUserId(userId),
+        this.fileRepository.findManyByParams({
+          where: { userId },
+          relations: [&#x27;category&#x27;],
+        }),
+      ]);
+
+    let dataAsString &#x3D; &#x27;&#x27;;
+    let dataAsArray &#x3D; [];
+
+    dataAsArray &#x3D; this.prepareUserToExport(user, dataAsArray);
+
+    if (user.profile) {
+      dataAsArray &#x3D; this.prepareProfileToExport(user.profile, dataAsArray);
+    }
+
+    if (unconfirmedEmails.length &gt; 0) {
+      dataAsArray &#x3D; this.prepareUnconfirmedEmailsToExport(
+        unconfirmedEmails,
+        dataAsArray
+      );
+    }
+
+    if (contacts.length &gt; 0) {
+      dataAsArray &#x3D; this.prepareContactsToExport(contacts, dataAsArray);
+    }
+
+    if (timeSlots.length &gt; 0) {
+      dataAsArray &#x3D; this.prepareTimeSlotsToExport(timeSlots, dataAsArray);
+    }
+
+    if (files.length &gt; 0) {
+      dataAsArray &#x3D; this.prepareFilesToExport(files, dataAsArray);
+    }
+
+    Object.values(dataAsArray).forEach((item) &#x3D;&gt; {
+      dataAsString +&#x3D; &#x60;${Object.values(item).join(&#x27;\t&#x27;)}\n&#x60;;
+    });
+
+    let base64content: string;
+
+    try {
+      fs.appendFileSync(filePath, dataAsString);
+
+      base64content &#x3D; fs.readFileSync(path.resolve(filePath), {
+        encoding: &#x27;base64&#x27;,
+      });
+
+      fs.unlinkSync(path.resolve(filePath));
+
+      return base64content;
+    } catch (error) {
+      this.logger.error(error);
+    }
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'ExportService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

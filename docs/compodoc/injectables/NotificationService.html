@@ -1,0 +1,1470 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>biostasis documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">biostasis documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li >NotificationService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/notification/service/notification.service.ts</code>
+        </p>
+
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#logger" >logger</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#handleSmsException" >handleSmsException</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#prepareAttachmentWithExportedData" >prepareAttachmentWithExportedData</a>
+                            </li>
+                            <li>
+                                <a href="#prepareEmailData" >prepareEmailData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#prepareEmergencyMessageAttachments" >prepareEmergencyMessageAttachments</a>
+                            </li>
+                            <li>
+                                <a href="#prepareSmsData" >prepareSmsData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#sendEmail" >sendEmail</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#sendEmergencyMessage" >sendEmergencyMessage</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#sendSms" >sendSms</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(config: ConfigService, mailJet: Email.Client, twilio: twilioLibrary.Twilio, messageService: <a href="../injectables/MessageService.html" target="_self">MessageService</a>, exportService: <a href="../injectables/ExportService.html" target="_self">ExportService</a>, fileRepository: <a href="../interfaces/File.html" target="_self">FileRepository</a>, fileService: <a href="../injectables/FileService.html" target="_self">FileService</a>, positiveInfoRepository: <a href="../classes/PositiveInfoRepository.html" target="_self">PositiveInfoRepository</a>, userService: <a href="../injectables/UserService.html" target="_self">UserService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/notification/service/notification.service.ts:37</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>config</td>
+                                                  
+                                                        <td>
+                                                                    <code>ConfigService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>mailJet</td>
+                                                  
+                                                        <td>
+                                                                    <code>Email.Client</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>twilio</td>
+                                                  
+                                                        <td>
+                                                                    <code>twilioLibrary.Twilio</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>messageService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/MessageService.html" target="_self" >MessageService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>exportService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ExportService.html" target="_self" >ExportService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>fileRepository</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/File.html" target="_self" >FileRepository</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>fileService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/FileService.html" target="_self" >FileService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>positiveInfoRepository</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../classes/PositiveInfoRepository.html" target="_self" >PositiveInfoRepository</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>userService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/UserService.html" target="_self" >UserService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleSmsException"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>handleSmsException</b></span>
+                        <a href="#handleSmsException"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>handleSmsException(error: Record<string | >, params: literal type)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="64"
+                            class="link-to-prism">src/notification/service/notification.service.ts:64</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>error</td>
+                                    <td>
+                                            <code>Record&lt;string | &gt;</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>params</td>
+                                    <td>
+                                            <code>literal type</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="prepareAttachmentWithExportedData"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>prepareAttachmentWithExportedData</b></span>
+                        <a href="#prepareAttachmentWithExportedData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>prepareAttachmentWithExportedData(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, isFromQueue: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="174"
+                            class="link-to-prism">src/notification/service/notification.service.ts:174</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>isFromQueue</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;Email.Attachment&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="prepareEmailData"></a>
+                    <span class="name">
+                        <span ><b>prepareEmailData</b></span>
+                        <a href="#prepareEmailData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>prepareEmailData(templateId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, variablesToEscapeAndSend: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank">object</a>, variablesToSend: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank">object</a>, to: literal type[], wantToGetNotifications?: number | null)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="138"
+                            class="link-to-prism">src/notification/service/notification.service.ts:138</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>templateId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>variablesToEscapeAndSend</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>variablesToSend</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>to</td>
+                                    <td>
+                                            <code>literal type[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>wantToGetNotifications</td>
+                                    <td>
+                                            <code>number | null</code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Email.SendParams</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="prepareEmergencyMessageAttachments"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>prepareEmergencyMessageAttachments</b></span>
+                        <a href="#prepareEmergencyMessageAttachments"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>prepareEmergencyMessageAttachments(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, isFromQueue: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="195"
+                            class="link-to-prism">src/notification/service/notification.service.ts:195</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>isFromQueue</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;Email.Attachment[]&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="prepareSmsData"></a>
+                    <span class="name">
+                        <span ><b>prepareSmsData</b></span>
+                        <a href="#prepareSmsData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>prepareSmsData(to: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="53"
+                            class="link-to-prism">src/notification/service/notification.service.ts:53</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>to</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>message</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>MessageListInstanceCreateOptions</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sendEmail"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>sendEmail</b></span>
+                        <a href="#sendEmail"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>sendEmail(params?: literal type)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="224"
+                            class="link-to-prism">src/notification/service/notification.service.ts:224</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>params</td>
+                                    <td>
+                                            <code>literal type</code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;Email.Response&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sendEmergencyMessage"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>sendEmergencyMessage</b></span>
+                        <a href="#sendEmergencyMessage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>sendEmergencyMessage(contact: literal type, user: <a href="../entitys/UserEntity.html" target="_self">UserEntity</a>, data)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="279"
+                            class="link-to-prism">src/notification/service/notification.service.ts:279</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>contact</td>
+                                    <td>
+                                            <code>literal type</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>user</td>
+                                    <td>
+                                                <code><a href="../entitys/UserEntity.html" target="_self" >UserEntity</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sendSms"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>sendSms</b></span>
+                        <a href="#sendSms"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>sendSms(params: literal type)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="94"
+                            class="link-to-prism">src/notification/service/notification.service.ts:94</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>params</td>
+                                    <td>
+                                            <code>literal type</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;MessageInstance | void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logger"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Logger(NotificationService.name)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/notification/service/notification.service.ts:37</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
+  Inject,
+  Injectable,
+  BadRequestException,
+  Logger,
+} from &quot;@nestjs/common&quot;;
+import { Email } from &quot;node-mailjet&quot;;
+import { ConfigService } from &quot;@nestjs/config&quot;;
+import { DICTIONARY } from &quot;../../common/constant/dictionary.constant&quot;;
+import {
+  SEND_MAIL_FAILED,
+  SEND_SMS_FAILED,
+  EMAIL_AND_SMS_NOT_ALLOWED,
+  EXPORT_DATA_FAILED,
+  GET_FILE_CONTENT_FAILED,
+} from &quot;../../common/error/keys&quot;;
+import { CustomError } from &quot;../../common/error/custom-error&quot;;
+import { DICTIONARY as NOTIFICATION_DI } from &quot;../constant/dictionary.constant&quot;;
+import * as twilioLibrary from &quot;twilio&quot;;
+import { UserEntity } from &quot;../../user/entity/user.entity&quot;;
+import { escapeHTML } from &quot;../helper/escape-html&quot;;
+import { getMailTemplateId } from &quot;../helper/get-template-id&quot;;
+import { getNameOrEmail } from &quot;../../common/helper/get-name-or-email&quot;;
+import { SendEmergencyMessageDTO } from &quot;../../message/request/dto/send-emergency-message.dto&quot;;
+import { MessageListInstanceCreateOptions } from &quot;twilio/lib/rest/api/v2010/account/message&quot;;
+import { MessageInstance } from &quot;twilio/lib/rest/api/v2010/account/message&quot;;
+import { MessageService } from &quot;../../queue/service/message.service&quot;;
+import { PROCESS } from &quot;../../queue/constant/process.constant&quot;;
+import { ExportService } from &quot;../../user/service/export.service&quot;;
+import { FileRepository } from &quot;../../file/repository/file.repository&quot;;
+import { FileService } from &quot;../../file/service/file.service&quot;;
+import { PositiveInfoRepository } from &quot;../../user/repository/positive-info.repository&quot;;
+import { UserService } from &quot;../../user/service/user.service&quot;;
+
+@Injectable()
+export class NotificationService {
+  private readonly logger &#x3D; new Logger(NotificationService.name);
+
+  constructor(
+    @Inject(DICTIONARY.CONFIG) private readonly config: ConfigService,
+    @Inject(NOTIFICATION_DI.MAIL_JET) private readonly mailJet: Email.Client,
+    @Inject(twilioLibrary.Twilio) private readonly twilio: twilioLibrary.Twilio,
+    private readonly messageService: MessageService,
+    private readonly exportService: ExportService,
+    @Inject(FileRepository)
+    private readonly fileRepository: FileRepository,
+    private readonly fileService: FileService,
+    @Inject(PositiveInfoRepository)
+    private readonly positiveInfoRepository: PositiveInfoRepository,
+    private readonly userService: UserService
+  ) { }
+
+  prepareSmsData(
+    to: string,
+    message: string
+  ): MessageListInstanceCreateOptions {
+    return {
+      from: this.config.get(&quot;twilio.phoneNumber&quot;),
+      to,
+      body: message,
+    };
+  }
+
+  async handleSmsException(
+    error: Record&lt;string, unknown&gt;,
+    params: {
+      data: MessageListInstanceCreateOptions;
+      isPositiveInfoQuestion?: boolean;
+      userId?: string;
+      isFromQueue?: boolean;
+      stopPropagation?: boolean;
+    }
+  ) {
+    this.logger.error(&#x60;Sms has not been sent (uid: ${params.userId})&#x60;);
+    this.logger.error(JSON.stringify(error));
+
+    if (params?.stopPropagation) {
+      return;
+    }
+
+    if (!params?.isFromQueue) {
+      await this.messageService.addJobToQueue(
+        PROCESS.SMS,
+        params,
+        this.config.get(&quot;queue.sendAfterTime.repeatTryingToSendMessage&quot;)
+      );
+
+      throw new CustomError(SEND_SMS_FAILED, error);
+    }
+
+    await this.sendSms({ ...params, stopPropagation: true });
+  }
+
+  async sendSms(params: {
+    data: MessageListInstanceCreateOptions;
+    isPositiveInfoQuestion?: boolean;
+    userId?: string;
+    isFromQueue?: boolean;
+    stopPropagation?: boolean;
+  }): Promise&lt;MessageInstance | void&gt; {
+    try {
+      return this.twilio.messages
+        .create(params.data)
+        .then(async (result) &#x3D;&gt; {
+          this.logger.log(&#x60;(uid: ${params?.userId}) SMS has been ${result?.status || &#x27;sent to twilio&#x27;}. SMS status available at: ${result?.uri || &#x27;not available&#x27;}. SMS body: &#x60;)
+          this.logger.log(result?.body || &#x27;not delivered&#x27;)
+
+          if (result.errorMessage) {
+            this.logger.error(
+              &#x60;[sendSms 1] Twilio result contains error message&#x60;,
+              JSON.stringify(result)
+            );
+            throw result;
+          }
+
+          if (params.isPositiveInfoQuestion &amp;&amp; params.userId) {
+            await this.positiveInfoRepository.setSmsTime(
+              params.userId,
+              this.config.get(
+                &quot;queue.sendAfterTime.triggerIfNoPositiveInfoAfterSms&quot;
+              ),
+              this.config.get(
+                &quot;queue.sendAfterTime.alertIfNoPositiveInfoAfterSms&quot;
+              )
+            );
+          }
+
+          return result;
+        })
+        .catch(async (error) &#x3D;&gt; {
+          await this.handleSmsException(error, params);
+        });
+    } catch (error) {
+      await this.handleSmsException(error, params);
+    }
+  }
+
+  prepareEmailData(
+    templateId: number,
+    variablesToEscapeAndSend: object,
+    variablesToSend: object,
+    to: { Email: string; Name?: string }[],
+    wantToGetNotifications?: number | null
+  ): Email.SendParams {
+    if (wantToGetNotifications &#x3D;&#x3D;&#x3D; 0) {
+      return;
+    }
+
+    const escapedVariables &#x3D; {};
+    for (const [key, value] of Object.entries(variablesToEscapeAndSend)) {
+      escapedVariables[key] &#x3D;
+        typeof value &#x3D;&#x3D;&#x3D; &quot;string&quot; ? escapeHTML(value) : value;
+    }
+
+    return {
+      Messages: [
+        {
+          From: {
+            Email: this.config.get(&quot;mailJet.email&quot;),
+            Name: this.config.get(&quot;mailJet.username&quot;),
+          },
+          To: to,
+          TemplateID: templateId,
+          TemplateLanguage: true,
+          Variables:
+            Object.keys(variablesToSend).length &gt; 0
+              ? { ...escapedVariables, ...variablesToSend }
+              : escapedVariables,
+        },
+      ],
+    };
+  }
+
+  async prepareAttachmentWithExportedData(
+    userId: string,
+    isFromQueue: boolean
+  ): Promise&lt;Email.Attachment&gt; {
+    const content &#x3D; await this.exportService.exportDataAsBase64(userId);
+
+    if (!content) {
+      this.logger.error(&quot;Exported content is empty&quot;);
+
+      if (!isFromQueue) {
+        throw new BadRequestException(EXPORT_DATA_FAILED);
+      }
+    }
+
+    return {
+      ContentType: &quot;application/vnd.ms-excel&quot;,
+      Filename: &quot;exported-data.xls&quot;,
+      Base64Content: content,
+    };
+  }
+
+  async prepareEmergencyMessageAttachments(
+    userId: string,
+    isFromQueue: boolean
+  ): Promise&lt;Email.Attachment[]&gt; {
+    const files &#x3D; await this.fileRepository.findManyByParams({ userId });
+    const attachments: Email.Attachment[] &#x3D; [];
+    let content: string;
+
+    for (const file of files) {
+      /**
+       * Possible attachment&#x27;s size problem
+       */
+
+      content &#x3D; await this.fileService.getFileAsBase64(file.key);
+
+      if (!content &amp;&amp; !isFromQueue) {
+        throw new BadRequestException(GET_FILE_CONTENT_FAILED);
+      }
+
+      attachments.push({
+        ContentType: file.mimeType,
+        Filename: file.name,
+        Base64Content: content,
+      });
+    }
+
+    return attachments;
+  }
+
+  async sendEmail(params?: {
+    data: Email.SendParams;
+    isFromQueue?: boolean;
+    exportedData?: boolean;
+    emergencyMessage?: boolean;
+    userId?: string;
+  }): Promise&lt;Email.Response&gt; {
+    const user &#x3D; await this.userService.findById(params.userId);
+
+    if (!params.userId || !user || user?.profile?.uploadedDocumentsAccess) {
+      let attachments: Email.Attachment[] &#x3D; [];
+
+      if (params?.exportedData) {
+        const attachment &#x3D; await this.prepareAttachmentWithExportedData(
+          params?.userId,
+          params?.isFromQueue
+        );
+
+        attachments.push(attachment);
+      }
+
+      if (params?.emergencyMessage) {
+        attachments &#x3D; await this.prepareEmergencyMessageAttachments(
+          params.userId,
+          params.isFromQueue
+        );
+      }
+
+      params.data.Messages[0].Attachments &#x3D; attachments;
+    }
+
+    return this.mailJet
+      .post(&quot;send&quot;, { version: &quot;v3.1&quot; })
+      .request(params.data)
+      .then((result: any) &#x3D;&gt; {
+        if (result.body.Messages[0].Status !&#x3D;&#x3D; &quot;success&quot;) {
+          throw result.body;
+        }
+
+        return result;
+      })
+      .catch(async (error) &#x3D;&gt; {
+        Logger.error(&#x60;${error?.ErrorMessage || &#x27;Mail has not been sent.&#x27;}&#x60;)
+        if (!params.isFromQueue) {
+          await this.messageService.addJobToQueue(
+            PROCESS.EMAIL,
+            params,
+            this.config.get(&quot;queue.sendAfterTime.repeatTryingToSendMessage&quot;)
+          );
+        } else {
+          throw new CustomError(SEND_MAIL_FAILED, error);
+        }
+      });
+  }
+
+  async sendEmergencyMessage(
+    contact: {
+      name: string;
+      email: string;
+      phone: string;
+    },
+    user: UserEntity,
+    data: SendEmergencyMessageDTO &amp; {
+      isFromQueue?: boolean;
+      locationUrl?: string;
+    }
+  ): Promise&lt;void&gt; {
+    if (user.profile?.emergencyEmailAndSms &#x3D;&#x3D;&#x3D; false) {
+      throw new BadRequestException(EMAIL_AND_SMS_NOT_ALLOWED);
+    }
+
+    let message &#x3D;
+      user.profile?.emergencyMessage ??
+      this.config
+        .get(&quot;emergencyTrigger.defaultMessage&quot;)
+        .toString()
+        .replace(
+          &quot;{name}&quot;,
+          getNameOrEmail(user.profile?.name, user.profile?.surname, user.email)
+        );
+
+    let smsData: MessageListInstanceCreateOptions;
+
+    if (contact.phone) {
+      smsData &#x3D; this.prepareSmsData(
+        contact.phone,
+        &#x60;${message &#x3D;&#x3D;&#x3D; user.profile?.emergencyMessage
+          ? &#x60;${this.config.get(
+            &quot;emergencyTrigger.customMessagePrefix&quot;
+          )} ${message}&#x60;
+          : message
+          } ${user.profile?.locationAccess &#x3D;&#x3D;&#x3D; true &amp;&amp; data.locationUrl
+            ? data.locationUrl
+            : &quot;&quot;
+          }&#x60;.trim()
+      );
+
+      if (!data.delayed) {
+        await this.sendSms({ data: smsData, isFromQueue: data.isFromQueue });
+      }
+    }
+
+    const files &#x3D; await this.fileRepository.findManyByParams({
+      userId: user.id,
+    });
+
+    let params: Record&lt;string, unknown&gt; &#x3D; {
+      contactName: contact.name,
+      username: getNameOrEmail(
+        user.profile?.name,
+        user.profile?.surname,
+        user.email
+      ),
+      message:
+        files.length &gt; 0
+          ? &#x60;${message} ${this.config.get(
+            &quot;emergencyTrigger.ifThereAreAttachments&quot;
+          )}&#x60;
+          : message,
+    };
+
+    if (user.profile?.locationAccess &#x3D;&#x3D;&#x3D; true) {
+      params.locationUrl &#x3D; data.locationUrl ?? &quot;&quot;;
+    }
+
+    const emailData &#x3D; this.prepareEmailData(
+      getMailTemplateId(
+        &#x60;EMERGENCY_MESSAGE_WITH${user.profile?.locationAccess !&#x3D;&#x3D; true ? &quot;OUT&quot; : &quot;&quot;
+        }_LOCATION&#x60;
+      ),
+      params,
+      {},
+      [
+        {
+          Email: contact.email,
+        },
+      ]
+    );
+
+    if (!data.delayed) {
+      await this.sendEmail({
+        data: emailData,
+        emergencyMessage: true,
+        userId: user.id,
+        isFromQueue: data.isFromQueue,
+      });
+    }
+
+    if (data.delayed) {
+      await this.messageService.addJobToQueue(
+        PROCESS.EMERGENCY,
+        {
+          sms: smsData,
+          email: emailData,
+        },
+        this.config.get(&#x60;queue.sendAfterTime.${data.messageType}&#x60;),
+        &#x60;${PROCESS.EMERGENCY}_${user.id}&#x60;
+      );
+    }
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'NotificationService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
