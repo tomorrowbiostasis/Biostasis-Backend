@@ -1,0 +1,140 @@
+image: 'docker-registry.dev.concisesoftware.com/node-java:latest'
+
+stages:
+  - install
+  - dependencies
+  - build
+  - tests
+  - deploy
+
+install:
+  stage: install
+  only:
+    - merge_requests
+  script:
+    - rm -rf node_modules
+    - yarn install
+  artifacts:
+    name: 'artifacts-$CI_PIPELINE_ID'
+    expire_in: 30 minutes
+    paths:
+      - node_modules/
+
+check:
+  only:
+    - merge_requests
+  stage: dependencies
+  script:
+    - yarn install
+    - yarn check:dependencies
+  dependencies:
+    - install
+
+audit:
+  only:
+    - merge_requests
+  stage: dependencies
+  script:
+    - ./audit.sh
+  dependencies:
+    - install
+
+build:
+  stage: build
+  only:
+    - merge_requests
+  script:
+    - yarn install
+    - yarn build-ci
+  dependencies:
+    - install
+
+lint:
+  only:
+    - merge_requests
+  stage: tests
+  script:
+    - yarn install
+    - yarn lint
+  dependencies:
+    - install
+
+unit-test:
+  only:
+    - merge_requests
+  stage: tests
+  script:
+    - yarn install
+    - yarn test --coverage
+  dependencies:
+    - install
+  artifacts:
+    name: 'cov-artifact-$CI_PIPELINE_ID'
+    expire_in: 1 hour
+    paths:
+      - ./coverage
+
+integration-tests:
+  only:
+    - merge_requests
+  stage: tests
+  variables:
+    MYSQL_DATABASE: biostasis_test
+    MYSQL_ROOT_PASSWORD: rootpassw0rd
+    DB_HOST: mysql
+    DB_PASSWORD: rootpassw0rd
+    DB_PORT: 3306
+    DB_USERNAME: root
+    NODE_ENV: test
+    REDIS_HOST: redis
+    REDIS_SCHEMA: redis
+    REDIS_USER: redis
+    REDIS_PORT: 6379
+  services:
+    - name: mysql:8.0.20
+      entrypoint:
+        [
+          '/entrypoint.sh',
+          '--default-authentication-plugin=mysql_native_password',
+        ]
+    - name: redis:5.0.7
+  script:
+    - yarn install
+    - yarn add mysql
+    - yarn test:integration
+  dependencies:
+    - install
+
+deploy:
+  stage: deploy   
+  before_script:
+        - mkdir -p ~/.ssh
+        - chmod 700 ~/.ssh
+        - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+        - chmod 644 ~/.ssh/known_hosts
+        - ssh-keyscan -H git-codecommit.eu-central-1.amazonaws.com >> ~/.ssh/known_hosts
+        - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+        - eval $(ssh-agent -s)
+        - echo "$CODECOMMIT_SSH_KEY"  | base64 -d | tr -d '\r' | ssh-add -
+  script:
+    - git remote add awscodecommit ssh://APKASZRNW4HCOWUBHBG6@git-codecommit.eu-central-1.amazonaws.com/v1/repos/biostasis-backend || true
+    - git push awscodecommit HEAD:refs/heads/staging --force
+  only:
+    - web
+
+deploy-prod:
+  stage: deploy   
+  before_script:
+        - mkdir -p ~/.ssh
+        - chmod 700 ~/.ssh
+        - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+        - chmod 644 ~/.ssh/known_hosts
+        - ssh-keyscan -H git-codecommit.eu-central-1.amazonaws.com >> ~/.ssh/known_hosts
+        - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+        - eval $(ssh-agent -s)
+        - echo "$CODECOMMIT_SSH_KEY"  | base64 -d | tr -d '\r' | ssh-add -
+  script:
+    - git remote add awscodecommit ssh://APKASZRNW4HCOWUBHBG6@git-codecommit.eu-central-1.amazonaws.com/v1/repos/biostasis-backend || true
+    - git push awscodecommit HEAD:refs/heads/production --force
+  only:
+    - web

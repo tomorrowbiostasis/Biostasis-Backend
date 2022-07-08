@@ -1,0 +1,1183 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>biostasis documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">biostasis documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li >SchedulerService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/scheduler/scheduler.service.ts</code>
+        </p>
+
+
+
+            <p class="comment">
+                <h3>Extends</h3>
+            </p>
+            <p class="comment">
+                    <code>NestSchedule</code>
+            </p>
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#logger" >logger</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#checkNotRegularPositiveInfo" >checkNotRegularPositiveInfo</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#checkRegularPositiveInfo" >checkRegularPositiveInfo</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#informAboutTimeSlots" >informAboutTimeSlots</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#sendAlertDueToLackOfPositiveInfo" >sendAlertDueToLackOfPositiveInfo</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#sendPushNotificationDueToLackOfPositiveInfo" >sendPushNotificationDueToLackOfPositiveInfo</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#sendRegularPushNotification" >sendRegularPushNotification</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#sendSmsDueToLackOfPositiveInfo" >sendSmsDueToLackOfPositiveInfo</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#shouldStartEscalation" >shouldStartEscalation</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#triggerEmergencyMessage" >triggerEmergencyMessage</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(config: ConfigService, positiveInfoRepository: <a href="../classes/PositiveInfoRepository.html" target="_self">PositiveInfoRepository</a>, messageService: <a href="../injectables/MessageService.html" target="_self">MessageService</a>, notificationService: <a href="../injectables/NotificationService.html" target="_self">NotificationService</a>, profileRepository: <a href="../classes/ProfileRepository.html" target="_self">ProfileRepository</a>, triggerTimeSlotService: <a href="../injectables/TriggerTimeSlotService.html" target="_self">TriggerTimeSlotService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/scheduler/scheduler.service.ts:18</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>config</td>
+                                                  
+                                                        <td>
+                                                                    <code>ConfigService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>positiveInfoRepository</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../classes/PositiveInfoRepository.html" target="_self" >PositiveInfoRepository</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>messageService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/MessageService.html" target="_self" >MessageService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>notificationService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/NotificationService.html" target="_self" >NotificationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>profileRepository</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../classes/ProfileRepository.html" target="_self" >ProfileRepository</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>triggerTimeSlotService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/TriggerTimeSlotService.html" target="_self" >TriggerTimeSlotService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkNotRegularPositiveInfo"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>checkNotRegularPositiveInfo</b></span>
+                        <a href="#checkNotRegularPositiveInfo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>checkNotRegularPositiveInfo()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Cron(&#x27;0 */5 * * * *&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="135"
+                            class="link-to-prism">src/scheduler/scheduler.service.ts:135</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkRegularPositiveInfo"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>checkRegularPositiveInfo</b></span>
+                        <a href="#checkRegularPositiveInfo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>checkRegularPositiveInfo()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Cron(&#x27;0 */5 * * * *&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="82"
+                            class="link-to-prism">src/scheduler/scheduler.service.ts:82</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="informAboutTimeSlots"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>informAboutTimeSlots</b></span>
+                        <a href="#informAboutTimeSlots"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>informAboutTimeSlots()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Cron(&#x27;0 */5 * * * *&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="32"
+                            class="link-to-prism">src/scheduler/scheduler.service.ts:32</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sendAlertDueToLackOfPositiveInfo"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>sendAlertDueToLackOfPositiveInfo</b></span>
+                        <a href="#sendAlertDueToLackOfPositiveInfo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>sendAlertDueToLackOfPositiveInfo(regularPushNotification: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="209"
+                            class="link-to-prism">src/scheduler/scheduler.service.ts:209</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>regularPushNotification</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sendPushNotificationDueToLackOfPositiveInfo"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>sendPushNotificationDueToLackOfPositiveInfo</b></span>
+                        <a href="#sendPushNotificationDueToLackOfPositiveInfo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>sendPushNotificationDueToLackOfPositiveInfo()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="142"
+                            class="link-to-prism">src/scheduler/scheduler.service.ts:142</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sendRegularPushNotification"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>sendRegularPushNotification</b></span>
+                        <a href="#sendRegularPushNotification"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>sendRegularPushNotification()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="89"
+                            class="link-to-prism">src/scheduler/scheduler.service.ts:89</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sendSmsDueToLackOfPositiveInfo"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>sendSmsDueToLackOfPositiveInfo</b></span>
+                        <a href="#sendSmsDueToLackOfPositiveInfo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>sendSmsDueToLackOfPositiveInfo(regularPushNotification: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="186"
+                            class="link-to-prism">src/scheduler/scheduler.service.ts:186</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>regularPushNotification</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="shouldStartEscalation"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>shouldStartEscalation</b></span>
+                        <a href="#shouldStartEscalation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>shouldStartEscalation(timezone?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="296"
+                            class="link-to-prism">src/scheduler/scheduler.service.ts:296</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>timezone</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="triggerEmergencyMessage"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>triggerEmergencyMessage</b></span>
+                        <a href="#triggerEmergencyMessage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>triggerEmergencyMessage(regularPushNotification: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="244"
+                            class="link-to-prism">src/scheduler/scheduler.service.ts:244</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>regularPushNotification</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logger"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Logger(SchedulerService.name)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/scheduler/scheduler.service.ts:18</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Inject, Injectable, Logger } from &quot;@nestjs/common&quot;;
+import { Cron, NestSchedule } from &quot;nest-schedule&quot;;
+import { PositiveInfoRepository } from &quot;../user/repository/positive-info.repository&quot;;
+import { MessageService } from &quot;../message/service/mesage.service&quot;;
+import { ConfigService } from &quot;@nestjs/config&quot;;
+import { DICTIONARY } from &quot;../common/constant/dictionary.constant&quot;;
+import { NotificationService } from &quot;../notification/service/notification.service&quot;;
+import { getNameOrEmail } from &quot;../common/helper/get-name-or-email&quot;;
+import { ProfileRepository } from &quot;../user/repository/profile.repository&quot;;
+import * as moment from &quot;moment&quot;;
+import { MESSAGE_TYPE } from &quot;../message/constant/message-type.constant&quot;;
+import { TriggerTimeSlotService } from &quot;../trigger-time-slot/service/trigger-time-slot.service&quot;;
+import { numberToDaysOfWeek } from &quot;../trigger-time-slot/enum/days-of-week.enum&quot;;
+import { modifyTimeAccordingTimezone } from &quot;../common/helper/modify-time-according-timezone&quot;;
+
+@Injectable()
+export class SchedulerService extends NestSchedule {
+  private readonly logger &#x3D; new Logger(SchedulerService.name);
+  constructor(
+    @Inject(DICTIONARY.CONFIG) private readonly config: ConfigService,
+    @Inject(PositiveInfoRepository)
+    private readonly positiveInfoRepository: PositiveInfoRepository,
+    private readonly messageService: MessageService,
+    private readonly notificationService: NotificationService,
+    private readonly profileRepository: ProfileRepository,
+    private readonly triggerTimeSlotService: TriggerTimeSlotService,
+  ) {
+    super();
+  }
+
+  @Cron(&quot;0 */5 * * * *&quot;)
+  async informAboutTimeSlots() {
+    const slots &#x3D; await this.triggerTimeSlotService.getSlotsToInform();
+
+    for (let slot of slots) {
+      await this.positiveInfoRepository.postponeBySlotTime(slot.u_id);
+
+      if (Array.isArray(slot) &amp;&amp; slot.length &gt; 0) slot &#x3D; slot[0];
+
+      slot.now &#x3D; new Date().toISOString().slice(0, 19) + &#x27;.000Z&#x27;;
+
+      const nowTime &#x3D; moment(slot.now).format(&#x27;HH:mm&#x27;);
+      const fromTime &#x3D; moment(slot.ts_from).format(&#x27;HH:mm&#x27;)
+      const toTime &#x3D; moment(slot.ts_to).format(&#x27;HH:mm&#x27;)
+      const leftThresholdTime &#x3D; moment(slot.leftThreshold).format(&#x27;HH:mm&#x27;)
+      const rightThresholdTime &#x3D; moment(slot.rightThreshold).format(&#x27;HH:mm&#x27;)
+
+      const shouldStartSpecific &#x3D; !!slot.ts_from
+        &amp;&amp; moment(leftThresholdTime, &#x27;HH:mm&#x27;).isSameOrAfter(moment(nowTime, &#x27;HH:mm&#x27;))
+        &amp;&amp; moment(nowTime, &#x27;HH:mm&#x27;).isAfter(moment(fromTime, &#x27;HH:mm&#x27;));
+
+      if (shouldStartSpecific) {
+        const day &#x3D; numberToDaysOfWeek.get(parseInt(slot.dayOfWeek));
+        const from &#x3D; modifyTimeAccordingTimezone(slot.ts_from, slot.ts_timezone).slice(11, 16);
+        const to &#x3D; modifyTimeAccordingTimezone(slot.ts_to, slot.ts_timezone).slice(11, 16);
+
+        this.messageService.sendMessageToDevice(slot.u_device_id, {
+          title: &#x27;Biostasis automated system is disabled&#x27;,
+          message: &#x60;The system is paused on ${day} from ${from} to ${to}&#x60;,
+          type: MESSAGE_TYPE.TIME_SLOT_NOTIFICATION,
+        });
+
+        continue;
+      }
+
+      const shouldProceedSpecific &#x3D; !!slot.ts_from &amp;&amp; moment(nowTime, &#x27;HH:mm&#x27;).isSameOrAfter(moment(rightThresholdTime, &#x27;HH:mm&#x27;)) &amp;&amp; moment(toTime, &#x27;HH:mm&#x27;).isAfter(moment(nowTime, &#x27;HH:mm&#x27;));
+      const shouldProceedPause &#x3D; !slot.ts_from &amp;&amp; moment(slot.now).isSameOrAfter(slot.rightThreshold) &amp;&amp; moment(slot.ts_to).isAfter(slot.now);
+
+      if (!shouldProceedSpecific &amp;&amp; !shouldProceedPause) {
+        continue;
+      }
+
+      this.messageService.sendMessageToDevice(slot.u_device_id, {
+        title: &#x27;Biostasis automated system will resume&#x27;,
+        message: &#x27;The system will resume according to your normal settings&#x27;,
+        type: MESSAGE_TYPE.TIME_SLOT_NOTIFICATION,
+      });
+    }
+  }
+
+  @Cron(&quot;0 */5 * * * *&quot;)
+  async checkRegularPositiveInfo() {
+    await this.sendRegularPushNotification();
+    await this.sendSmsDueToLackOfPositiveInfo(true);
+    await this.sendAlertDueToLackOfPositiveInfo(true);
+    await this.triggerEmergencyMessage(true);
+  }
+
+  async sendRegularPushNotification() {
+    const profiles &#x3D;
+      await this.profileRepository.findWhereRegularNotificationIsNeeded();
+
+    const operations &#x3D; [], userIds &#x3D; [];
+
+    for (const profile of profiles) {
+      if (!this.shouldStartEscalation(profile?.timezone)) {
+        continue;
+      }
+
+      const activeSlot &#x3D; await this.triggerTimeSlotService.getActiveTimeSlot(profile.userId);
+
+      if (activeSlot) {
+        await this.positiveInfoRepository.postponeBySlotTime(profile.userId);
+        continue;
+      }
+
+      this.logger.log(&#x60;[TIME BASED] Escalation started for ${profile.userId} at ${new Date().toISOString()}. Step: push notification.&#x60;);
+
+      operations.push(
+        this.messageService.sendMessageToDevice(profile.deviceId, {
+          title: this.config.get(&quot;firebase.notification.title&quot;),
+          message: this.config.get(&quot;firebase.notification.message.regular&quot;),
+          type: MESSAGE_TYPE.EMERGENCY_TIME_BASED_CHECK,
+        })
+      );
+
+      userIds.push(profile.userId);
+    }
+
+    if (operations.length &gt; 0) {
+      Promise.all(operations);
+      await Promise.all([
+        await this.positiveInfoRepository.setPushNotificationTime(
+          userIds,
+          this.config.get(
+            &quot;queue.sendAfterTime.smsIfNoPositiveInfoAfterPushNotification&quot;
+          )
+        ),
+        await this.profileRepository.setRegularNotificationTime(userIds),
+      ]);
+    }
+  }
+
+  @Cron(&quot;0 */5 * * * *&quot;)
+  async checkNotRegularPositiveInfo() {
+    await this.sendPushNotificationDueToLackOfPositiveInfo();
+    await this.sendSmsDueToLackOfPositiveInfo(false);
+    await this.sendAlertDueToLackOfPositiveInfo(false);
+    await this.triggerEmergencyMessage(false);
+  }
+
+  async sendPushNotificationDueToLackOfPositiveInfo() {
+    const expiredInformation &#x3D;
+      await this.positiveInfoRepository.findExpiredInformation();
+
+    const operations &#x3D; [], userIds &#x3D; [];
+
+    for (const information of expiredInformation) {
+      if (!this.shouldStartEscalation(information.user?.profile?.timezone)) {
+        continue;
+      }
+
+      const activeSlot &#x3D; await this.triggerTimeSlotService.getActiveTimeSlot(information.user.id);
+
+      if (activeSlot) {
+        await this.positiveInfoRepository.postponeBySlotTime(information.user.id);
+        continue;
+      }
+
+      this.logger.log(&#x60;[PULSE BASED] Escalation started for ${information.userId} at ${new Date().toISOString()}. Step: push notification (setPushNotificationTime).&#x60;);
+
+      operations.push(
+        this.messageService.sendMessageToDevice(information.user.deviceId, {
+          title: this.config.get(&quot;firebase.notification.title&quot;),
+          message: this.config
+            .get(&quot;firebase.notification.message.pulseBased&quot;)
+            .replace(&quot;{minutes}&quot;, information.minutesToNext),
+          type: MESSAGE_TYPE.EMERGENCY_PULSE_BASED_CHECK,
+        })
+      );
+
+      userIds.push(information.user.id);
+    }
+
+    if (operations.length &gt; 0) {
+      await Promise.all(operations);
+      await this.positiveInfoRepository.setPushNotificationTime(
+        userIds,
+        this.config.get(
+          &quot;queue.sendAfterTime.smsIfNoPositiveInfoAfterPushNotification&quot;
+        )
+      );
+    }
+  }
+
+  async sendSmsDueToLackOfPositiveInfo(regularPushNotification: boolean) {
+    const pushNotificationWithoutReaction &#x3D;
+      await this.positiveInfoRepository.findPushNotificationWithoutReaction(
+        regularPushNotification
+      );
+
+    for (const item of pushNotificationWithoutReaction) {
+      this.logger.log(&#x60;Escalation continues for ${item.userId} at ${new Date().toISOString()}. Step: sms.&#x60;);
+
+      this.notificationService.sendSms({
+        data: this.notificationService.prepareSmsData(
+          &#x60;${item.user.profile.prefix}${item.user.profile.phone}&#x60;,
+          this.config
+            .get(&quot;firebase.sms&quot;)
+            .replace(&quot;{domain}&quot;, this.config.get(&quot;backend.url&quot;))
+        ),
+        isPositiveInfoQuestion: true,
+        userId: item.user.id,
+        isFromQueue: true,
+      });
+    }
+  }
+
+  async sendAlertDueToLackOfPositiveInfo(regularPushNotification: boolean) {
+    const smsWithoutReaction &#x3D;
+      await this.positiveInfoRepository.findSmsWithoutReaction(
+        regularPushNotification,
+        &quot;alert_time&quot;
+      );
+    const operations &#x3D; [];
+    const userIds &#x3D; [];
+
+    for (const item of smsWithoutReaction) {
+      if (await this.triggerTimeSlotService.isActiveTimeSlot(item.userId)) {
+        continue;
+      }
+
+      this.logger.log(&#x60;Escalation continues for ${item.userId} at ${new Date().toISOString()}. Step: alert  (clearAlertTime).&#x60;);
+
+      operations.push(
+        this.messageService.sendMessageToDevice(item.user.deviceId, {
+          title: this.config.get(&quot;firebase.notification.title&quot;),
+          message: this.config.get(&quot;firebase.notification.message.alert&quot;),
+          type: MESSAGE_TYPE.EMERGENCY_ALERT,
+          sound: this.config.get(&quot;firebase.notification.sound&quot;),
+        })
+      );
+
+      userIds.push(item.userId);
+    }
+
+    if (operations.length &gt; 0) {
+      Promise.all(operations);
+
+      await this.positiveInfoRepository.clearAlertTime(userIds);
+    }
+  }
+
+  async triggerEmergencyMessage(regularPushNotification: boolean) {
+    const smsWithoutReaction &#x3D;
+      await this.positiveInfoRepository.findSmsWithoutReaction(
+        regularPushNotification,
+        &quot;sms_time&quot;
+      );
+
+    const operations &#x3D; [], userIds &#x3D; [];
+
+    for (const item of smsWithoutReaction) {
+      this.logger.log(&#x60;Escalation ends for ${item.userId} at ${new Date().toISOString()}. Step: emergency message (clearPositiveInfo and disable automatedEmergency).&#x60;);
+
+      userIds.push(item.userId);
+
+      for (const contact of item.user.contacts) {
+        if (!contact.active) {
+          continue;
+        }
+
+        operations.push(
+          this.notificationService.sendEmergencyMessage(
+            {
+              name: getNameOrEmail(
+                contact.name,
+                contact.surname,
+                contact.email
+              ),
+              email: contact.email,
+              phone: contact.prefix
+                ? &#x60;${contact.prefix}${contact.phone}&#x60;
+                : null,
+            },
+            item.user,
+            {
+              delayed: false,
+              isFromQueue: true,
+              locationUrl: item?.user?.profile?.location,
+            }
+          )
+        );
+      }
+
+      if (userIds.length &gt; 0) {
+        await Promise.all([
+          this.positiveInfoRepository.clearEverythingForUsers(userIds),
+          this.profileRepository.disableAutomatedEmergencyForUsers(userIds),
+          ...operations
+        ]);
+      }
+    }
+  }
+
+  private shouldStartEscalation(timezone?: string): boolean {
+    const currentDateTime &#x3D; modifyTimeAccordingTimezone(new Date().toISOString(), timezone);
+
+    const hour &#x3D; parseInt(currentDateTime.slice(11, 13));
+
+    return hour &gt;&#x3D; parseInt(this.config.get(&quot;night.end&quot;)) &amp;&amp;
+      hour &lt; parseInt(this.config.get(&quot;night.start&quot;));
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'SchedulerService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

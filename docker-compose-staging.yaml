@@ -1,0 +1,106 @@
+version: '3.4'
+
+services:
+  biostasis_redis:
+    image: redis:5.0.7
+    container_name: biostasis_redis
+    command: ['--notify-keyspace-events KEA']
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 1s
+      timeout: 3s
+      retries: 30
+
+  biostasis_app:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile-staging
+    command: sh -c "dockerize -wait tcp://${DB_HOST}:3306 -timeout 300s -wait-retry-interval 5s npm run typeorm:run && npm run start:prod"
+    container_name: biostasis_app
+    ports:
+      - 17001:5000
+    tty: true
+    links:
+      - biostasis_database
+      - biostasis_redis
+    depends_on:
+      - biostasis_database
+      - biostasis_redis
+    environment:
+      - APP_PORT=${APP_PORT}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=3306
+      - NODE_ENV=${NODE_ENV}
+      - GLOBAL_PREFIX=${GLOBAL_PREFIX}
+      - COGNITO_ACCESS_KEY_ID=${COGNITO_ACCESS_KEY_ID}
+      - COGNITO_SECRET_ACCESS_KEY=${COGNITO_SECRET_ACCESS_KEY}
+      - COGNITO_USER_POOL_ID=${COGNITO_USER_POOL_ID}
+      - COGNITO_CLIENT_ID=${COGNITO_CLIENT_ID}
+      - COGNITO_REGION=${COGNITO_REGION}
+      - MAILJET_API_KEY=${MAILJET_API_KEY}
+      - MAILJET_API_SECRET=${MAILJET_API_SECRET}
+      - MAILJET_EMAIL=${MAILJET_EMAIL}
+      - MAILJET_USERNAME=${MAILJET_USERNAME}
+      - BACKEND_URL=${BACKEND_URL}
+      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+      - TWILIO_PHONE_NUMBER=${TWILIO_PHONE_NUMBER}
+      - FIREBASE_ACCOUNT_KEY=${FIREBASE_ACCOUNT_KEY}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_SCHEMA=${REDIS_SCHEMA}
+      - REDIS_USER=${REDIS_USER}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_DISABLE_TLS=${REDIS_DISABLE_TLS}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - S3_ACCESS_KEY_ID=${S3_ACCESS_KEY_ID}
+      - S3_BUCKET=${S3_BUCKET}
+      - S3_URL=${S3_URL}
+      - S3_REGION=${S3_REGION}
+      - S3_SECRET_ACCESS_KEY=${S3_SECRET_ACCESS_KEY}
+      - S3_FILE_SIZE_LIMIT=${S3_FILE_SIZE_LIMIT}
+      - CDN_PRIV_KEY_ID=${CDN_PRIV_KEY_ID}
+      - CDN_PRIV_KEY=${CDN_PRIV_KEY}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - ENCRYPTION_IV=${ENCRYPTION_IV}
+
+  biostasis_database:
+    env_file:
+      - .env
+    image: mysql:8.0.20
+    container_name: biostasis_database
+    volumes:
+      - /home/jenkins/biostasis/db/mysql/:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: ${DB_DATABASE}
+      TZ: Europe/London
+    entrypoint: sh -c "
+      echo 'CREATE DATABASE IF NOT EXISTS biostasis_test;' > /docker-entrypoint-initdb.d/init.sql;
+      /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password"
+    command:
+      [
+        '--character-set-server=utf8mb4',
+        '--collation-server=utf8mb4_unicode_ci',
+        '--default-authentication-plugin=mysql_native_password',
+      ]
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      interval: 1s
+      timeout: 3s
+      retries: 30
+
+  biostasis_phpmyadmin:
+    depends_on:
+      - biostasis_database
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - '17009:80'
+    environment:
+      PMA_HOST: biostasis_database

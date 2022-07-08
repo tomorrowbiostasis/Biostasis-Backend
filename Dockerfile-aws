@@ -1,0 +1,16 @@
+FROM node:16.10.0
+
+RUN apt-get update && apt-get install -y \
+       build-essential \
+       libssl-dev
+
+RUN mkdir -p /app
+
+COPY . /var/www/backend
+WORKDIR /var/www/backend
+
+EXPOSE 5000
+
+RUN yarn
+RUN npm run build
+CMD npm run typeorm:run && npm run start:prod
