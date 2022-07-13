@@ -16,6 +16,10 @@ export class MessageService {
     deviceId: string,
     data: Record<string, string>
   ): Promise<Record<string, unknown>> {
+    if (!deviceId) {
+      return;
+    }
+
     const user = await this.userService.findByDeviceId(deviceId);
 
     if (user?.profile?.allowNotifications === false) {
