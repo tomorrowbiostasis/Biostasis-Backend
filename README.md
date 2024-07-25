@@ -21,7 +21,7 @@
   - [License](#license)
 
 ## Before You Start:
-  - Read our [contribution](https://github.com/tomorrowbiostasis/tomorrowbiostasis/blob/main/CONTRIBUTING.md) guidance to gain a better understanding on how to be part of the Biostasis development community.
+  - Read our [contribution](https://github.com/tomorrowbiostasis/tomorrowbiostasis/blob/main/CONTRIBUTING.md) guidance to gain a better understanding on how to be a part of the Biostasis development community.
   - Please make sure to visit the [Biostasis-Cloud-infrastructure](https://github.com/tomorrowbiostasis/Biostasis-Cloud-infrastructure) and create your own cloud and external services. **Otherwise, you won't be able to run the application properly (you need your own .env credentials).**
 
 ## Introduction:
@@ -127,7 +127,7 @@ Everything is containerized using **Docker**. Each stage of the app (dev, stagin
   For development and staging purposes to simplify monitoring and manual testing we use swagger documentation. To access swagger documentation simply start the application and go to [http://localhost:5000/swagger](http://localhost:5000/swagger).
   
   ## Software Overview:
-  If you want to get a complete understading about the software architecture of the application and how everything connected from the inside, you can **[Click Here](https://tomorrowbiostasis.github.io/Biostasis-Backend/compodoc/overview.html)** and visit our documentation built using [compodoc](https://compodoc.app/).
+  If you want to get a complete understading of the software architecture of the application and how everything is connected, you can **[click here](https://tomorrowbiostasis.github.io/Biostasis-Backend/compodoc/overview.html)** and visit our documentation built using [compodoc](https://compodoc.app/).
   
   The application consist of:
   - 10 Modules
@@ -139,15 +139,15 @@ Everything is containerized using **Docker**. Each stage of the app (dev, stagin
   - 7 Interfaces
   
   ### Modules:
-  Each module has its own responsibilities and logic to handle. Modules can interact with each other e.g. to obtain necessary information or fire some tasks. We can distinguish ten modules in the app:
+  Each module has its own responsibilities and logic to handle. Modules can interact with each other, e.g. to obtain necessary information or execute some tasks. We can distinguish ten modules in the app:
 
   - **AppModule File:** `src/app.module.ts` main application module.
   - **AuthorizationModule File:** `src/authentication/authenticaiton.module.ts` handling auth logic, connection with AWS Cognito.
   - **ContactModule File:** `src/contact/contact.module.ts` contact’s API.
   - **FileModule File:** `src/file/file.module.ts` uploading and accessing files.
-  - **MessageModule File:** `src/message/message.module.ts` sending email messages and sms 'REST API' endpoints.
-  - **NotificationModule File:** `src/notification/notification.module.ts` low level logic of handling all types of notifications (including push notifications).
-  - **QueueModule File:** `src/queue/queue.module.ts` low level logic of handling queue.
+  - **MessageModule File:** `src/message/message.module.ts` sending email messages and SMS 'REST API' endpoints.
+  - **NotificationModule File:** `src/notification/notification.module.ts` low level logic for handling all types of notifications (including push notifications).
+  - **QueueModule File:** `src/queue/queue.module.ts` low level logic for handling queue.
   - **SchedulerModule File:** `src/scheduler/scheduler.module.ts` scheduling background or postponed tasks.
   - **TriggerTimeSlotModule File:** `src/trigger-time-slot/trigger-time-slot.module.ts` off time slots API.
   - **UserModule File:** `src/user/user.module.ts` handling all data and processes connected with user and user profile.
