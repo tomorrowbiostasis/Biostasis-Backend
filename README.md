@@ -8,11 +8,11 @@
 ![windows os](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white) ![mac os](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=apple&logoColor=white) ![Linux os](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
 
 
-## Table of content:
+## Table of Contents:
   - [Before You Start](#before-you-start)
   - [Introduction](#introduction) 
   - [Tech Stack](#tech-stack)
-  - [installation](#installation)
+  - [Installation](#installation)
   - [Running Tests](#running-tests)
   - [Swagger Documentation](#swagger-documentation)
   - [Software Overview](#software-overview)
@@ -21,11 +21,11 @@
   - [License](#license)
 
 ## Before You Start:
-  - Read our [contribution](https://github.com/tomorrowbiostasis/tomorrowbiostasis/blob/main/CONTRIBUTING.md) guidance if you did not already to gain better understanding on how to be part of biostasis community.
-  - Please make sure to visit the [Biostasis-Cloud-infrastructure](https://github.com/tomorrowbiostasis/Biostasis-Cloud-infrastructure) and create your own cloud and external services. **Otherwise, you can't run the application properly (you need your own .env credentials).**
+  - Read our [contribution](https://github.com/tomorrowbiostasis/tomorrowbiostasis/blob/main/CONTRIBUTING.md) guidance to gain a better understanding on how to be part of the Biostasis development community.
+  - Please make sure to visit the [Biostasis-Cloud-infrastructure](https://github.com/tomorrowbiostasis/Biostasis-Cloud-infrastructure) and create your own cloud and external services. **Otherwise, you won't be able to run the application properly (you need your own .env credentials).**
 
 ## Introduction:
-The following document contains documentation for the backend part of the Biostasis application. You can find here overall information about how the backend works, how to set it for development/production purposes, and a deep engineering analysis of internal app processes.
+The following document contains documentation for the backend part of the Biostasis application. Here you can find information about how the backend works, how to set it up for development/production purposes, and a deep engineering analysis of internal app processes.
 
 ## Tech Stack:
 
@@ -40,11 +40,11 @@ The following document contains documentation for the backend part of the Biosta
 
 The Biostasis application uses modern programming technologies which allow for building maintainable and versatile software. **Node.js**, **Express.js**, and **NestJs** frameworks were used with **TypeScript** as the programing language due to the simplicity of provided solutions and easy development processes. To properly handle varying configuration and credentials keys the app uses environment variables.
 
-For data storing purposes the application uses **MySQL** database in version 8+. From a software perspective, to allow quick data manipulation ORM mechanism has been involved. The app uses TypeORM which is a modern and readable way to handle database queries and mapping objects into db records.
+For data storing purposes the application uses **MySQL** database in version 8+. From a software perspective, to allow for quick data manipulation, the ORM mechanism has been involved. The app uses TypeORM which is a modern and readable way to handle database queries and mapping objects into database records.
 
-Biostasis backend uses **Redis** for caching temporary data and queuing long live or postponed processes. Used Redis version: 5.0.7.
+The Biostasis app backend uses **Redis** for caching temporary data and queuing long lived or postponed processes. Currently using Redis version 5.0.7.
 
-Everything is containerized using **Docker**. Each stage of the app (dev, staging, production) has separated docker definitions. Docker compose files have been written using version 3.4 of the language syntax. The application runs on node.js ver 16.10.0 image.
+Everything is containerized using **Docker**. Each stage of the app (dev, staging, production) has separated docker definitions. Docker compose files have been written using version 3.4 of the language syntax. The application runs on Node.js version 16.10.0 image.
 
 ## installation:
   1. **Setting up Environment Credentials:** 
@@ -55,7 +55,9 @@ Everything is containerized using **Docker**. Each stage of the app (dev, stagin
    
        Change the name of the file from `.example.env` to `.env` 
        
-       fill the file with proper values. You can also use alternative ways to bind environment variables but we recommend using the `.env` file.
+       Fill the file with proper values.
+       
+       You can also use alternative ways to bind environment variables but we recommend using the `.env` file.
     
    2. **Docker Containerization:**
   
@@ -78,33 +80,35 @@ Everything is containerized using **Docker**. Each stage of the app (dev, stagin
        
       -     docker compose -f docker-compose-only-db.yml up --build
       
-         ⚠️ Make sure you have **[node.js](https://nodejs.org/)** installed on your machine before you start. And the values for `DB_HOST` and `REDIS_HOST` in `.env` file are `localhost` to avoid failed connection to the database.
+         ⚠️ Make sure you have **[Node.js](https://nodejs.org/)** installed on your machine before you start. And the values for `DB_HOST` and `REDIS_HOST` in `.env` file are `localhost` to avoid failed connection to the database.
  
-         if you want to have control of application flow you can run MySQL and Redis using docker, then simply run the application by firing below commands:  
+         If you want to have control of application flow you can run MySQL and Redis using docker, then simply run the application by executing the commands below:  
          
-         1. we use `yarn` package manager instead of `npm`. 
+        1. We use `yarn` package manager instead of `npm`. 
             
                 npm install --global yarn
 
-          2. install all dependencies for the application.
-          
-                 yarn
-          
-          3. Build the database schema and tables using typeorm migrations from `src/migrations`.
-              
-                 yarn typeorm:run
-          
-          4. Run the application in the development environment.
-          
-                 yarn start:dev
-                 
-          
-          Setting the app staging and production stages is the same as for development. You just have to keep in mind to have environment variables up to date and use proper Docker files.
+        2. Install all dependencies for the application.
+        
+                yarn
+        
+        3. Build the database schema and tables using typeorm migrations from `src/migrations`.
+            
+                yarn typeorm:run
+        
+        4. Run the application in the development environment.
+        
+                yarn start:dev
+                
+        
+        To set up the app's staging and production stages, follow the same steps as for development. You just have to keep in mind to have up to date environment variables and use the proper Docker files.
             
             
  ## Running Tests:
  
- Please make sure everytime you implement new feature small or big to run tests to be fully sure that your application instance works properly or your changes haven’t broken anything, you can fire unit and integration tests included in the app:
+ Please make sure to run tests every time you implement a new feature, whether it be big or small. This ensures that your application instance works properly and that your changes have not broken anything.
+ 
+ You can run the unit and integration test suites included in the app in the follwing ways:
   
   - Unit tests
         
@@ -112,7 +116,7 @@ Everything is containerized using **Docker**. Each stage of the app (dev, stagin
    
   - Integration tests: 
   
-    **❗ Requires database and redis connection. So, the appropriate docker instance (only db) should be running.**
+    **❗ Requires database and Redis connection. So, the appropriate docker instance (only db) should be running.**
         
         yarn test:integration
   
