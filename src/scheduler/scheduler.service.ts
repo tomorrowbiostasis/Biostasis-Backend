@@ -30,7 +30,7 @@ export class SchedulerService extends NestSchedule {
 
   @Cron("0 */5 * * * *")
   async informAboutTimeSlots() {
-      console.log("test logging. test, one more test");
+      console.log("test logging. test, one more test, test1");
     const slots = await this.triggerTimeSlotService.getSlotsToInform();
 
     for (let slot of slots) {
