@@ -157,50 +157,55 @@ export class SchedulerService extends NestSchedule {
 
   //   this.logger.log('Sent generic hourly silent pushes to all devices.');
   // }
-  @Cron('0 0 * * * *')
-  // @Cron("0 */5 * * * *")
-  async wakeUpAppGeneric() {
-    this.logger.log("WAKE UP APP GENERIC func started");
-    const allProfiles = await this.profileRepository.findAllActiveDeviceIds();
-    const chunkSize = 100;
-    const delayBetweenChunksMs = 500;
+  // @Cron('0 0 * * * *')
+  // // @Cron("0 */5 * * * *")
+  // async wakeUpAppGeneric() {
+  //   this.logger.log("WAKE UP APP GENERIC func started");
+  //   const allProfiles = await this.profileRepository.findAllActiveDeviceIds();
+  //   const chunkSize = 100;
+  //   const delayBetweenChunksMs = 500;
 
-    const profilesWithDeviceIds = allProfiles.filter((p) => p.deviceId);
-    const total = profilesWithDeviceIds.length;
-    let sentCount = 0;
-    let failedCount = 0;
+  //   const profilesWithDeviceIds = allProfiles.filter((p) => p.deviceId);
+  //   const total = profilesWithDeviceIds.length;
+  //   let sentCount = 0;
+  //   let failedCount = 0;
 
-    for (let i = 0; i < total; i += chunkSize) {
-      const chunk = profilesWithDeviceIds.slice(i, i + chunkSize);
+  //   for (let i = 0; i < total; i += chunkSize) {
+  //     const chunk = profilesWithDeviceIds.slice(i, i + chunkSize);
 
-      const results = await Promise.all(
-        chunk.map((profile) =>
-          this.messageService
-            .sendMessageToDevice(
-              profile.deviceId,
-              { type: 'GENERIC_HOURLY_WAKE' },
-              'silent'
-            )
-            .then((value) => ({ status: 'fulfilled', value }))
-            .catch((reason) => ({ status: 'rejected', reason }))
-        )
-      );
+  //     const results = await Promise.all(
+  //       chunk.map((profile) =>
+  //         this.messageService
+  //           .sendMessageToDevice(
+  //             profile.deviceId,
+  //             { type: 'GENERIC_HOURLY_WAKE' },
+  //             'silent'
+  //           )
+  //           .then((value) => ({ status: 'fulfilled', value }))
+  //           .catch((reason) => ({ status: 'rejected', reason }))
+  //       )
+  //     );
 
-      results.forEach((result, index) => {
-        if (result.status === 'fulfilled') {
-          sentCount++;
-        } else {
-          failedCount++;
-          this.logger.warn(`Failed to send silent push to deviceId: ${chunk[index].deviceId}`);
-        }
-      });
+  //     results.forEach((result, index) => {
+  //       if (result.status === 'fulfilled') {
+  //         sentCount++;
+  //       } else {
+  //         failedCount++;
+  //         this.logger.warn(`Failed to send silent push to deviceId: ${chunk[index].deviceId}`);
+  //       }
+  //     });
 
-      await new Promise((res) => setTimeout(res, delayBetweenChunksMs));
-    }
+  //     await new Promise((res) => setTimeout(res, delayBetweenChunksMs));
+  //   }
 
-    this.logger.log(
-      `Silent push summary: Sent ${sentCount}, Failed ${failedCount}, Total ${total}`
-    );
+  //   this.logger.log(
+  //     `Silent push summary: Sent ${sentCount}, Failed ${failedCount}, Total ${total}`
+  //   );
+  // }
+
+  @Cron("0 */2 * * * *")
+  async testLogging() {
+    this.logger.log("Test log entry from SchedulerService at " + new Date().toISOString());
   }
 
 
