@@ -157,8 +157,10 @@ export class SchedulerService extends NestSchedule {
 
   //   this.logger.log('Sent generic hourly silent pushes to all devices.');
   // }
-  @Cron('0 0 * * * *')
+  // @Cron('0 0 * * * *')
+  @Cron("0 */5 * * * *")
   async wakeUpAppGeneric() {
+    this.logger.log("WAKE UP APP GENERIC func started");
     const allProfiles = await this.profileRepository.findAllActiveDeviceIds();
     const chunkSize = 100;
     const delayBetweenChunksMs = 500;
