@@ -80,6 +80,8 @@ export class SchedulerService extends NestSchedule {
 
   @Cron("0 */5 * * * *")
   async checkRegularPositiveInfo() {
+    console.log('Console log from SchedulerService at checkRegularPositiveInfo', new Date().toISOString());
+    this.logger.log("Test log entry from SchedulerService at checkRegularPositiveInfo" + new Date().toISOString());
     await this.sendRegularPushNotification();
     await this.sendSmsDueToLackOfPositiveInfo(true);
     await this.sendAlertDueToLackOfPositiveInfo(true);
@@ -133,6 +135,8 @@ export class SchedulerService extends NestSchedule {
 
   @Cron("0 */5 * * * *")
   async checkNotRegularPositiveInfo() {
+    console.log('Console log from SchedulerService at checkNotRegularPositiveInfo', new Date().toISOString());
+    this.logger.log("Test log entry from SchedulerService at checkNotRegularPositiveInfo" + new Date().toISOString());
     await this.sendPushNotificationDueToLackOfPositiveInfo();
     await this.sendSmsDueToLackOfPositiveInfo(false);
     await this.sendAlertDueToLackOfPositiveInfo(false);
@@ -203,11 +207,11 @@ export class SchedulerService extends NestSchedule {
   //   );
   // }
 
-  @Cron("0 */2 * * * *")
-  async testLogging() {
-    console.log('Console log from SchedulerService at', new Date().toISOString());
-    this.logger.log("Test log entry from SchedulerService at " + new Date().toISOString());
-  }
+  // @Cron("0 */2 * * * *")
+  // async testLogging() {
+  //   console.log('Console log from SchedulerService at', new Date().toISOString());
+  //   this.logger.log("Test log entry from SchedulerService at " + new Date().toISOString());
+  // }
 
 
   async sendPushNotificationDueToLackOfPositiveInfo() {
