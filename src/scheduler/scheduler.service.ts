@@ -143,24 +143,24 @@ export class SchedulerService extends NestSchedule {
     await this.triggerEmergencyMessage(false);
   }
 
-  // @Cron('0 0 * * * *')
-  // async wakeUpAppGeneric() {
-  //   const allProfiles = await this.profileRepository.findAllActiveDeviceIds();
+  @Cron('0 0 * * * *')
+  async wakeUpAppGeneric() {
+    const allProfiles = await this.profileRepository.findAllActiveDeviceIds();
 
-  //   for (const profile of allProfiles) {
-  //     if (!profile.deviceId) continue;
+    for (const profile of allProfiles) {
+      if (!profile.deviceId) continue;
 
-  // await this.messageService.sendMessageToDevice(
-  //       profile.deviceId,
-  //       {
-  //         type: 'GENERIC_HOURLY_WAKE',
-  //       },
-  //       'silent'
-  //     );
-  //   }
+      await this.messageService.sendMessageToDevice(
+        profile.deviceId,
+        {
+          type: 'GENERIC_HOURLY_WAKE',
+        },
+        'silent'
+      );
+    }
 
-  //   this.logger.log('Sent generic hourly silent pushes to all devices.');
-  // }
+    this.logger.log('Sent generic hourly silent pushes to all devices.');
+  }
   // @Cron('0 0 * * * *')
   // // @Cron("0 */5 * * * *")
   // async wakeUpAppGeneric() {
