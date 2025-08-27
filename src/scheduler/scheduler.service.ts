@@ -139,6 +139,69 @@ export class SchedulerService extends NestSchedule {
     await this.triggerEmergencyMessage(false);
   }
 
+  // @Cron('0 0 * * * *')
+  // async wakeUpAppGeneric() {
+  //   const allProfiles = await this.profileRepository.findAllActiveDeviceIds();
+
+  //   for (const profile of allProfiles) {
+  //     if (!profile.deviceId) continue;
+
+  //     await this.messageService.sendMessageToDevice(
+  //       profile.deviceId,
+  //       {
+  //         type: 'GENERIC_HOURLY_WAKE',
+  //       },
+  //       'silent'
+  //     );
+  //   }
+
+  //   this.logger.log('Sent generic hourly silent pushes to all devices.');
+  // }
+  @Cron('0 0 * * * *')
+  async wakeUpAppGeneric() {
+    const allProfiles = await this.profileRepository.findAllActiveDeviceIds();
+    const chunkSize = 100;
+    const delayBetweenChunksMs = 500;
+
+    const profilesWithDeviceIds = allProfiles.filter((p) => p.deviceId);
+    const total = profilesWithDeviceIds.length;
+    let sentCount = 0;
+    let failedCount = 0;
+
+    for (let i = 0; i < total; i += chunkSize) {
+      const chunk = profilesWithDeviceIds.slice(i, i + chunkSize);
+
+      const results = await Promise.all(
+        chunk.map((profile) =>
+          this.messageService
+            .sendMessageToDevice(
+              profile.deviceId,
+              { type: 'GENERIC_HOURLY_WAKE' },
+              'silent'
+            )
+            .then((value) => ({ status: 'fulfilled', value }))
+            .catch((reason) => ({ status: 'rejected', reason }))
+        )
+      );
+
+      results.forEach((result, index) => {
+        if (result.status === 'fulfilled') {
+          sentCount++;
+        } else {
+          failedCount++;
+          this.logger.warn(`Failed to send silent push to deviceId: ${chunk[index].deviceId}`);
+        }
+      });
+
+      await new Promise((res) => setTimeout(res, delayBetweenChunksMs));
+    }
+
+    this.logger.log(
+      `Silent push summary: Sent ${sentCount}, Failed ${failedCount}, Total ${total}`
+    );
+  }
+
+
   async sendPushNotificationDueToLackOfPositiveInfo() {
     const expiredInformation =
       await this.positiveInfoRepository.findExpiredInformation();

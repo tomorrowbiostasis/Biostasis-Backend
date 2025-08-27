@@ -14,6 +14,15 @@ export class ProfileRepository extends Repository<ProfileEntity> {
     });
   }
 
+  findAllActiveDeviceIds(): Promise<{ userId: string; deviceId: string }[]> {
+    return this.createQueryBuilder('profile')
+      .select('profile.user_id', 'userId')
+      .addSelect('profile.device_id', 'deviceId')
+      .where('profile.device_id IS NOT NULL')
+      .andWhere('profile.automated_emergency = 1')
+      .getRawMany();
+  }
+
   findWhereRegularNotificationIsNeeded(): Promise<
     {
       userId: string;
