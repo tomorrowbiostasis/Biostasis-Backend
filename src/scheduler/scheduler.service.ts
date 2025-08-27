@@ -146,7 +146,7 @@ export class SchedulerService extends NestSchedule {
   //   for (const profile of allProfiles) {
   //     if (!profile.deviceId) continue;
 
-  //     await this.messageService.sendMessageToDevice(
+  // await this.messageService.sendMessageToDevice(
   //       profile.deviceId,
   //       {
   //         type: 'GENERIC_HOURLY_WAKE',
@@ -205,6 +205,7 @@ export class SchedulerService extends NestSchedule {
 
   @Cron("0 */2 * * * *")
   async testLogging() {
+    console.log('Console log from SchedulerService at', new Date().toISOString());
     this.logger.log("Test log entry from SchedulerService at " + new Date().toISOString());
   }
 
