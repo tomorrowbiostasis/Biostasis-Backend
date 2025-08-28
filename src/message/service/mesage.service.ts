@@ -1,6 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { UserService } from '../../user/service/user.service';
 import { DICTIONARY } from '../constant/dictionary.constant';
+import * as firebase from 'firebase-admin';
 
 @Injectable()
 export class MessageService {
@@ -123,4 +124,39 @@ export class MessageService {
       }
     }
   }
+
+  async sendMessageToDeviceIOSSilent(deviceId: string, data: Record<string, string>): Promise<void> {
+    if (!deviceId) return;
+
+    const user = await this.userService.findByDeviceId(deviceId);
+    if (user?.profile?.allowNotifications === false) return;
+
+    const message: firebase.messaging.Message = {
+      token: deviceId,
+      data: {
+        source: 'backend',
+        type: data.type || '',
+        ...data,
+      },
+      apns: {
+        headers: {
+          'apns-priority': '5',
+          'apns-push-type': 'background'
+        },
+        payload: {
+          aps: {
+            'content-available': 1
+          },
+        },
+      },
+    };
+
+    try {
+      await this.firebase.messaging().send(message);
+      this.logger.log(`Silent iOS push sent: ${JSON.stringify({ deviceId, ...data })}`);
+    } catch (error) {
+      this.logger.error(error, `Failed silent iOS push: ${JSON.stringify(data)}`, deviceId);
+    }
+  }
+
 }
