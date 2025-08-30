@@ -143,7 +143,7 @@ export class SchedulerService extends NestSchedule {
     await this.triggerEmergencyMessage(false);
   }
 
-  @Cron('0 */5 * * * *')
+  @Cron('0 */2 * * * *')
   async testCronLogging() {
     const now = new Date().toISOString();
     console.log(`Test Cron triggered at ${now}`);
