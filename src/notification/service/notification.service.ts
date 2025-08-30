@@ -71,7 +71,7 @@ export class NotificationService {
       stopPropagation?: boolean;
     }
   ) {
-    this.logger.error(`Sms has not been sent (uid: ${params.userId})`);
+    this.logger.error(`Sms has not been sent:: (uid: ${params.userId})`);
     this.logger.error(JSON.stringify(error));
 
     if (params?.stopPropagation) {
