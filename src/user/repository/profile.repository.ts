@@ -14,14 +14,23 @@ export class ProfileRepository extends Repository<ProfileEntity> {
     });
   }
 
-  findAllActiveDeviceIds(): Promise<{ userId: string; deviceId: string }[]> {
-    return this.createQueryBuilder('profile')
-      .select('profile.user_id', 'userId')
-      .addSelect('profile.device_id', 'deviceId')
-      .where('profile.device_id IS NOT NULL')
-      .andWhere('profile.automated_emergency = 1')
-      .getRawMany();
+  async findAllActiveDeviceIds(): Promise<{ userId: string; deviceId: string }[]> {
+    try {
+      const results = await this.createQueryBuilder('profile')
+        .leftJoin('profile.user', 'user')
+        .select('profile.user_id', 'userId')
+        .addSelect('user.device_id', 'deviceId')
+        .where('user.device_id IS NOT NULL')
+        .andWhere('profile.automated_emergency = 1')
+        .getRawMany();
+
+      return results;
+    } catch (error) {
+      this.logger.error('Error fetching active device IDs', error);
+      return [];
+    }
   }
+
 
   findWhereRegularNotificationIsNeeded(): Promise<
     {
