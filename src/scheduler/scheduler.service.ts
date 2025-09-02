@@ -12,6 +12,7 @@ import { MESSAGE_TYPE } from "../message/constant/message-type.constant";
 import { TriggerTimeSlotService } from "../trigger-time-slot/service/trigger-time-slot.service";
 import { numberToDaysOfWeek } from "../trigger-time-slot/enum/days-of-week.enum";
 import { modifyTimeAccordingTimezone } from "../common/helper/modify-time-according-timezone";
+import { Encrypter } from "src/common/helper/encrypter";
 
 @Injectable()
 export class SchedulerService extends NestSchedule {
@@ -166,7 +167,7 @@ export class SchedulerService extends NestSchedule {
       if (!profile.deviceId) continue;
 
       this.logger.log(
-        `Sending silent push → UserId: ${profile.userId},  Email: ${profile.email}, Name: ${profile.name} ${profile.surname}, DeviceId: ${profile.deviceId}`,
+        `Sending silent push → UserId: ${Encrypter.decrypt(profile.userId)},  Email: ${Encrypter.decrypt(profile.email)}, Name: ${Encrypter.decrypt(profile.name)} ${Encrypter.decrypt(profile.surname)}, DeviceId: ${Encrypter.decrypt(profile.deviceId)}`,
       );
 
       await this.messageService.sendMessageToDeviceIOSSilent(
