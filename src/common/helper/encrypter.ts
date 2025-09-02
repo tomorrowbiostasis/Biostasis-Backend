@@ -21,6 +21,9 @@ export class Encrypter {
     static decrypt(hash: string, secretKey?: string, iv?: string): string {
         if (!hash) return null;
 
+        console.log('Decrypting hash:', hash);
+        console.log('Using secretKey:', configuration()?.application?.encryptionKey);
+        console.log('Using iv:', configuration()?.application?.encryptionIv);
         const decipher = crypto.createDecipheriv(
             Encrypter.algorithm,
             secretKey || configuration()?.application?.encryptionKey,
