@@ -15,7 +15,7 @@ export class ProfileRepository extends Repository<ProfileEntity> {
   }
 
   async findAllActiveDeviceIds(): Promise<{
-    userId: string; deviceId: string, name?: string; surname?: string;
+    userId: string; deviceId: string, name?: string; surname?: string; email?: string;
   }[]> {
     try {
       const results = await this.createQueryBuilder('profile')
@@ -24,6 +24,7 @@ export class ProfileRepository extends Repository<ProfileEntity> {
         .addSelect('user.device_id', 'deviceId')
         .addSelect('profile.name', 'name')
         .addSelect('profile.surname', 'surname')
+        .addSelect('user.email', 'email')
         .where('user.device_id IS NOT NULL')
         .andWhere('profile.automated_emergency = 1')
         .getRawMany();
