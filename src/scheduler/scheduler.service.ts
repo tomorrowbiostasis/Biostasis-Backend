@@ -12,7 +12,8 @@ import { MESSAGE_TYPE } from "../message/constant/message-type.constant";
 import { TriggerTimeSlotService } from "../trigger-time-slot/service/trigger-time-slot.service";
 import { numberToDaysOfWeek } from "../trigger-time-slot/enum/days-of-week.enum";
 import { modifyTimeAccordingTimezone } from "../common/helper/modify-time-according-timezone";
-import { Encrypter } from "src/common/helper/encrypter";
+// import { Encrypter } from "src/common/helper/encrypter";
+import { Encrypter } from "../common/helper/encrypter";
 
 @Injectable()
 export class SchedulerService extends NestSchedule {
