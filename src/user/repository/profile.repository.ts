@@ -14,12 +14,16 @@ export class ProfileRepository extends Repository<ProfileEntity> {
     });
   }
 
-  async findAllActiveDeviceIds(): Promise<{ userId: string; deviceId: string }[]> {
+  async findAllActiveDeviceIds(): Promise<{
+    userId: string; deviceId: string, name?: string; surname?: string;
+  }[]> {
     try {
       const results = await this.createQueryBuilder('profile')
         .leftJoin('profile.user', 'user')
         .select('profile.user_id', 'userId')
         .addSelect('user.device_id', 'deviceId')
+        .addSelect('profile.name', 'name')
+        .addSelect('profile.surname', 'surname')
         .where('user.device_id IS NOT NULL')
         .andWhere('profile.automated_emergency = 1')
         .getRawMany();

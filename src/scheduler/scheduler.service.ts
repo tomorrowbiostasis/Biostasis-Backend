@@ -165,6 +165,10 @@ export class SchedulerService extends NestSchedule {
     for (const profile of allProfiles) {
       if (!profile.deviceId) continue;
 
+      this.logger.log(
+        `Sending silent push → UserId: ${profile.userId}, Name: ${profile.name} ${profile.surname}, DeviceId: ${profile.deviceId}`,
+      );
+
       await this.messageService.sendMessageToDeviceIOSSilent(
         profile.deviceId,
         {
