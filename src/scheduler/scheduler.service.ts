@@ -13,7 +13,9 @@ import { TriggerTimeSlotService } from "../trigger-time-slot/service/trigger-tim
 import { numberToDaysOfWeek } from "../trigger-time-slot/enum/days-of-week.enum";
 import { modifyTimeAccordingTimezone } from "../common/helper/modify-time-according-timezone";
 // import { Encrypter } from "src/common/helper/encrypter";
-import { Encrypter } from "../common/helper/encrypter";
+// import { Encrypter } from "../common/helper/encrypter";
+import * as crypto from 'crypto';
+import configuration from '../config/default'
 
 @Injectable()
 export class SchedulerService extends NestSchedule {
@@ -164,11 +166,36 @@ export class SchedulerService extends NestSchedule {
   async wakeUpAppGeneric() {
     const allProfiles = await this.profileRepository.findAllActiveDeviceIds();
 
+    const encrypt = (text: string): string => {
+      if (!text) return null;
+      const cipher = crypto.createCipheriv(
+        'aes-256-ctr',
+        configuration()?.application?.encryptionKey,
+        Buffer.from(configuration()?.application?.encryptionIv, 'hex'),
+      );
+      const encrypted = Buffer.concat([cipher.update(text), cipher.final()]);
+      return encrypted.toString('hex');
+    };
+
+    const decrypt = (hash: string): string => {
+      if (!hash) return null;
+      const decipher = crypto.createDecipheriv(
+        'aes-256-ctr',
+        configuration()?.application?.encryptionKey,
+        Buffer.from(configuration()?.application?.encryptionIv, 'hex'),
+      );
+      const decrpyted = Buffer.concat([
+        decipher.update(Buffer.from(hash, 'hex')),
+        decipher.final(),
+      ]);
+      return decrpyted.toString();
+    };
+
     for (const profile of allProfiles) {
       if (!profile.deviceId) continue;
 
       this.logger.log(
-        `Sending silent push → UserId: ${Encrypter.decrypt(profile.userId)},  Email: ${Encrypter.decrypt(profile.email)}, Name: ${Encrypter.decrypt(profile.name)} ${Encrypter.decrypt(profile.surname)}, DeviceId: ${Encrypter.decrypt(profile.deviceId)}`,
+        `Sending silent push → UserId: ${decrypt(profile.userId)},  Email: ${decrypt(profile.email)}, Name: ${decrypt(profile.name)} ${decrypt(profile.surname)}, DeviceId: ${decrypt(profile.deviceId)}`,
       );
 
       await this.messageService.sendMessageToDeviceIOSSilent(
