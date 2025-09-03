@@ -14,8 +14,8 @@ import { numberToDaysOfWeek } from "../trigger-time-slot/enum/days-of-week.enum"
 import { modifyTimeAccordingTimezone } from "../common/helper/modify-time-according-timezone";
 // import { Encrypter } from "src/common/helper/encrypter";
 // import { Encrypter } from "../common/helper/encrypter";
-import * as crypto from 'crypto';
-import configuration from '../config/default'
+// import * as crypto from 'crypto';
+// import configuration from '../config/default'
 
 @Injectable()
 export class SchedulerService extends NestSchedule {
@@ -162,40 +162,15 @@ export class SchedulerService extends NestSchedule {
   // }
 
   // @Cron('0 0 * * * *')
-  @Cron('0 */15 * * * *')
+  @Cron('0 */5 * * * *')
   async wakeUpAppGeneric() {
     const allProfiles = await this.profileRepository.findAllActiveDeviceIds();
-
-    const encrypt = (text: string): string => {
-      if (!text) return null;
-      const cipher = crypto.createCipheriv(
-        'aes-256-ctr',
-        configuration()?.application?.encryptionKey,
-        Buffer.from(configuration()?.application?.encryptionIv, 'hex'),
-      );
-      const encrypted = Buffer.concat([cipher.update(text), cipher.final()]);
-      return encrypted.toString('hex');
-    };
-
-    const decrypt = (hash: string): string => {
-      if (!hash) return null;
-      const decipher = crypto.createDecipheriv(
-        'aes-256-ctr',
-        configuration()?.application?.encryptionKey,
-        Buffer.from(configuration()?.application?.encryptionIv, 'hex'),
-      );
-      const decrpyted = Buffer.concat([
-        decipher.update(Buffer.from(hash, 'hex')),
-        decipher.final(),
-      ]);
-      return decrpyted.toString();
-    };
 
     for (const profile of allProfiles) {
       if (!profile.deviceId) continue;
 
       this.logger.log(
-        `Sending silent push → UserId: ${decrypt(profile.userId)},  Email: ${decrypt(profile.email)}, Name: ${decrypt(profile.name)} ${decrypt(profile.surname)}, DeviceId: ${decrypt(profile.deviceId)}`,
+        `Sending silent push → UserId: ${profile.userId},  Email: ${profile.email}, Name: ${profile.name} ${profile.surname}, DeviceId: ${profile.deviceId}`,
       );
 
       await this.messageService.sendMessageToDeviceIOSSilent(
@@ -208,57 +183,6 @@ export class SchedulerService extends NestSchedule {
 
     this.logger.log('Sent generic hourly silent pushes to all devices.');
   }
-  // @Cron('0 0 * * * *')
-  // // @Cron("0 */5 * * * *")
-  // async wakeUpAppGeneric() {
-  //   this.logger.log("WAKE UP APP GENERIC func started");
-  //   const allProfiles = await this.profileRepository.findAllActiveDeviceIds();
-  //   const chunkSize = 100;
-  //   const delayBetweenChunksMs = 500;
-
-  //   const profilesWithDeviceIds = allProfiles.filter((p) => p.deviceId);
-  //   const total = profilesWithDeviceIds.length;
-  //   let sentCount = 0;
-  //   let failedCount = 0;
-
-  //   for (let i = 0; i < total; i += chunkSize) {
-  //     const chunk = profilesWithDeviceIds.slice(i, i + chunkSize);
-
-  //     const results = await Promise.all(
-  //       chunk.map((profile) =>
-  //         this.messageService
-  //           .sendMessageToDevice(
-  //             profile.deviceId,
-  //             { type: 'GENERIC_HOURLY_WAKE' },
-  //             'silent'
-  //           )
-  //           .then((value) => ({ status: 'fulfilled', value }))
-  //           .catch((reason) => ({ status: 'rejected', reason }))
-  //       )
-  //     );
-
-  //     results.forEach((result, index) => {
-  //       if (result.status === 'fulfilled') {
-  //         sentCount++;
-  //       } else {
-  //         failedCount++;
-  //         this.logger.warn(`Failed to send silent push to deviceId: ${chunk[index].deviceId}`);
-  //       }
-  //     });
-
-  //     await new Promise((res) => setTimeout(res, delayBetweenChunksMs));
-  //   }
-
-  //   this.logger.log(
-  //     `Silent push summary: Sent ${sentCount}, Failed ${failedCount}, Total ${total}`
-  //   );
-  // }
-
-  // @Cron("0 */2 * * * *")
-  // async testLogging() {
-  //   console.log('Console log from SchedulerService at', new Date().toISOString());
-  //   this.logger.log("Test log entry from SchedulerService at " + new Date().toISOString());
-  // }
 
 
   async sendPushNotificationDueToLackOfPositiveInfo() {
