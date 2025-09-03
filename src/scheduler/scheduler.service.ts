@@ -147,22 +147,7 @@ export class SchedulerService extends NestSchedule {
     await this.triggerEmergencyMessage(false);
   }
 
-  // Leaving here for testing purposes
-  // @Cron('0 */2 * * * *')
-  // async testCronLogging() {
-  //   const now = new Date().toISOString();
-  //   console.log(`Test Cron triggered at ${now}`);
-  //   this.logger.log(`Test Cron triggered at ${now}`);
-
-  //   // Simulate some async work
-  //   await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  //   console.log(`Test Cron finished at ${new Date().toISOString()}`);
-  //   this.logger.log(`Test Cron finished at ${new Date().toISOString()}`);
-  // }
-
-  // @Cron('0 0 * * * *')
-  @Cron('0 */5 * * * *')
+  @Cron('0 0 * * * *')
   async wakeUpAppGeneric() {
     const allProfiles = await this.profileRepository.findAllActiveDeviceIds();
 
