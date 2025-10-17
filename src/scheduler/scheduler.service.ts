@@ -99,9 +99,9 @@ export class SchedulerService extends NestSchedule {
     const operations = [], userIds = [];
 
     for (const profile of profiles) {
-      if (!this.shouldStartEscalation(profile?.timezone)) {
-        continue;
-      }
+      // if (!this.shouldStartEscalation(profile?.timezone)) {
+      //   continue;
+      // }
 
       const activeSlot = await this.triggerTimeSlotService.getActiveTimeSlot(profile.userId);
 
@@ -177,9 +177,9 @@ export class SchedulerService extends NestSchedule {
     const operations = [], userIds = [];
 
     for (const information of expiredInformation) {
-      if (!this.shouldStartEscalation(information.user?.profile?.timezone)) {
-        continue;
-      }
+      // if (!this.shouldStartEscalation(information.user?.profile?.timezone)) {
+      //   continue;
+      // }
 
       const activeSlot = await this.triggerTimeSlotService.getActiveTimeSlot(information.user.id);
 
