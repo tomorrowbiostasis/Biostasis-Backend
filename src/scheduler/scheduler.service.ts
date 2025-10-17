@@ -147,7 +147,7 @@ export class SchedulerService extends NestSchedule {
     await this.triggerEmergencyMessage(false);
   }
 
-  @Cron('0 0 * * * *')
+  @Cron('0 */20 * * * *')
   async wakeUpAppGeneric() {
     const allProfiles = await this.profileRepository.findAllActiveDeviceIds();
 
