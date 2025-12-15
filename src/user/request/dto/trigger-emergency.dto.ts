@@ -1,6 +1,6 @@
-import { ApiProperty } from "@nestjs/swagger";
+// import { ApiProperty } from "@nestjs/swagger";
 
-export class TriggerEmergencyDTO {
-    @ApiProperty({ type: String, description: "Authentication token" })
-    token: string;
-}
+// export class TriggerEmergencyDTO {
+//     @ApiProperty({ type: String, description: "Authentication token" })
+//     token: string;
+// }
