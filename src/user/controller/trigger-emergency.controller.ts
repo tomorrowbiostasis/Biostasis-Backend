@@ -72,6 +72,7 @@ import { User } from "../../authentication/decorator/user.decorator";
 import { UserEntity, ROLES } from "../../user/entity/user.entity";
 import { SuccessRO } from "../../common/response/success.ro";
 import { plainToClass } from "class-transformer";
+import { UserService } from "../service/user.service";
 
 @ApiBearerAuth()
 @ApiTags("user")
@@ -79,11 +80,17 @@ import { plainToClass } from "class-transformer";
 @UseGuards(AuthGuard("cognito"), RolesGuard) // ✅ correct order
 export class TriggerEmergencyController {
 
+    constructor(
+        private readonly userService: UserService,
+    ) { }
+
     @ApiResponse({ status: 200, type: SuccessRO })
     @ApiOperation({ summary: "Trigger emergency" })
     @Roles([ROLES.USER])
     @Post("trigger-emergency")
     async triggerEmergency(@User() user: UserEntity) {
+        user = await this.userService.findByIdOrFail(user.id);
+
         // return plainToClass(SuccessRO, {
         //     success: true,
         //     data: user, // ← user came from token
