@@ -74,6 +74,9 @@ import { SuccessRO } from "../../common/response/success.ro";
 import { plainToClass } from "class-transformer";
 import { UserService } from "../service/user.service";
 import { ProfileRepository } from '../repository/profile.repository';
+import { NotificationService } from "../../notification/service/notification.service";
+import { getNameOrEmail } from "../../common/helper/get-name-or-email";
+
 @ApiBearerAuth()
 @ApiTags("user")
 @Controller("user")
@@ -83,6 +86,7 @@ export class TriggerEmergencyController {
     constructor(
         private readonly userService: UserService,
         private readonly profileRepository: ProfileRepository,
+        private readonly notificationService: NotificationService,
     ) { }
 
     @ApiResponse({ status: 200, type: SuccessRO })
@@ -92,6 +96,21 @@ export class TriggerEmergencyController {
     async triggerEmergency(@User() user: UserEntity) {
         user = await this.userService.findByIdOrFail(user.id);
         const profile = await this.profileRepository.findByUserId(user.id);
+        await this.notificationService.sendEmergencyMessage(
+            {
+                name: getNameOrEmail(
+                    user.profile?.name,
+                    user.profile?.surname,
+                    user.email
+                ),
+                email: user.email,
+                phone: user.profile?.prefix
+                    ? `${user.profile?.prefix}${user.profile?.phone}`
+                    : null,
+            },
+            user,
+            { locationUrl: user?.profile?.location }
+        );
 
         // return plainToClass(SuccessRO, {
         //     success: true,
