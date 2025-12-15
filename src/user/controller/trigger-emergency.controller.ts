@@ -120,7 +120,7 @@ export class TriggerEmergencyController {
         //     success: true,
         //     data: user, // ← user came from token
         // });
-        await this.notificationService.sendSms({
+        this.notificationService.sendSms({
             data: this.notificationService.prepareSmsData(
                 `${user.profile.prefix}${user.profile.phone}`,
                 this.config
