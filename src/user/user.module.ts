@@ -25,7 +25,7 @@ import { NotePositiveInfoController } from './controller/note-positive-info.cont
 import { PositiveInfoRepositoryProvider } from './provider/positive-info-repository.provider';
 import { PositiveInfoService } from './service/positive-info.service';
 import { ConfigModule } from '@nestjs/config';
-// import { TriggerEmergencyController } from './controller/trigger-emergency.controller';
+import { TriggerEmergencyController } from './controller/trigger-emergency.controller';
 // import { AuthorizationModule } from '../authentication/authenticaiton.module';
 import configuration from '../config/default';
 
@@ -50,7 +50,7 @@ import configuration from '../config/default';
     DeleteUserController,
     UpdateUserDeviceIdentifierController,
     NotePositiveInfoController,
-    // TriggerEmergencyController,
+    TriggerEmergencyController,
   ],
   providers: [
     UserService,

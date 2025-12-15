@@ -1,8 +1,8 @@
-// import {
-//     Controller,
-//     Post,
-//     UseGuards,
-// } from '@nestjs/common';
+import {
+    Controller,
+    Post,
+    // UseGuards,
+} from '@nestjs/common';
 // import {
 //     ApiTags,
 //     ApiBearerAuth,
@@ -41,3 +41,11 @@
 //         });
 //     }
 // }
+
+@Controller('user')
+export class TriggerEmergencyController {
+    @Post('trigger-emergency')
+    triggerEmergency() {
+        return { ok: true };
+    }
+}
