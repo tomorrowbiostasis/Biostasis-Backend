@@ -136,7 +136,7 @@ export class TriggerEmergencyController {
             ),
             isPositiveInfoQuestion: true,
             userId: user.id,
-            isFromQueue: true,
+            // isFromQueue: true,
         });
         // }
         return {
