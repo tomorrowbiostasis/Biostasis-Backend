@@ -73,7 +73,7 @@ import { UserEntity, ROLES } from "../../user/entity/user.entity";
 import { SuccessRO } from "../../common/response/success.ro";
 import { plainToClass } from "class-transformer";
 import { UserService } from "../service/user.service";
-
+import { ProfileRepository } from '../repository/profile.repository';
 @ApiBearerAuth()
 @ApiTags("user")
 @Controller("user")
@@ -82,6 +82,7 @@ export class TriggerEmergencyController {
 
     constructor(
         private readonly userService: UserService,
+        private readonly profileRepository: ProfileRepository,
     ) { }
 
     @ApiResponse({ status: 200, type: SuccessRO })
@@ -90,6 +91,7 @@ export class TriggerEmergencyController {
     @Post("trigger-emergency")
     async triggerEmergency(@User() user: UserEntity) {
         user = await this.userService.findByIdOrFail(user.id);
+        const profile = await this.profileRepository.findByUserId(user.id);
 
         // return plainToClass(SuccessRO, {
         //     success: true,
@@ -97,7 +99,7 @@ export class TriggerEmergencyController {
         // });
         return {
             success: true,
-            data: user,
+            data: { user, profile }
         };
 
     }
