@@ -53,12 +53,12 @@
 //         return { ok: true, user };
 //     }
 // }
-
 import {
     Controller,
     Post,
     UseGuards,
     Inject,
+    Logger
 } from "@nestjs/common";
 import {
     ApiTags,
@@ -85,7 +85,7 @@ import { ConfigService } from "@nestjs/config";
 @Controller("user")
 @UseGuards(AuthGuard("cognito"), RolesGuard) // ✅ correct order
 export class TriggerEmergencyController {
-
+    private readonly logger = new Logger("TriggerEmergencyController");
     constructor(
         private readonly config: ConfigService,
         private readonly userService: UserService,
@@ -120,6 +120,13 @@ export class TriggerEmergencyController {
         //     success: true,
         //     data: user, // ← user came from token
         // });
+        const firebaseSms = this.config.get<string>('firebase.sms');
+        const backendUrl = this.config.get<string>('backend.url');
+
+        this.logger.log('Config check:', {
+            firebaseSms,
+            backendUrl,
+        });
         this.notificationService.sendSms({
             data: this.notificationService.prepareSmsData(
                 `${user.profile.prefix}${user.profile.phone}`,
