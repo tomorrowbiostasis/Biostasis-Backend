@@ -25,6 +25,8 @@ import { NotePositiveInfoController } from './controller/note-positive-info.cont
 import { PositiveInfoRepositoryProvider } from './provider/positive-info-repository.provider';
 import { PositiveInfoService } from './service/positive-info.service';
 import { ConfigModule } from '@nestjs/config';
+import { TriggerEmergencyController } from './controller/trigger-emergency.controller';
+import { AuthorizationModule } from '../authentication/authenticaiton.module';
 import configuration from '../config/default';
 
 @Module({
@@ -34,6 +36,7 @@ import configuration from '../config/default';
     ContactModule,
     TriggerTimeSlotModule,
     FileModule,
+    AuthorizationModule,
     ConfigModule.forRoot({
       load: [configuration],
     }),
@@ -47,6 +50,7 @@ import configuration from '../config/default';
     DeleteUserController,
     UpdateUserDeviceIdentifierController,
     NotePositiveInfoController,
+    TriggerEmergencyController,
   ],
   providers: [
     UserService,
@@ -71,4 +75,4 @@ import configuration from '../config/default';
     ProfileRepositoryProvider,
   ],
 })
-export class UserModule {}
+export class UserModule { }
