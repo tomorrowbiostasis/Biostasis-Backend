@@ -84,10 +84,15 @@ export class TriggerEmergencyController {
     @Roles([ROLES.USER])
     @Post("trigger-emergency")
     async triggerEmergency(@User() user: UserEntity) {
-        return plainToClass(SuccessRO, {
+        // return plainToClass(SuccessRO, {
+        //     success: true,
+        //     data: user, // ← user came from token
+        // });
+        return {
             success: true,
-            data: user, // ← user came from token
-        });
+            data: user,
+        };
+
     }
 }
 
