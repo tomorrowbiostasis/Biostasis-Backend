@@ -3,6 +3,7 @@ import {
     Post,
     // UseGuards,
 } from '@nestjs/common';
+import { UserService } from '../service/user.service';
 // import {
 //     ApiTags,
 //     ApiBearerAuth,
@@ -44,8 +45,11 @@ import {
 
 @Controller('user')
 export class TriggerEmergencyController {
+    constructor(private readonly userService: UserService) { }
+
     @Post('trigger-emergency')
-    triggerEmergency() {
-        return { ok: true };
+    async triggerEmergency() {
+        const user = await this.userService.findById('test');
+        return { ok: true, user };
     }
 }
