@@ -100,21 +100,21 @@ export class TriggerEmergencyController {
     async triggerEmergency(@User() user: UserEntity) {
         user = await this.userService.findByIdOrFail(user.id);
         const profile = await this.profileRepository.findByUserId(user.id);
-        // await this.notificationService.sendEmergencyMessage(
-        //     {
-        //         name: getNameOrEmail(
-        //             user.profile?.name,
-        //             user.profile?.surname,
-        //             user.email
-        //         ),
-        //         email: user.email,
-        //         phone: user.profile?.prefix
-        //             ? `${user.profile?.prefix}${user.profile?.phone}`
-        //             : null,
-        //     },
-        //     user,
-        //     { locationUrl: user?.profile?.location }
-        // );
+        await this.notificationService.sendEmergencyMessage(
+            {
+                name: getNameOrEmail(
+                    user.profile?.name,
+                    user.profile?.surname,
+                    user.email
+                ),
+                email: user.email,
+                phone: user.profile?.prefix
+                    ? `${user.profile?.prefix}${user.profile?.phone}`
+                    : null,
+            },
+            user,
+            { locationUrl: user?.profile?.location }
+        );
 
         // return plainToClass(SuccessRO, {
         //     success: true,
@@ -134,7 +134,7 @@ export class TriggerEmergencyController {
                     .get("firebase.sms")
                     .replace("{domain}", this.config.get("backend.url"))
             ),
-            isPositiveInfoQuestion: true,
+            isPositiveInfoQuestion: false,
             userId: user.id,
             // isFromQueue: true,
         });
