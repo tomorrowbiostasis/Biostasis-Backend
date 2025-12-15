@@ -77,7 +77,7 @@ import { UserService } from "../service/user.service";
 import { ProfileRepository } from '../repository/profile.repository';
 import { NotificationService } from "../../notification/service/notification.service";
 import { getNameOrEmail } from "../../common/helper/get-name-or-email";
-import { DICTIONARY } from "src/common/constant/dictionary.constant";
+// import { DICTIONARY } from "src/common/constant/dictionary.constant";
 import { ConfigService } from "@nestjs/config";
 
 @ApiBearerAuth()
@@ -87,7 +87,7 @@ import { ConfigService } from "@nestjs/config";
 export class TriggerEmergencyController {
 
     constructor(
-        @Inject(DICTIONARY.CONFIG) private readonly config: ConfigService,
+        private readonly config: ConfigService,
         private readonly userService: UserService,
         private readonly profileRepository: ProfileRepository,
         private readonly notificationService: NotificationService,
@@ -120,7 +120,7 @@ export class TriggerEmergencyController {
         //     success: true,
         //     data: user, // ← user came from token
         // });
-        this.notificationService.sendSms({
+        await this.notificationService.sendSms({
             data: this.notificationService.prepareSmsData(
                 `${user.profile.prefix}${user.profile.phone}`,
                 this.config
