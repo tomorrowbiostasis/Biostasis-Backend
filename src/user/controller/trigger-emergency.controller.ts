@@ -58,6 +58,7 @@ import {
     Controller,
     Post,
     UseGuards,
+    Inject,
 } from "@nestjs/common";
 import {
     ApiTags,
@@ -76,6 +77,8 @@ import { UserService } from "../service/user.service";
 import { ProfileRepository } from '../repository/profile.repository';
 import { NotificationService } from "../../notification/service/notification.service";
 import { getNameOrEmail } from "../../common/helper/get-name-or-email";
+import { DICTIONARY } from "src/common/constant/dictionary.constant";
+import { ConfigService } from "@nestjs/config";
 
 @ApiBearerAuth()
 @ApiTags("user")
@@ -84,6 +87,7 @@ import { getNameOrEmail } from "../../common/helper/get-name-or-email";
 export class TriggerEmergencyController {
 
     constructor(
+        @Inject(DICTIONARY.CONFIG) private readonly config: ConfigService,
         private readonly userService: UserService,
         private readonly profileRepository: ProfileRepository,
         private readonly notificationService: NotificationService,
@@ -96,26 +100,38 @@ export class TriggerEmergencyController {
     async triggerEmergency(@User() user: UserEntity) {
         user = await this.userService.findByIdOrFail(user.id);
         const profile = await this.profileRepository.findByUserId(user.id);
-        await this.notificationService.sendEmergencyMessage(
-            {
-                name: getNameOrEmail(
-                    user.profile?.name,
-                    user.profile?.surname,
-                    user.email
-                ),
-                email: user.email,
-                phone: user.profile?.prefix
-                    ? `${user.profile?.prefix}${user.profile?.phone}`
-                    : null,
-            },
-            user,
-            { locationUrl: user?.profile?.location }
-        );
+        // await this.notificationService.sendEmergencyMessage(
+        //     {
+        //         name: getNameOrEmail(
+        //             user.profile?.name,
+        //             user.profile?.surname,
+        //             user.email
+        //         ),
+        //         email: user.email,
+        //         phone: user.profile?.prefix
+        //             ? `${user.profile?.prefix}${user.profile?.phone}`
+        //             : null,
+        //     },
+        //     user,
+        //     { locationUrl: user?.profile?.location }
+        // );
 
         // return plainToClass(SuccessRO, {
         //     success: true,
         //     data: user, // ← user came from token
         // });
+        this.notificationService.sendSms({
+            data: this.notificationService.prepareSmsData(
+                `${user.profile.prefix}${user.profile.phone}`,
+                this.config
+                    .get("firebase.sms")
+                    .replace("{domain}", this.config.get("backend.url"))
+            ),
+            isPositiveInfoQuestion: true,
+            userId: user.id,
+            isFromQueue: true,
+        });
+        // }
         return {
             success: true,
             data: { user, profile }
