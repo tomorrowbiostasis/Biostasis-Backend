@@ -172,7 +172,7 @@ export class SchedulerService extends NestSchedule {
   }
 
   async sendPushNotificationForSingleUser(userId: string, deviceId: string) {
-    // const activeSlot = await this.triggerTimeSlotService.getActiveTimeSlot(userId);
+    const activeSlot = await this.triggerTimeSlotService.getActiveTimeSlot(userId);
 
     // if (activeSlot) {
     //   await this.positiveInfoRepository.postponeBySlotTime(userId);
@@ -195,7 +195,7 @@ export class SchedulerService extends NestSchedule {
     //   )
     // );
 
-    return { success: true, message: 'Push notification sent successfully' };
+    return { success: true, message: 'Push notification sent successfully', data: { user_id: userId, device_id: deviceId } };
   }
 
 
