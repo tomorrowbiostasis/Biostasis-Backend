@@ -14,6 +14,7 @@ import { TriggerTimeSlotModule } from '../trigger-time-slot/trigger-time-slot.mo
   imports: [
     ScheduleModule.register(),
     forwardRef(() => NotificationModule),
+    forwardRef(() => UserModule),
     UserModule,
     MessageModule,
     forwardRef(() => TriggerTimeSlotModule),
@@ -25,4 +26,4 @@ import { TriggerTimeSlotModule } from '../trigger-time-slot/trigger-time-slot.mo
   providers: [SchedulerService, ConfigProvider],
   exports: [SchedulerService],
 })
-export class SchedulerModule {}
+export class SchedulerModule { }

@@ -3,7 +3,8 @@ import {
     Post,
     UseGuards,
     Inject,
-    Logger
+    Logger,
+    forwardRef,
 } from "@nestjs/common";
 import {
     ApiTags,
@@ -21,7 +22,6 @@ import { plainToClass } from "class-transformer";
 import { UserService } from "../service/user.service";
 import { ProfileRepository } from '../repository/profile.repository';
 import { NotificationService } from "../../notification/service/notification.service";
-import { TriggerTimeSlotService } from "../../trigger-time-slot/service/trigger-time-slot.service";
 import { getNameOrEmail } from "../../common/helper/get-name-or-email";
 // import { DICTIONARY } from "src/common/constant/dictionary.constant";
 import { ConfigService } from "@nestjs/config";
@@ -38,8 +38,8 @@ export class TriggerEmergencyController {
         private readonly userService: UserService,
         private readonly profileRepository: ProfileRepository,
         private readonly notificationService: NotificationService,
+        @Inject(forwardRef(() => SchedulerService))
         private readonly schedulerService: SchedulerService,
-        private readonly triggerTimeSlotService: TriggerTimeSlotService,
 
     ) { }
 
@@ -56,17 +56,16 @@ export class TriggerEmergencyController {
                 message: "No device ID found for user"
             };
         }
-        const activeSlot = await this.triggerTimeSlotService.getActiveTimeSlot(user.id);
 
 
-        // const result = await this.schedulerService.sendPushNotificationForSingleUser(
-        //     user.id,
-        //     profile.user.deviceId,
-        // );
+        const result = await this.schedulerService.sendPushNotificationForSingleUser(
+            user.id,
+            profile.user.deviceId,
+        );
 
         return {
             success: 'true',
-            data: activeSlot,
+            data: result,
         };
         // await this.notificationService.sendEmergencyMessage(
         //     {

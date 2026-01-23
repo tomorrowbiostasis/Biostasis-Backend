@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { UserService } from './service/user.service';
 import { ProfileService } from './service/profile.service';
 import { CognitoIdentityServiceProvider } from '../common/provider/cognito-identity-service.provider';
@@ -41,7 +41,7 @@ import { SchedulerModule } from '../scheduler/scheduler.module';
     ConfigModule.forRoot({
       load: [configuration],
     }),
-    SchedulerModule,
+    forwardRef(() => SchedulerModule),
   ],
   controllers: [
     UpdateUserProfileController,
