@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from "@nestjs/common";
+import { Inject, Injectable, Logger, forwardRef } from "@nestjs/common";
 import { Cron, NestSchedule } from "nest-schedule";
 import { PositiveInfoRepository } from "../user/repository/positive-info.repository";
 import { MessageService } from "../message/service/mesage.service";
@@ -12,6 +12,7 @@ import { MESSAGE_TYPE } from "../message/constant/message-type.constant";
 import { TriggerTimeSlotService } from "../trigger-time-slot/service/trigger-time-slot.service";
 import { numberToDaysOfWeek } from "../trigger-time-slot/enum/days-of-week.enum";
 import { modifyTimeAccordingTimezone } from "../common/helper/modify-time-according-timezone";
+import { UserService } from '../user/service/user.service';
 // import { Encrypter } from "src/common/helper/encrypter";
 // import { Encrypter } from "../common/helper/encrypter";
 // import * as crypto from 'crypto';
@@ -21,6 +22,7 @@ import { modifyTimeAccordingTimezone } from "../common/helper/modify-time-accord
 export class SchedulerService extends NestSchedule {
   private readonly logger = new Logger(SchedulerService.name);
   constructor(
+    @Inject(forwardRef(() => UserService))
     @Inject(DICTIONARY.CONFIG) private readonly config: ConfigService,
     @Inject(PositiveInfoRepository)
     private readonly positiveInfoRepository: PositiveInfoRepository,

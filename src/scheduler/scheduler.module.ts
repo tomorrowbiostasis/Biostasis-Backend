@@ -15,7 +15,7 @@ import { TriggerTimeSlotModule } from '../trigger-time-slot/trigger-time-slot.mo
     ScheduleModule.register(),
     forwardRef(() => NotificationModule),
     forwardRef(() => UserModule),
-    UserModule,
+    // UserModule,
     MessageModule,
     forwardRef(() => TriggerTimeSlotModule),
     // forwardRef(() => AppModule),
