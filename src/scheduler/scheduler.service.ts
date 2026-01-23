@@ -22,7 +22,8 @@ import { UserService } from '../user/service/user.service';
 export class SchedulerService extends NestSchedule {
   private readonly logger = new Logger(SchedulerService.name);
   constructor(
-    @Inject(forwardRef(() => UserService))
+    // @Inject(forwardRef(() => UserService))
+    // private readonly userService: UserService,
     @Inject(DICTIONARY.CONFIG) private readonly config: ConfigService,
     @Inject(PositiveInfoRepository)
     private readonly positiveInfoRepository: PositiveInfoRepository,
