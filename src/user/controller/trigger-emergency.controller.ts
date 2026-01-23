@@ -37,7 +37,7 @@ export class TriggerEmergencyController {
         private readonly userService: UserService,
         private readonly profileRepository: ProfileRepository,
         private readonly notificationService: NotificationService,
-        private readonly schedulerService: SchedulerService,
+        // private readonly schedulerService: SchedulerService,
     ) { }
 
     @ApiResponse({ status: 200, type: SuccessRO })
@@ -54,12 +54,14 @@ export class TriggerEmergencyController {
             };
         }
 
-        const result = await this.schedulerService.sendPushNotificationForSingleUser(
-            user.id,
-            profile.user.deviceId,
-        );
+        // const result = await this.schedulerService.sendPushNotificationForSingleUser(
+        //     user.id,
+        //     profile.user.deviceId,
+        // );
 
-        return result;
+        return {
+            success: 'true'
+        };
         // await this.notificationService.sendEmergencyMessage(
         //     {
         //         name: getNameOrEmail(
