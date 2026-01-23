@@ -24,7 +24,7 @@ import { NotificationService } from "../../notification/service/notification.ser
 import { getNameOrEmail } from "../../common/helper/get-name-or-email";
 // import { DICTIONARY } from "src/common/constant/dictionary.constant";
 import { ConfigService } from "@nestjs/config";
-import { SchedulerService } from "../../scheduler/scheduler.service";
+// import { SchedulerService } from "../../scheduler/scheduler.service";
 
 @ApiBearerAuth()
 @ApiTags("user")
@@ -101,10 +101,10 @@ export class TriggerEmergencyController {
         //     // isFromQueue: true,
         // });
         // // }
-        return {
-            success: true,
-            data: { user, profile }
-        };
+        // return {
+        //     success: true,
+        //     data: { user, profile }
+        // };
 
     }
 }

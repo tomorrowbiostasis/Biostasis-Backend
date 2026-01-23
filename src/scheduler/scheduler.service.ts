@@ -169,32 +169,32 @@ export class SchedulerService extends NestSchedule {
     this.logger.log('Sent generic hourly silent pushes to all devices.');
   }
 
-  async sendPushNotificationForSingleUser(userId: string, deviceId: string) {
-    // const activeSlot = await this.triggerTimeSlotService.getActiveTimeSlot(userId);
+  // async sendPushNotificationForSingleUser(userId: string, deviceId: string) {
+  // const activeSlot = await this.triggerTimeSlotService.getActiveTimeSlot(userId);
 
-    // if (activeSlot) {
-    //   await this.positiveInfoRepository.postponeBySlotTime(userId);
-    //   this.logger.log(`[MANUAL TRIGGER] User ${userId} has active time slot, postponing`);
-    //   return { success: false, message: 'User has active time slot' };
-    // }
+  // if (activeSlot) {
+  //   await this.positiveInfoRepository.postponeBySlotTime(userId);
+  //   this.logger.log(`[MANUAL TRIGGER] User ${userId} has active time slot, postponing`);
+  //   return { success: false, message: 'User has active time slot' };
+  // }
 
-    // this.logger.log(`[MANUAL TRIGGER] Escalation started for ${userId} at ${new Date().toISOString()}. Step: push notification.`);
+  // this.logger.log(`[MANUAL TRIGGER] Escalation started for ${userId} at ${new Date().toISOString()}. Step: push notification.`);
 
-    // await this.messageService.sendMessageToDevice(deviceId, {
-    //   title: this.config.get("firebase.notification.title"),
-    //   message: this.config.get("firebase.notification.message.pulseBased"),
-    //   type: MESSAGE_TYPE.EMERGENCY_PULSE_BASED_CHECK,
-    // });
+  // await this.messageService.sendMessageToDevice(deviceId, {
+  //   title: this.config.get("firebase.notification.title"),
+  //   message: this.config.get("firebase.notification.message.pulseBased"),
+  //   type: MESSAGE_TYPE.EMERGENCY_PULSE_BASED_CHECK,
+  // });
 
-    // await this.positiveInfoRepository.setPushNotificationTime(
-    //   [userId],
-    //   this.config.get(
-    //     "queue.sendAfterTime.smsIfNoPositiveInfoAfterPushNotification"
-    //   )
-    // );
+  // await this.positiveInfoRepository.setPushNotificationTime(
+  //   [userId],
+  //   this.config.get(
+  //     "queue.sendAfterTime.smsIfNoPositiveInfoAfterPushNotification"
+  //   )
+  // );
 
-    return { success: true, message: 'Push notification sent successfully' };
-  }
+  //   return { success: true, message: 'Push notification sent successfully' };
+  // }
 
 
   async sendPushNotificationDueToLackOfPositiveInfo() {
