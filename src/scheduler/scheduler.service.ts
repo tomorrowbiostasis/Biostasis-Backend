@@ -144,7 +144,7 @@ export class SchedulerService extends NestSchedule {
   async checkNotRegularPositiveInfo() {
     // console.log('Console log from SchedulerService at checkNotRegularPositiveInfo', new Date().toISOString());
     // this.logger.log("Test log entry from SchedulerService at checkNotRegularPositiveInfo" + new Date().toISOString());
-    await this.sendPushNotificationDueToLackOfPositiveInfo();
+    // await this.sendPushNotificationDueToLackOfPositiveInfo();
     await this.sendSmsDueToLackOfPositiveInfo(false);
     await this.sendAlertDueToLackOfPositiveInfo(false);
     await this.triggerEmergencyMessage(false);
