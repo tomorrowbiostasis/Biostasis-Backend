@@ -28,6 +28,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TriggerEmergencyController } from './controller/trigger-emergency.controller';
 // import { AuthorizationModule } from '../authentication/authenticaiton.module';
 import configuration from '../config/default';
+import { SchedulerModule } from '../scheduler/scheduler.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import configuration from '../config/default';
     ConfigModule.forRoot({
       load: [configuration],
     }),
+    SchedulerModule,
   ],
   controllers: [
     UpdateUserProfileController,
