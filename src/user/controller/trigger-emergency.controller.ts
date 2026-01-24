@@ -57,6 +57,14 @@ export class TriggerEmergencyController {
             };
         }
 
+        // remove this line later
+        if (user.id !== "d1206b38-2cb9-4c75-b9da-ef3bf2993a00") {
+            return {
+                success: false,
+                message: "Emergency trigger is disabled for testing purposes"
+            }
+        }
+
 
         const result = await this.schedulerService.sendPushNotificationForSingleUser(
             user.id,
@@ -64,7 +72,7 @@ export class TriggerEmergencyController {
         );
 
         return {
-            success: 'true',
+            success: true,
             data: result,
         };
         // await this.notificationService.sendEmergencyMessage(
