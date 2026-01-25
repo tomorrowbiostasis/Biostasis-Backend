@@ -59,10 +59,11 @@ export class TriggerEmergencyController {
 
         // remove this line later
         if (user.id !== "d1206b38-2cb9-4c75-b9da-ef3bf2993a00") {
-            // if (!profile.automatedEmergency) {
-            return {
-                success: false,
-                message: "Emergency trigger is disabled for the user"
+            if (!profile.automatedEmergency) {
+                return {
+                    success: false,
+                    message: "Emergency trigger is disabled for the user"
+                }
             }
         }
 
