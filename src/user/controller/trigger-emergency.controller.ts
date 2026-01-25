@@ -57,23 +57,12 @@ export class TriggerEmergencyController {
             };
         }
 
-        // remove this line later
-        if (user.id !== "d1206b38-2cb9-4c75-b9da-ef3bf2993a00") {
-            if (!profile.automatedEmergency) {
-                return {
-                    success: false,
-                    message: "Emergency trigger is disabled for the user"
-                }
-            }
-        }
         if (!profile.automatedEmergency) {
             return {
                 success: false,
                 message: "Emergency trigger is disabled for the user"
             }
         }
-
-
 
         const result = await this.schedulerService.sendPushNotificationForSingleUser(
             user.id,
@@ -82,55 +71,8 @@ export class TriggerEmergencyController {
 
         return {
             success: true,
-            data: {
-                user,
-                profile,
-            },
+            data: result,
         };
-        // await this.notificationService.sendEmergencyMessage(
-        //     {
-        //         name: getNameOrEmail(
-        //             user.profile?.name,
-        //             user.profile?.surname,
-        //             user.email
-        //         ),
-        //         email: user.email,
-        //         phone: user.profile?.prefix
-        //             ? `${user.profile?.prefix}${user.profile?.phone}`
-        //             : null,
-        //     },
-        //     user,
-        //     { locationUrl: user?.profile?.location }
-        // );
-
-        // // return plainToClass(SuccessRO, {
-        // //     success: true,
-        // //     data: user,
-        // // });
-        // const firebaseSms = this.config.get<string>('firebase.sms');
-        // const backendUrl = this.config.get<string>('backend.url');
-
-        // this.logger.log('Config check:', {
-        //     firebaseSms,
-        //     backendUrl,
-        // });
-        // this.notificationService.sendSms({
-        //     data: this.notificationService.prepareSmsData(
-        //         `${user.profile.prefix}${user.profile.phone}`,
-        //         this.config
-        //             .get("firebase.sms")
-        //             .replace("{domain}", this.config.get("backend.url"))
-        //     ),
-        //     isPositiveInfoQuestion: false,
-        //     userId: user.id,
-        //     // isFromQueue: true,
-        // });
-        // // }
-        // return {
-        //     success: true,
-        //     data: { user, profile }
-        // };
-
     }
 }
 

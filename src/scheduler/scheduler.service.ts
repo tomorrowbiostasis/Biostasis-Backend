@@ -85,15 +85,15 @@ export class SchedulerService extends NestSchedule {
     }
   }
 
-  // @Cron("0 */5 * * * *")
-  // async checkRegularPositiveInfo() {
-  //   console.log('Console log from SchedulerService at checkRegularPositiveInfo', new Date().toISOString());
-  //   this.logger.log("Test log entry from SchedulerService at checkRegularPositiveInfo" + new Date().toISOString());
-  //   await this.sendRegularPushNotification();
-  //   await this.sendSmsDueToLackOfPositiveInfo(true);
-  //   await this.sendAlertDueToLackOfPositiveInfo(true);
-  //   await this.triggerEmergencyMessage(true);
-  // }
+  @Cron("0 */5 * * * *")
+  async checkRegularPositiveInfo() {
+    console.log('Console log from SchedulerService at checkRegularPositiveInfo', new Date().toISOString());
+    this.logger.log("Test log entry from SchedulerService at checkRegularPositiveInfo" + new Date().toISOString());
+    await this.sendRegularPushNotification();
+    await this.sendSmsDueToLackOfPositiveInfo(true);
+    await this.sendAlertDueToLackOfPositiveInfo(true);
+    await this.triggerEmergencyMessage(true);
+  }
 
   async sendRegularPushNotification() {
     const profiles =
@@ -144,13 +144,15 @@ export class SchedulerService extends NestSchedule {
   async checkNotRegularPositiveInfo() {
     // console.log('Console log from SchedulerService at checkNotRegularPositiveInfo', new Date().toISOString());
     // this.logger.log("Test log entry from SchedulerService at checkNotRegularPositiveInfo" + new Date().toISOString());
+
+    // keep the commented line for future reference
     // await this.sendPushNotificationDueToLackOfPositiveInfo();
     await this.sendSmsDueToLackOfPositiveInfo(false);
     await this.sendAlertDueToLackOfPositiveInfo(false);
     await this.triggerEmergencyMessage(false);
   }
 
-  @Cron('0 */20 * * * *')
+  @Cron('0 */30 * * * *')
   async wakeUpAppGeneric() {
     const allProfiles = await this.profileRepository.findAllActiveDeviceIds();
 
