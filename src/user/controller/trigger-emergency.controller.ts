@@ -66,6 +66,12 @@ export class TriggerEmergencyController {
                 }
             }
         }
+        if (!profile.automatedEmergency) {
+            return {
+                success: false,
+                message: "Emergency trigger is disabled for the user"
+            }
+        }
 
 
 
