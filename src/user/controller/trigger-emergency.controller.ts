@@ -18,19 +18,16 @@ import { Roles } from "../../authentication/decorator/roles.decorator";
 import { User } from "../../authentication/decorator/user.decorator";
 import { UserEntity, ROLES } from "../../user/entity/user.entity";
 import { SuccessRO } from "../../common/response/success.ro";
-import { plainToClass } from "class-transformer";
 import { UserService } from "../service/user.service";
 import { ProfileRepository } from '../repository/profile.repository';
 import { NotificationService } from "../../notification/service/notification.service";
-import { getNameOrEmail } from "../../common/helper/get-name-or-email";
-// import { DICTIONARY } from "src/common/constant/dictionary.constant";
 import { ConfigService } from "@nestjs/config";
 import { SchedulerService } from "../../scheduler/scheduler.service";
 
 @ApiBearerAuth()
 @ApiTags("user")
 @Controller("user")
-@UseGuards(AuthGuard("cognito"), RolesGuard) // ✅ correct order
+@UseGuards(AuthGuard("cognito"), RolesGuard)
 export class TriggerEmergencyController {
     private readonly logger = new Logger("TriggerEmergencyController");
     constructor(
